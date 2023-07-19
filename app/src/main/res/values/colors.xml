@@ -11,4 +11,9 @@
     <color name="coffee_text_primary">#212121</color>
     <color name="coffee_text_secondary">#757575</color>
 
+    <color name="gray_background">#EDEDED</color>
+    <color name="gray_icon">#A8A6A6</color>
+    <color name="blue">#2277BB</color>
+    <color name="red">#D50F0F</color>
+
 </resources>
