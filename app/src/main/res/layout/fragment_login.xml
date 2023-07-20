@@ -7,10 +7,12 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray_background"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
         tools:context=".ui.auth.login.LoginFragment">
 
         <ImageView
@@ -19,46 +21,32 @@
             android:layout_height="200dp"
             android:layout_marginTop="8dp"
             android:contentDescription="@string/logo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/logo_cafe" />
+            app:srcCompat="@drawable/img_logo_cafe" />
 
         <TextView
-            android:id="@+id/tv_welcome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/welcome_back"
             android:textSize="48sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_logo" />
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/login_to_your_account_to_access_coffee_world"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_welcome" />
+            android:text="@string/request_login" />
 
         <LinearLayout
             android:id="@+id/ll_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="48dp"
-            android:background="@drawable/bg_linear_layout_border_white_32"
+            android:background="@drawable/bg_linear_layout_border_white_16"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_login">
+            android:padding="8dp">
 
             <ImageView
                 android:layout_width="35dp"
@@ -73,26 +61,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:autofillHints=""
                 android:background="@android:color/transparent"
                 android:hint="@string/username"
-                android:inputType="textPersonName"
-                android:minHeight="48dp"
-                android:autofillHints="" />
+                android:inputType="text"
+                android:minHeight="48dp" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="24dp"
-            android:background="@drawable/bg_linear_layout_border_white_32"
+            android:background="@drawable/bg_linear_layout_border_white_16"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_username">
+            android:padding="8dp">
 
             <ImageView
                 android:layout_width="35dp"
@@ -107,30 +92,76 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:autofillHints=""
                 android:background="@android:color/transparent"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:minHeight="48dp"
-                android:autofillHints="" />
+                android:minHeight="48dp" />
         </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/cb_show_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/show_password"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_password" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="48dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/facebook"
+                android:src="@drawable/img_facebook" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/google"
+                android:src="@drawable/img_google" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/telegram"
+                android:src="@drawable/img_telegram" />
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/tv_forgot_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="32dp"
+            android:fontFamily="sans-serif-medium"
             android:text="@string/forgot_password"
             android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_password" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btn_login"
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/login"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -138,108 +169,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_forgot_password" />
 
-        <TextView
-            android:id="@+id/textView2"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:text="@string/or_connect_using"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_login" />
-
-        <LinearLayout
-            android:id="@+id/ll_facebook"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:background="@drawable/bg_linear_layout_border_blue_16"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/ll_google"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:contentDescription="@string/logo"
-                android:src="@drawable/img_facebook" />
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginVertical="4dp"
-                android:text="@string/facebook"
-                android:textColor="@color/white"
+                android:text="@string/don_t_have_an_account"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sign_up"
+                android:textColor="@color/blue"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_google"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/bg_linear_layout_border_red_16"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/ll_facebook"
-            app:layout_constraintTop_toBottomOf="@+id/textView2">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:contentDescription="@string/logo"
-                android:src="@drawable/img_google" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginVertical="4dp"
-                android:text="@string/google"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/don_t_have_an_account"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tv_sign_up"
-            app:layout_constraintHorizontal_bias="0.5"
-            android:textSize="16sp"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_facebook" />
-
-        <TextView
-            android:id="@+id/tv_sign_up"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/blue"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:text="@string/sign_up"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/ll_google" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>
