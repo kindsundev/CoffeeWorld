@@ -3,8 +3,6 @@ package kind.sun.dev.coffeeworld.di
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.scopes.ActivityRetainedScoped
-import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.components.SingletonComponent
 import kind.sun.dev.coffeeworld.data.api.AuthService
 import kind.sun.dev.coffeeworld.utils.AuthInterceptor
@@ -16,7 +14,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
+object NetworkModule {
 
     @Singleton
     @Provides
@@ -32,7 +30,7 @@ class NetworkModule {
         return OkHttpClient.Builder().addInterceptor(authInterceptor).build()
     }
 
-    @ActivityScoped
+    @Singleton
     @Provides
     fun provideAuthService(
         retrofitBuilder: Retrofit.Builder,
@@ -40,5 +38,4 @@ class NetworkModule {
     ): AuthService {
         return retrofitBuilder.client(okHttpClient).build().create(AuthService::class.java)
     }
-
 }
