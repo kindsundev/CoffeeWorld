@@ -18,11 +18,17 @@ class RegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRegisterBinding.inflate(layoutInflater)
+        binding.registerFragment = this
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+    }
+
+    fun backToLoginFragment() {
+        requireActivity().supportFragmentManager.popBackStack()
     }
 
     override fun onDestroyView() {

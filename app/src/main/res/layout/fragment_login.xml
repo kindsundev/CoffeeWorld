@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="loginFragment"
+            type="kind.sun.dev.coffeeworld.ui.auth.login.LoginFragment" />
     </data>
 
     <LinearLayout
@@ -184,11 +186,12 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/tv_sign_up"
+                android:id="@+id/tv_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:text="@string/register"
+                android:onClick="@{() -> loginFragment.startToRegisterFragment()}"
                 android:textColor="@color/blue"
                 android:textSize="16sp"
                 android:textStyle="bold" />

@@ -13,20 +13,10 @@
         <item name="android:textColorPrimary">@color/coffee_text_primary</item>
         <item name="android:textColorSecondary">@color/coffee_text_secondary</item>
 
-        <!-- custom status bar -->
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.CoffeeWorld" parent="Base.Theme.CoffeeWorld" />
-
-    <style name="ViewVerticalLine">
-        <item name="android:layout_width">40dp</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:layout_marginStart">-15dp</item>
-        <item name="android:layout_marginEnd">-15dp</item>
-        <item name="android:contentDescription">@string/logo</item>
-        <item name="android:src">@drawable/custom_vertical_line</item>
-    </style>
 
 </resources>
