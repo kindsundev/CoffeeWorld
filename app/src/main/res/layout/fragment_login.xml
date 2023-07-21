@@ -4,9 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="loginFragment"
             type="kind.sun.dev.coffeeworld.ui.auth.LoginFragment" />
+
+        <variable
+            name="authViewModel"
+            type="kind.sun.dev.coffeeworld.ui.auth.AuthViewModel" />
     </data>
 
     <LinearLayout
@@ -37,8 +42,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="@color/black"
             android:text="@string/request_login"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <LinearLayout
@@ -66,11 +71,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:autofillHints=""
-                android:textSize="16sp"
                 android:background="@android:color/transparent"
                 android:hint="@string/username"
                 android:inputType="text"
-                android:minHeight="48dp" />
+                android:minHeight="48dp"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -98,11 +103,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:autofillHints=""
-                android:textSize="16sp"
                 android:background="@android:color/transparent"
                 android:hint="@string/password"
-                android:inputType="textPassword"
-                android:minHeight="48dp" />
+                app:passwordInputType="@{authViewModel.isPasswordVisible}"
+                android:minHeight="48dp"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <CheckBox
@@ -112,15 +117,15 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:text="@string/show_password"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_password" />
+            android:checked="@={authViewModel.isPasswordVisible}"
+            android:onCheckedChanged="@{(button, isChecked) -> authViewModel.onShowPasswordChecked(isChecked)}"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tv_error"
-            android:textColor="@color/red"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/red" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -170,7 +175,7 @@
             android:layout_height="64dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="32dp"
-            android:onClick="@{() -> loginFragment.login()}"
+            android:onClick="@{() -> loginFragment.onClickLogin()}"
             android:text="@string/login"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -195,8 +200,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:onClick="@{() -> loginFragment.onClickRegister()}"
                 android:text="@string/register"
-                android:onClick="@{() -> loginFragment.navigateToRegister()}"
                 android:textColor="@color/blue"
                 android:textSize="16sp"
                 android:textStyle="bold" />

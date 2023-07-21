@@ -3,6 +3,7 @@ package kind.sun.dev.coffeeworld.ui.auth
 import android.text.TextUtils
 import android.util.Patterns
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +25,12 @@ class AuthViewModel @Inject constructor(
 
     val authRegisterResponseLiveData: LiveData<NetworkResult<String>>
         get() = authRepository.authRegisterResponseLiveData
+
+    val isPasswordVisible = MutableLiveData<Boolean>(false)
+
+    fun onShowPasswordChecked(isChecked: Boolean) {
+        isPasswordVisible.value = isChecked
+    }
 
 
     fun loginUser(loginRequest: LoginRequest) {

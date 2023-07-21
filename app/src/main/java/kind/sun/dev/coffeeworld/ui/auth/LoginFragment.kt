@@ -13,7 +13,6 @@ import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.data.model.request.auth.LoginRequest
 import kind.sun.dev.coffeeworld.databinding.FragmentLoginBinding
 import kind.sun.dev.coffeeworld.ui.MainActivity
-import kind.sun.dev.coffeeworld.utils.Logger
 import kind.sun.dev.coffeeworld.utils.NetworkResult
 import kind.sun.dev.coffeeworld.utils.TokenManager
 import javax.inject.Inject
@@ -32,6 +31,7 @@ class LoginFragment : Fragment() {
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         binding.loginFragment = this
+        binding.authViewModel = authViewModel
         binding.lifecycleOwner = this
         checkTokenAndRedirect()
         return binding.root
@@ -66,7 +66,7 @@ class LoginFragment : Fragment() {
         }
     }
 
-    fun login() {
+    fun onClickLogin() {
         val validationResult = validLoginDataInput()
         if(validationResult.first) {
             authViewModel.loginUser(getLoginRequest())
@@ -86,7 +86,7 @@ class LoginFragment : Fragment() {
         return LoginRequest(username, password)
     }
 
-    fun navigateToRegister() {
+    fun onClickRegister() {
         val registerFragment = RegisterFragment()
         requireActivity().supportFragmentManager.commit {
             addToBackStack(null)
