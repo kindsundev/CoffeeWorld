@@ -11,6 +11,7 @@ import kind.sun.dev.coffeeworld.utils.NetworkResult
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Response
 import javax.inject.Inject
@@ -58,8 +59,13 @@ class AuthRepository @Inject constructor(
         if (response.isSuccessful && response.body() != null) {
             liveData.postValue(NetworkResult.Success(response.body()!!))
         } else if (response.errorBody() != null) {
-            val error = JSONObject(response.errorBody()!!.charStream().toString())
-            liveData.postValue(NetworkResult.Error(error.getString("message")))
+            try {
+                val errorJSON = JSONObject(response.errorBody()!!.string())
+                val errorMessage = errorJSON.getString("message")
+                liveData.postValue(NetworkResult.Error(errorMessage))
+            } catch (e: JSONException) {
+                Logger.error("JSONException: ${e.message.toString()}")
+            }
         } else {
             liveData.postValue(NetworkResult.Error("Something went wrong"))
         }
