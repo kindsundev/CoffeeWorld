@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.ui.auth
+package kind.sun.dev.coffeeworld.ui.auth.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,9 +10,9 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
-import kind.sun.dev.coffeeworld.data.model.request.auth.LoginRequest
 import kind.sun.dev.coffeeworld.databinding.FragmentLoginBinding
 import kind.sun.dev.coffeeworld.ui.MainActivity
+import kind.sun.dev.coffeeworld.ui.auth.register.RegisterFragment
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.api.TokenManager
 import javax.inject.Inject
@@ -23,33 +23,44 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private val authViewModel by viewModels<AuthViewModel>()
+    private val loginViewModel by viewModels<LoginViewModel>()
     @Inject lateinit var tokenManager: TokenManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        binding.loginFragment = this
-        binding.authViewModel = authViewModel
-        binding.lifecycleOwner = this
+        initDataBinding()
         checkTokenAndRedirect()
         return binding.root
     }
 
+    private fun initDataBinding() {
+        binding.fragment = this
+        binding.viewModel = loginViewModel
+        binding.lifecycleOwner = this
+    }
+
     private fun checkTokenAndRedirect() {
         if(tokenManager.getToken() != null) {
-          startActivity(Intent(requireContext(), MainActivity::class.java))
+            startActivity(Intent(requireContext(), MainActivity::class.java))
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initObservers()
+        setupErrorValidationObserver()
+        setupLoginResponseObserver()
     }
 
-    private fun initObservers() {
-        authViewModel.authLoginResponseLiveData.observe(viewLifecycleOwner) {
+    private fun setupErrorValidationObserver() {
+        loginViewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
+            binding.tvError.text = it
+        }
+    }
+
+    private fun setupLoginResponseObserver() {
+        loginViewModel.loginResponseLiveData.observe(viewLifecycleOwner) {
             // hide progress bar
             when(it) {
                 is NetworkResult.Success -> {
@@ -64,26 +75,6 @@ class LoginFragment : Fragment() {
                 }
             }
         }
-    }
-
-    fun onClickLogin() {
-        val validationResult = validLoginDataInput()
-        if(validationResult.first) {
-            authViewModel.loginUser(getLoginRequest())
-        } else {
-            binding.tvError.text = validationResult.second
-        }
-    }
-
-    private fun validLoginDataInput(): Pair<Boolean, String> {
-        val loginRequest = getLoginRequest()
-        return authViewModel.validateLoginCredentials(loginRequest)
-    }
-
-    private fun getLoginRequest(): LoginRequest {
-        val username = binding.edtUsername.text.toString().trim()
-        val password = binding.edtPassword.text.toString().trim()
-        return LoginRequest(username, password)
     }
 
     fun onClickRegister() {
