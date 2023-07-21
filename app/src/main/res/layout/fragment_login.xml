@@ -6,7 +6,7 @@
     <data>
         <variable
             name="loginFragment"
-            type="kind.sun.dev.coffeeworld.ui.auth.login.LoginFragment" />
+            type="kind.sun.dev.coffeeworld.ui.auth.LoginFragment" />
     </data>
 
     <LinearLayout
@@ -15,7 +15,7 @@
         android:background="@color/gray_background"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        tools:context=".ui.auth.login.LoginFragment">
+        tools:context=".ui.auth.LoginFragment">
 
         <ImageView
             android:id="@+id/img_logo"
@@ -106,7 +106,6 @@
         </LinearLayout>
 
         <CheckBox
-            android:id="@+id/cb_show_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -116,6 +115,12 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_password" />
+
+        <TextView
+            android:id="@+id/tv_error"
+            android:textColor="@color/red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -155,17 +160,17 @@
             android:id="@+id/tv_forgot_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:text="@string/forgot_password"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
         <Button
-            android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="32dp"
+            android:onClick="@{() -> loginFragment.login()}"
             android:text="@string/login"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -191,7 +196,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:text="@string/register"
-                android:onClick="@{() -> loginFragment.startToRegisterFragment()}"
+                android:onClick="@{() -> loginFragment.navigateToRegister()}"
                 android:textColor="@color/blue"
                 android:textSize="16sp"
                 android:textStyle="bold" />
