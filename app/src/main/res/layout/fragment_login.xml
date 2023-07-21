@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
         <variable
-            name="loginFragment"
-            type="kind.sun.dev.coffeeworld.ui.auth.LoginFragment" />
+            name="fragment"
+            type="kind.sun.dev.coffeeworld.ui.auth.login.LoginFragment" />
 
         <variable
-            name="authViewModel"
-            type="kind.sun.dev.coffeeworld.ui.auth.AuthViewModel" />
+            name="viewModel"
+            type="kind.sun.dev.coffeeworld.ui.auth.login.LoginViewModel" />
     </data>
 
     <LinearLayout
@@ -20,7 +19,7 @@
         android:background="@color/gray_background"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        tools:context=".ui.auth.LoginFragment">
+        tools:context=".ui.auth.login.LoginFragment">
 
         <ImageView
             android:id="@+id/img_logo"
@@ -71,6 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:autofillHints=""
+                android:text="@={viewModel.usernameLiveData}"
                 android:background="@android:color/transparent"
                 android:hint="@string/username"
                 android:inputType="text"
@@ -103,9 +103,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:autofillHints=""
+                android:text="@={viewModel.passwordLiveData}"
                 android:background="@android:color/transparent"
                 android:hint="@string/password"
-                app:passwordInputType="@{authViewModel.isPasswordVisible}"
+                app:passwordInputType="@{viewModel.isPasswordVisible}"
                 android:minHeight="48dp"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -117,8 +118,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:text="@string/show_password"
-            android:checked="@={authViewModel.isPasswordVisible}"
-            android:onCheckedChanged="@{(button, isChecked) -> authViewModel.onShowPasswordChecked(isChecked)}"
+            android:checked="@={viewModel.isPasswordVisible}"
+            android:onCheckedChanged="@{(button, isChecked) -> viewModel.onShowPasswordChecked(isChecked)}"
             android:textSize="14sp" />
 
         <TextView
@@ -175,7 +176,7 @@
             android:layout_height="64dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="32dp"
-            android:onClick="@{() -> loginFragment.onClickLogin()}"
+            android:onClick="@{() -> viewModel.onClickLogin()}"
             android:text="@string/login"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -200,7 +201,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:onClick="@{() -> loginFragment.onClickRegister()}"
+                android:onClick="@{() -> fragment.onClickRegister()}"
                 android:text="@string/register"
                 android:textColor="@color/blue"
                 android:textSize="16sp"
