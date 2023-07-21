@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.ui.auth
+package kind.sun.dev.coffeeworld.ui.auth.register
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

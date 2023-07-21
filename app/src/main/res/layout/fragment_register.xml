@@ -6,7 +6,7 @@
 
         <variable
             name="registerFragment"
-            type="kind.sun.dev.coffeeworld.ui.auth.RegisterFragment" />
+            type="kind.sun.dev.coffeeworld.ui.auth.register.RegisterFragment" />
     </data>
 
     <LinearLayout
