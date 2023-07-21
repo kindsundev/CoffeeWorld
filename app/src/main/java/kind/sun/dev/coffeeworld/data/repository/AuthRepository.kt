@@ -1,5 +1,6 @@
 package kind.sun.dev.coffeeworld.data.repository
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kind.sun.dev.coffeeworld.data.api.AuthService
 import kind.sun.dev.coffeeworld.data.model.request.auth.LoginRequest
@@ -18,9 +19,12 @@ class AuthRepository @Inject constructor(
     private val authService: AuthService
 ) {
     private val _authLoginResponseLiveData = MutableLiveData<NetworkResult<AuthResponse>>()
-    val authLoginResponseLiveData get() = _authLoginResponseLiveData
+    val authLoginResponseLiveData: LiveData<NetworkResult<AuthResponse>>
+        get() = _authLoginResponseLiveData
+
     private val _authRegisterResponseLiveData = MutableLiveData<NetworkResult<String>>()
-    val authRegisterResponseLiveData get() = _authRegisterResponseLiveData
+    val authRegisterResponseLiveData: LiveData<NetworkResult<String>>
+        get() = _authRegisterResponseLiveData
 
     private val authExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Logger.error("AuthException: ${throwable.message}")
