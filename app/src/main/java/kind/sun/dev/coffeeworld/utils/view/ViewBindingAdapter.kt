@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.utils
+package kind.sun.dev.coffeeworld.utils.view
 
 import android.text.InputType
 import android.widget.EditText

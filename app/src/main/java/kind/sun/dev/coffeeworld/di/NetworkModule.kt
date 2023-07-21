@@ -5,8 +5,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kind.sun.dev.coffeeworld.data.api.AuthService
-import kind.sun.dev.coffeeworld.utils.AuthInterceptor
-import kind.sun.dev.coffeeworld.utils.Constants.API_BASE_URL
+import kind.sun.dev.coffeeworld.utils.api.AuthInterceptor
+import kind.sun.dev.coffeeworld.utils.common.Constants.API_BASE_URL
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

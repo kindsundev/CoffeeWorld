@@ -6,8 +6,8 @@ import kind.sun.dev.coffeeworld.data.api.AuthService
 import kind.sun.dev.coffeeworld.data.model.request.auth.LoginRequest
 import kind.sun.dev.coffeeworld.data.model.request.auth.RegisterRequest
 import kind.sun.dev.coffeeworld.data.model.response.auth.AuthResponse
-import kind.sun.dev.coffeeworld.utils.Logger
-import kind.sun.dev.coffeeworld.utils.NetworkResult
+import kind.sun.dev.coffeeworld.utils.common.Logger
+import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

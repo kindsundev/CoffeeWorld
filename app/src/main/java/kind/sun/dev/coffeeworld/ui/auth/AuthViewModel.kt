@@ -11,7 +11,7 @@ import kind.sun.dev.coffeeworld.data.model.request.auth.LoginRequest
 import kind.sun.dev.coffeeworld.data.model.request.auth.RegisterRequest
 import kind.sun.dev.coffeeworld.data.model.response.auth.AuthResponse
 import kind.sun.dev.coffeeworld.data.repository.AuthRepository
-import kind.sun.dev.coffeeworld.utils.NetworkResult
+import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,7 +31,6 @@ class AuthViewModel @Inject constructor(
     fun onShowPasswordChecked(isChecked: Boolean) {
         isPasswordVisible.value = isChecked
     }
-
 
     fun loginUser(loginRequest: LoginRequest) {
         viewModelScope.launch {

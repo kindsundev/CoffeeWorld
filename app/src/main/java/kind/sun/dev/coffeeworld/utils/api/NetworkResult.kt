@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.utils
+package kind.sun.dev.coffeeworld.utils.api
 
 sealed class NetworkResult<T>(val data: T? = null, val message: String? = null) {
 

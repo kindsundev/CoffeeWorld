@@ -13,8 +13,8 @@ import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.data.model.request.auth.LoginRequest
 import kind.sun.dev.coffeeworld.databinding.FragmentLoginBinding
 import kind.sun.dev.coffeeworld.ui.MainActivity
-import kind.sun.dev.coffeeworld.utils.NetworkResult
-import kind.sun.dev.coffeeworld.utils.TokenManager
+import kind.sun.dev.coffeeworld.utils.api.NetworkResult
+import kind.sun.dev.coffeeworld.utils.api.TokenManager
 import javax.inject.Inject
 
 @AndroidEntryPoint

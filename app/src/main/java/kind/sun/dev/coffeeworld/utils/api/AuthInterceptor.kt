@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.utils
+package kind.sun.dev.coffeeworld.utils.api
 
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

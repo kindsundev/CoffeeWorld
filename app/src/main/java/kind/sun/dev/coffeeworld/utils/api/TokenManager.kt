@@ -1,9 +1,9 @@
-package kind.sun.dev.coffeeworld.utils
+package kind.sun.dev.coffeeworld.utils.api
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kind.sun.dev.coffeeworld.utils.Constants.SHARED_PREFS_TOKEN_FILE
-import kind.sun.dev.coffeeworld.utils.Constants.USER_TOKEN
+import kind.sun.dev.coffeeworld.utils.common.Constants.SHARED_PREFS_TOKEN_FILE
+import kind.sun.dev.coffeeworld.utils.common.Constants.USER_TOKEN
 import javax.inject.Inject
 
 class TokenManager @Inject constructor(
