@@ -7,7 +7,6 @@ import androidx.fragment.app.commit
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.databinding.ActivityAuthBinding
-import kind.sun.dev.coffeeworld.ui.auth.login.LoginFragment
 
 @AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
