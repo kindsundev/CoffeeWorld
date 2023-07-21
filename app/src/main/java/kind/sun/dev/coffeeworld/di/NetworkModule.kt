@@ -10,6 +10,7 @@ import kind.sun.dev.coffeeworld.utils.Constants.API_BASE_URL
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -27,7 +28,12 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
-        return OkHttpClient.Builder().addInterceptor(authInterceptor).build()
+        return OkHttpClient.Builder()
+            .addInterceptor(authInterceptor)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .build()
     }
 
     @Singleton
