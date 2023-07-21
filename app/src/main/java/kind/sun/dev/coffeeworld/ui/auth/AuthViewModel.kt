@@ -44,7 +44,7 @@ class AuthViewModel @Inject constructor(
             isTextEmpty(loginRequest.username) || isTextEmpty(loginRequest.password) -> {
                 result = Pair(false, "Please provide all the credentials")
             }
-            loginRequest.username.matches(Regex("\\S+")) -> {
+            loginRequest.username.contains("\\s".toRegex()) -> {
                 result = Pair(false, "Username must not have spaces")
             }
             loginRequest.username.endsWith(".") -> {
@@ -64,7 +64,7 @@ class AuthViewModel @Inject constructor(
                     || isTextEmpty(registerRequest.email) || isTextEmpty(registerRequest.name) -> {
                 result = Pair(false, "Please provide all the credentials")
             }
-            registerRequest.username.matches(Regex("\\S+")) -> {
+            registerRequest.username.contains("\\s".toRegex())-> {
                 result = Pair(false, "Username must not have spaces")
             }
             registerRequest.username.endsWith(".") -> {
