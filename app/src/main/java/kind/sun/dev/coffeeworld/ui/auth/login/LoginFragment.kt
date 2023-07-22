@@ -15,13 +15,14 @@ import kind.sun.dev.coffeeworld.ui.MainActivity
 import kind.sun.dev.coffeeworld.ui.auth.register.RegisterFragment
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.api.TokenManager
+import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
-
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    @Inject lateinit var loadingDialog: LoadingDialog
 
     private val loginViewModel by viewModels<LoginViewModel>()
     @Inject lateinit var tokenManager: TokenManager
@@ -61,17 +62,18 @@ class LoginFragment : Fragment() {
 
     private fun setupLoginResponseObserver() {
         loginViewModel.loginResponseLiveData.observe(viewLifecycleOwner) {
-            // hide progress bar
             when(it) {
                 is NetworkResult.Success -> {
+                    loadingDialog.dismiss()
 //                    tokenManager.saveToken(it.data!!.data.token)
                     startActivity(Intent(requireContext(), MainActivity::class.java))
                 }
                 is NetworkResult.Error -> {
+                    loadingDialog.dismiss()
                     binding.tvError.text = it.message
                 }
                 is NetworkResult.Loading -> {
-                    // show progress bar
+                    loadingDialog.show(parentFragmentManager, LoadingDialog::class.simpleName)
                 }
             }
         }
