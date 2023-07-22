@@ -79,10 +79,11 @@ class LoginFragment : Fragment() {
         }
     }
 
+    // Why I don't addToBackStack(). Because when target fragment calls popBackStack() can't include animation
     fun onClickRegister() {
         val registerFragment = RegisterFragment()
         requireActivity().supportFragmentManager.commit {
-            addToBackStack(null)
+            setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
             replace(R.id.fragment_container, registerFragment)
         }
     }

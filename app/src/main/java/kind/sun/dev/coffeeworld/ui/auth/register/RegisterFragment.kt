@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.commit
 import dagger.hilt.android.AndroidEntryPoint
+import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.databinding.FragmentRegisterBinding
+import kind.sun.dev.coffeeworld.ui.auth.login.LoginFragment
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
@@ -28,8 +31,14 @@ class RegisterFragment : Fragment() {
     }
 
     fun backToLoginFragment() {
-        requireActivity().supportFragmentManager.popBackStack()
+        val registerFragment = LoginFragment()
+        requireActivity().supportFragmentManager.commit {
+            setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+            replace(R.id.fragment_container, registerFragment)
+        }
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
