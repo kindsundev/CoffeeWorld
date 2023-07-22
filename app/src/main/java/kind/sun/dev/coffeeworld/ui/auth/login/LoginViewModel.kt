@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.data.model.request.auth.LoginRequest
-import kind.sun.dev.coffeeworld.data.model.response.auth.AuthResponse
+import kind.sun.dev.coffeeworld.data.model.response.auth.LoginResponse
 import kind.sun.dev.coffeeworld.data.repository.AuthRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kotlinx.coroutines.launch
@@ -22,7 +22,7 @@ class LoginViewModel @Inject constructor(
     val errorMessageLiveData = MutableLiveData<String>("")
     val isPasswordVisible = MutableLiveData<Boolean>(false)
 
-    val loginResponseLiveData: LiveData<NetworkResult<AuthResponse>>
+    val loginResponseLiveData: LiveData<NetworkResult<LoginResponse>>
         get() = authRepository.authLoginResponseLiveData
 
     fun onClickLogin() {
