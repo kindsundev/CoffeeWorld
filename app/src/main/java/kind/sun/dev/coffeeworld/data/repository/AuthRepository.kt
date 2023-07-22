@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import kind.sun.dev.coffeeworld.data.api.AuthService
 import kind.sun.dev.coffeeworld.data.model.request.auth.LoginRequest
 import kind.sun.dev.coffeeworld.data.model.request.auth.RegisterRequest
-import kind.sun.dev.coffeeworld.data.model.response.auth.AuthResponse
+import kind.sun.dev.coffeeworld.data.model.response.auth.LoginResponse
+import kind.sun.dev.coffeeworld.data.model.response.auth.RegisterResponse
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -19,12 +20,12 @@ import javax.inject.Inject
 class AuthRepository @Inject constructor(
     private val authService: AuthService
 ) {
-    private val _authLoginResponseLiveData = MutableLiveData<NetworkResult<AuthResponse>>()
-    val authLoginResponseLiveData: LiveData<NetworkResult<AuthResponse>>
+    private val _authLoginResponseLiveData = MutableLiveData<NetworkResult<LoginResponse>>()
+    val authLoginResponseLiveData: LiveData<NetworkResult<LoginResponse>>
         get() = _authLoginResponseLiveData
 
-    private val _authRegisterResponseLiveData = MutableLiveData<NetworkResult<String>>()
-    val authRegisterResponseLiveData: LiveData<NetworkResult<String>>
+    private val _authRegisterResponseLiveData = MutableLiveData<NetworkResult<RegisterResponse>>()
+    val authRegisterResponseLiveData: LiveData<NetworkResult<RegisterResponse>>
         get() = _authRegisterResponseLiveData
 
     private val authExceptionHandler = CoroutineExceptionHandler { _, throwable ->
