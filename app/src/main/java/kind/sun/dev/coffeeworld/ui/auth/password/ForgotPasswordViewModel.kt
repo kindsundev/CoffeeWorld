@@ -11,12 +11,15 @@ import kind.sun.dev.coffeeworld.data.model.request.auth.AuthRequest
 import kind.sun.dev.coffeeworld.data.model.response.auth.AuthResponse
 import kind.sun.dev.coffeeworld.data.repository.AuthRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
+import kind.sun.dev.coffeeworld.utils.common.Constants
+import kind.sun.dev.coffeeworld.utils.network.NetworkHelper
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ForgotPasswordViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val networkHelper: NetworkHelper
 ): ViewModel() {
     val usernameLiveData = MutableLiveData<String>("")
     val emailLiveData = MutableLiveData<String>("")
@@ -58,7 +61,11 @@ class ForgotPasswordViewModel @Inject constructor(
 
     private fun passwordReset(authRequest: AuthRequest) {
         viewModelScope.launch {
-            authRepository.passwordReset(authRequest)
+            if (networkHelper.isConnected) {
+                authRepository.passwordReset(authRequest)
+            } else {
+                errorMessageLiveData.value = Constants.NO_INTERNET_CONNECTION
+            }
         }
     }
 

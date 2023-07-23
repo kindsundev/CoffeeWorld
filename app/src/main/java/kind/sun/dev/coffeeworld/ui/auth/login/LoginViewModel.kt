@@ -10,12 +10,15 @@ import kind.sun.dev.coffeeworld.data.model.request.auth.LoginRequest
 import kind.sun.dev.coffeeworld.data.model.response.auth.LoginResponse
 import kind.sun.dev.coffeeworld.data.repository.AuthRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
+import kind.sun.dev.coffeeworld.utils.common.Constants
+import kind.sun.dev.coffeeworld.utils.network.NetworkHelper
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val networkHelper: NetworkHelper
 ) : ViewModel() {
     val usernameLiveData = MutableLiveData<String>("")
     val passwordLiveData = MutableLiveData<String>("")
@@ -59,7 +62,11 @@ class LoginViewModel @Inject constructor(
 
     private fun loginUser(loginRequest: LoginRequest) {
         viewModelScope.launch {
-            authRepository.login(loginRequest)
+            if (networkHelper.isConnected) {
+                authRepository.login(loginRequest)
+            } else {
+                errorMessageLiveData.value = Constants.NO_INTERNET_CONNECTION
+            }
         }
     }
 

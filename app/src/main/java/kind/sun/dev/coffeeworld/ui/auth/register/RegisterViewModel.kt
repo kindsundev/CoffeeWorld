@@ -11,12 +11,15 @@ import kind.sun.dev.coffeeworld.data.model.request.auth.RegisterRequest
 import kind.sun.dev.coffeeworld.data.model.response.auth.RegisterResponse
 import kind.sun.dev.coffeeworld.data.repository.AuthRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
+import kind.sun.dev.coffeeworld.utils.common.Constants
+import kind.sun.dev.coffeeworld.utils.network.NetworkHelper
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val networkHelper: NetworkHelper
 ) : ViewModel() {
     val nameLiveData = MutableLiveData<String>("")
     val emailLiveData = MutableLiveData<String>("")
@@ -81,7 +84,11 @@ class RegisterViewModel @Inject constructor(
 
     private fun registerUser(registerRequest: RegisterRequest) {
         viewModelScope.launch {
-            authRepository.register(registerRequest)
+            if (networkHelper.isConnected) {
+                authRepository.register(registerRequest)
+            } else {
+                errorMessageLiveData.value = Constants.NO_INTERNET_CONNECTION
+            }
         }
     }
 
