@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,7 +45,7 @@ class RegisterFragment : Fragment() {
 
     private fun setupErrorValidationObserver() {
         registerViewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
-            binding.tvError.text = it
+            binding.tvResponse.text = it
         }
     }
 
@@ -55,12 +54,12 @@ class RegisterFragment : Fragment() {
             when(it) {
                 is NetworkResult.Success -> {
                     loadingDialog.dismiss()
-                    Toast.makeText(requireActivity(), it.data!!.data, Toast.LENGTH_SHORT).show()
+                    binding.tvResponse.text = it.data!!.data
                     backToLoginFragment()
                 }
                 is NetworkResult.Error -> {
                     loadingDialog.dismiss()
-                    binding.tvError.text = it.message
+                    binding.tvResponse.text = it.message
                 }
                 is NetworkResult.Loading -> {
                     loadingDialog.show(parentFragmentManager, LoadingDialog::class.simpleName)
