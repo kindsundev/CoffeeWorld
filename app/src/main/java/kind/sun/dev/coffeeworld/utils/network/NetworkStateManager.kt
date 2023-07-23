@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.utils.api
+package kind.sun.dev.coffeeworld.utils.network
 
 import android.content.BroadcastReceiver
 import android.content.Context
