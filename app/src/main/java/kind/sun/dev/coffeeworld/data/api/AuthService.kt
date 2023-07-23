@@ -3,6 +3,7 @@ package kind.sun.dev.coffeeworld.data.api
 import kind.sun.dev.coffeeworld.data.model.request.auth.AuthRequest
 import kind.sun.dev.coffeeworld.data.model.request.auth.LoginRequest
 import kind.sun.dev.coffeeworld.data.model.request.auth.RegisterRequest
+import kind.sun.dev.coffeeworld.data.model.response.auth.AuthResponse
 import kind.sun.dev.coffeeworld.data.model.response.auth.LoginResponse
 import kind.sun.dev.coffeeworld.data.model.response.auth.RegisterResponse
 import retrofit2.Response
@@ -18,6 +19,6 @@ interface AuthService {
     suspend fun register(@Body registerRequest: RegisterRequest): Response<RegisterResponse>
 
     @POST("/auth/forgot-password")
-    suspend fun forgotPassword(@Body authRequest: AuthRequest): Response<String>
+    suspend fun passwordReset(@Body authRequest: AuthRequest): Response<AuthResponse>
 
 }

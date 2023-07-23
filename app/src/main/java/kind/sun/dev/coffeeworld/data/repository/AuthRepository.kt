@@ -3,8 +3,10 @@ package kind.sun.dev.coffeeworld.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kind.sun.dev.coffeeworld.data.api.AuthService
+import kind.sun.dev.coffeeworld.data.model.request.auth.AuthRequest
 import kind.sun.dev.coffeeworld.data.model.request.auth.LoginRequest
 import kind.sun.dev.coffeeworld.data.model.request.auth.RegisterRequest
+import kind.sun.dev.coffeeworld.data.model.response.auth.AuthResponse
 import kind.sun.dev.coffeeworld.data.model.response.auth.LoginResponse
 import kind.sun.dev.coffeeworld.data.model.response.auth.RegisterResponse
 import kind.sun.dev.coffeeworld.utils.common.Logger
@@ -28,6 +30,10 @@ class AuthRepository @Inject constructor(
     val authRegisterResponseLiveData: LiveData<NetworkResult<RegisterResponse>>
         get() = _authRegisterResponseLiveData
 
+    private val _authPasswordResetResponseLiveData = MutableLiveData<NetworkResult<AuthResponse>>()
+    val authPasswordResetResponseLiveData: LiveData<NetworkResult<AuthResponse>>
+        get() = _authPasswordResetResponseLiveData
+
     private val authExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Logger.error("AuthException: ${throwable.message}")
     }
@@ -49,6 +55,18 @@ class AuthRepository @Inject constructor(
             it.postValue(NetworkResult.Loading())
             withContext(Dispatchers.IO + authExceptionHandler) {
                 val response = authService.register(registerRequest)
+                withContext(Dispatchers.Main) {
+                    handleResponse(response, it)
+                }
+            }
+        }
+    }
+
+    suspend fun passwordReset(authRequest: AuthRequest) {
+        _authPasswordResetResponseLiveData.let {
+            it.postValue(NetworkResult.Loading())
+            withContext(Dispatchers.IO + authExceptionHandler) {
+                val response = authService.passwordReset(authRequest)
                 withContext(Dispatchers.Main) {
                     handleResponse(response, it)
                 }

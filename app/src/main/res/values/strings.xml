@@ -30,4 +30,7 @@
     <string name="back">Back</string>
     <string name="telegram">Telegram</string>
     <string name="please_wait">Please wait</string>
+    <string name="request_provide_user_info">Please provide your account user information</string>
+    <string name="confirm">Confirm</string>
+    <string name="remembered_my_password">I remembered my password</string>
 </resources>
