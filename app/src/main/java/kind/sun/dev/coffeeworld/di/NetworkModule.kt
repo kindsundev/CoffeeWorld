@@ -1,11 +1,14 @@
 package kind.sun.dev.coffeeworld.di
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kind.sun.dev.coffeeworld.data.api.AuthService
 import kind.sun.dev.coffeeworld.utils.api.AuthInterceptor
+import kind.sun.dev.coffeeworld.utils.api.NetworkStateManager
 import kind.sun.dev.coffeeworld.utils.common.Constants.API_BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,6 +20,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+
+    @Provides
+    @Singleton
+    fun provideNetworkStateManager(@ApplicationContext context: Context): NetworkStateManager {
+        return NetworkStateManager(context)
+    }
 
     @Singleton
     @Provides
