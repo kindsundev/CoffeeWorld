@@ -262,9 +262,12 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tv_error"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_response"
+            android:gravity="center"
+            android:layout_marginHorizontal="16dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:textColor="@color/red" />
 
         <Button

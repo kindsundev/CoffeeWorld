@@ -21,7 +21,6 @@
         tools:context=".ui.auth.login.LoginFragment">
 
         <ImageView
-            android:id="@+id/img_logo"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="8dp"
@@ -93,7 +92,6 @@
             app:cardElevation="8dp">
 
             <LinearLayout
-                android:id="@+id/ll_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="6dp"
@@ -109,7 +107,6 @@
                     android:src="@drawable/ic_baseline_lock_24" />
 
                 <EditText
-                    android:id="@+id/edt_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -176,11 +173,11 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_forgot_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/forgot_password"
+            android:onClick="@{() -> fragment.onClickForgotPassword()}"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
@@ -207,7 +204,6 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/tv_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
