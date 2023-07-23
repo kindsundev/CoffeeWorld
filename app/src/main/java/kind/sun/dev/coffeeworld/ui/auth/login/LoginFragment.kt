@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.databinding.FragmentLoginBinding
 import kind.sun.dev.coffeeworld.ui.MainActivity
+import kind.sun.dev.coffeeworld.ui.auth.password.ForgotPasswordFragment
 import kind.sun.dev.coffeeworld.ui.auth.register.RegisterFragment
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.api.TokenManager
@@ -43,9 +44,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun checkTokenAndRedirect() {
-        if(tokenManager.getToken() != null) {
-            startActivity(Intent(requireContext(), MainActivity::class.java))
-        }
+        if(tokenManager.getToken() != null) { startMainActivity() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,8 +64,8 @@ class LoginFragment : Fragment() {
             when(it) {
                 is NetworkResult.Success -> {
                     loadingDialog.dismiss()
-//                    tokenManager.saveToken(it.data!!.data.token)
-                    startActivity(Intent(requireContext(), MainActivity::class.java))
+                    tokenManager.saveToken(it.data!!.data.token)
+                    startMainActivity()
                 }
                 is NetworkResult.Error -> {
                     loadingDialog.dismiss()
@@ -86,6 +85,20 @@ class LoginFragment : Fragment() {
             setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
             replace(R.id.fragment_container, registerFragment)
         }
+    }
+
+    fun onClickForgotPassword() {
+        val passwordFragment = ForgotPasswordFragment()
+        requireActivity().supportFragmentManager.commit {
+            setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+            replace(R.id.fragment_container, passwordFragment)
+        }
+    }
+
+    private fun startMainActivity() {
+        startActivity(Intent(requireContext(), MainActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK )
+        })
     }
 
     override fun onDestroyView() {
