@@ -2,10 +2,14 @@ package kind.sun.dev.coffeeworld.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import android.view.Gravity
+import android.view.View
+import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.databinding.ActivityMainBinding
@@ -31,22 +35,35 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNavView.setupWithNavController(navController)
         }
     }
+
     override fun onResume() {
         super.onResume()
         registerNetworkState()
     }
+
     private fun registerNetworkState() {
         networkStateManager.registerNetworkReceiver()
         networkStateManager.isConnectedLiveData.observe(this) { isConnected ->
             if (isConnected) {
-                if (!wasConnectedToInternet) {
-                    Toast.makeText(this, "Connected to the Internet", Toast.LENGTH_SHORT).show()
-                }
+                if (!wasConnectedToInternet) { showNetworkState("Connected to the Internet") }
             } else {
-                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show()
+                showNetworkState("No Internet Connection")
             }
             wasConnectedToInternet = isConnected
         }
+    }
+
+    private fun showNetworkState(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).apply {
+            view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)?.let {
+                it.textAlignment = View.TEXT_ALIGNMENT_CENTER
+            }
+            view.layoutParams = (view.layoutParams as CoordinatorLayout.LayoutParams).apply {
+                gravity = Gravity.TOP and Gravity.CENTER_HORIZONTAL
+                val marginPx : Int = (16 * resources.displayMetrics.density).toInt()
+                setMargins(marginPx, marginPx, marginPx, marginPx)
+            }
+        }.show()
     }
 
     override fun onDestroy() {
