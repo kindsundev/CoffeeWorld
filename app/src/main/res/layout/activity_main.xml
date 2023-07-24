@@ -36,9 +36,16 @@
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_nav_view"
+                style="@style/CustomBottomNavigation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                app:elevation="8dp"
+                app:itemBackground="@drawable/bottom_nav_item_background"
+                app:itemIconSize="28dp"
+                app:itemIconTint="@color/bottom_nav_item_color_selector"
+                app:itemTextColor="@color/bottom_nav_item_color_selector"
+                app:labelVisibilityMode="labeled"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
