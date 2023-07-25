@@ -33,4 +33,6 @@
     <string name="request_provide_user_info">Please provide your account user information</string>
     <string name="confirm">Confirm</string>
     <string name="remembered_my_password">I remembered my password</string>
+    <string name="other">Other</string>
+    <string name="more">More</string>
 </resources>

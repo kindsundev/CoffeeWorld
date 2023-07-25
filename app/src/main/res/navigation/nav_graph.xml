@@ -21,10 +21,10 @@
         android:label="fragment_order"
         tools:layout="@layout/fragment_order" />
     <fragment
-        android:id="@+id/menuFragment"
-        android:name="kind.sun.dev.coffeeworld.ui.menu.MenuFragment"
-        android:label="fragment_menu"
-        tools:layout="@layout/fragment_menu" />
+        android:id="@+id/moreFragment"
+        android:name="kind.sun.dev.coffeeworld.ui.more.MoreFragment"
+        android:label="fragment_more"
+        tools:layout="@layout/fragment_more" />
     <fragment
         android:id="@+id/cafeFragment"
         android:name="kind.sun.dev.coffeeworld.ui.cafe.CafeFragment"
