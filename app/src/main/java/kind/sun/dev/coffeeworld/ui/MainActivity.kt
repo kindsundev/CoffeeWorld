@@ -25,10 +25,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        setupBottomNav()
+        setupBottomNavController()
     }
 
-    private fun setupBottomNav() {
+    private fun setupBottomNavController() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_view)
         navHostFragment?.let {
             val navController = it.findNavController()
