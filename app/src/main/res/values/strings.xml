@@ -46,4 +46,5 @@
     <string name="address">Address</string>
     <string name="from_here_0_01_km">From here 0.01 km</string>
     <string name="other_coffee_shops">Other Coffee shops</string>
+    <string name="offline">Offline</string>
 </resources>
