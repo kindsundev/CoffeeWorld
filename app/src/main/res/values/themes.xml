@@ -20,8 +20,13 @@
 
     <style name="Theme.CoffeeWorld" parent="Base.Theme.CoffeeWorld" />
 
-    <style name="CustomBottomNavigation" parent="Widget.Design.BottomNavigationView">
+    <style name="bottom_nav" parent="Widget.Design.BottomNavigationView">
         <item name="android:layout_marginTop">-2dp</item>
     </style>
+
+    <style name="image_rounded_corner">
+        <item name="cornerSize">8dp</item>
+    </style>
+
 
 </resources>

@@ -35,4 +35,15 @@
     <string name="remembered_my_password">I remembered my password</string>
     <string name="other">Other</string>
     <string name="more">More</string>
+    <string name="coffee_shop">Coffee Shop</string>
+    <string name="map">Map</string>
+    <string name="search">Search</string>
+    <string name="notification">Notification</string>
+    <string name="gift_card">Gift Card</string>
+    <string name="coffee_shop_near_you">Coffee shop near you</string>
+    <string name="image_cafe">Image Cafe</string>
+    <string name="cafe_name">Cafe Name</string>
+    <string name="address">Address</string>
+    <string name="from_here_0_01_km">From here 0.01 km</string>
+    <string name="other_coffee_shops">Other Coffee shops</string>
 </resources>

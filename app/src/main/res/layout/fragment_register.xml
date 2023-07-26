@@ -274,7 +274,7 @@
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="32dp"
+            android:layout_marginVertical="24dp"
             android:onClick="@{() -> viewModel.onClickRegister()}"
             android:text="@string/register"
             android:textSize="18sp"
