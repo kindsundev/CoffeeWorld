@@ -7,6 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kind.sun.dev.coffeeworld.data.api.AuthService
+import kind.sun.dev.coffeeworld.data.api.CafeService
 import kind.sun.dev.coffeeworld.utils.api.AuthInterceptor
 import kind.sun.dev.coffeeworld.utils.network.NetworkStateManager
 import kind.sun.dev.coffeeworld.utils.common.Constants.API_BASE_URL
@@ -50,7 +51,8 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(
+    @WithAuthQualifier
+    fun provideOkHttpClientWithAuth(
         authInterceptor: AuthInterceptor,
         loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
@@ -65,10 +67,32 @@ object NetworkModule {
 
     @Singleton
     @Provides
+    @WithoutAuthQualifier
+    fun provideOkHttpClientWithoutAuth(
+        loggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .build()
+    }
+
+    @Singleton
+    @Provides
     fun provideAuthService(
         retrofitBuilder: Retrofit.Builder,
-        okHttpClient: OkHttpClient
+        @WithAuthQualifier okHttpClient: OkHttpClient
     ): AuthService {
         return retrofitBuilder.client(okHttpClient).build().create(AuthService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideCafeService(
+        retrofitBuilder: Retrofit.Builder,
+        @WithoutAuthQualifier okHttpClient: OkHttpClient): CafeService {
+        return retrofitBuilder.client(okHttpClient).build().create(CafeService::class.java)
     }
 }
