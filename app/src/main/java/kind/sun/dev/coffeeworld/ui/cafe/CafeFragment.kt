@@ -5,8 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
+import kind.sun.dev.coffeeworld.R
+import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel
 import kind.sun.dev.coffeeworld.databinding.FragmentCafeBinding
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Logger
@@ -20,11 +25,12 @@ class CafeFragment : Fragment() {
 
     private val cafeViewModel by viewModels<CafeViewModel>()
     @Inject lateinit var loadingDialog: LoadingDialog
+    private lateinit var cafeAdapter: CafeAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCafeBinding.inflate(layoutInflater)
+        _binding = FragmentCafeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -52,8 +58,8 @@ class CafeFragment : Fragment() {
             when(it) {
                 is NetworkResult.Success -> {
                     loadingDialog.dismiss()
-                    Logger.info(it.data!!.data.size.toString())
-                    TODO("Implementation adapter")
+                    binding.llBody.visibility = View.VISIBLE
+                    initRecyclerView(it.data!!.data)
                 }
                 is NetworkResult.Error -> {
                     loadingDialog.dismiss()
@@ -64,6 +70,35 @@ class CafeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun initRecyclerView(list: List<CafeModel>) {
+        cafeAdapter = CafeAdapter(::onCafeClicked)
+        cafeAdapter.let {
+            binding.rvCafe.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = cafeAdapter
+            }
+            initCoffeeNearHere(list[0])
+            it.submitList(list.subList(1, list.size))
+        }
+    }
+
+    private fun initCoffeeNearHere(cafe: CafeModel) {
+        binding.layoutCoffeeShopNear.apply {
+            tvName.text = cafe.name
+            tvLocation.text = cafe.location
+            root.setOnClickListener { onCafeClicked(cafe) }
+            Glide.with(requireContext())
+                .load(cafe.image)
+                .placeholder(R.drawable.img_coffee_loading)
+                .centerCrop()
+                .into(imgCafe)
+        }
+    }
+
+    private fun onCafeClicked(cafe: CafeModel) {
+        Toast.makeText(requireContext(), cafe.id.toString(), Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

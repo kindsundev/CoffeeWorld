@@ -1,71 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginBottom="4dp"
-    app:cardCornerRadius="8dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <data>
+
+        <variable
+            name="cafe"
+            type="kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:padding="16dp">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="8dp">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/img_cafe"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/image_cafe"
-            android:scaleType="centerCrop"
-            android:src="@drawable/img_coffee"
-            app:shapeAppearanceOverlay="@style/image_rounded_corner" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="16dp"
-            android:layout_toEndOf="@id/img_cafe"
-            android:lines="1"
-            android:text="@string/cafe_name"
-            android:textAlignment="textStart"
-            android:textAllCaps="true" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/img_cafe"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/image_cafe"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{cafe.image}"
+                app:shapeAppearanceOverlay="@style/image_rounded_corner"
+                tools:src="@drawable/img_coffee" />
 
-        <TextView
-            android:id="@+id/tv_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_name"
-            android:layout_alignParentEnd="true"
-            android:layout_marginVertical="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_toEndOf="@id/img_cafe"
-            android:lines="1"
-            android:text="@string/address"
-            android:textAlignment="textStart"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@id/img_cafe"
+                android:lines="1"
+                android:text="@{cafe.name}"
+                android:textAlignment="textStart"
+                android:textAllCaps="true"
+                tools:text="@string/name" />
 
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_name"
+                android:layout_alignParentEnd="true"
+                android:layout_marginVertical="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@id/img_cafe"
+                android:lines="1"
+                android:text="@{cafe.location}"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:text="Location" />
 
-        <TextView
-            android:id="@+id/tv_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="16dp"
-            android:layout_toEndOf="@id/img_cafe"
-            android:lines="1"
-            android:text="@string/from_here_0_01_km"
-            android:textAlignment="textStart"
-            android:textSize="16sp" />
+            <TextView
+                android:id="@+id/tv_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@id/img_cafe"
+                android:lines="1"
+                android:text="@string/from_here_0_01_km"
+                android:textAlignment="textStart"
+                android:textSize="16sp" />
 
+        </RelativeLayout>
 
-    </RelativeLayout>
-
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</layout>

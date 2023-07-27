@@ -24,6 +24,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="email">Email</string>
     <string name="name">Name</string>
+    <string name="location">Location</string>
     <string name="create">Create</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="show_password">Show Password</string>
