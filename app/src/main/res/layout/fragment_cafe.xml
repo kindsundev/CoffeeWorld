@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="fragment"
+            type="kind.sun.dev.coffeeworld.ui.cafe.CafeFragment" />
 
+        <variable
+            name="viewModel"
+            type="kind.sun.dev.coffeeworld.ui.cafe.CafeViewModel" />
     </data>
 
     <LinearLayout
@@ -70,6 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                android:baselineAligned="false"
                 android:weightSum="4">
 
                 <LinearLayout
@@ -89,6 +95,7 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:afterTextChanged="@{(editText) -> fragment.onSearchChanged(editText.toString())}"
                         android:autofillHints=""
                         android:background="@android:color/transparent"
                         android:hint="@string/search"
@@ -132,44 +139,45 @@
             android:layout_height="1dp"
             android:background="@color/light_gray" />
 
-        <LinearLayout
-            android:id="@+id/ll_body"
+        <TextView
+            android:id="@+id/tv_coffee_shop_near"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/coffee_shop_near_you"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            tools:visibility="visible" />
+
+        <include
+            android:id="@+id/layout_coffee_shop_near"
+            layout="@layout/item_cafe"
+            android:visibility="invisible"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_other_coffee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/other_coffee_shops"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            tools:visibility="visible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_cafe"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="visible">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginVertical="8dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="@string/coffee_shop_near_you"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <include
-                android:id="@+id/layout_coffee_shop_near"
-                layout="@layout/item_cafe" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="@string/other_coffee_shops"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_cafe"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="55dp"/>
-
-        </LinearLayout>
+            android:layout_marginTop="8dp"
+            android:paddingBottom="55dp"
+            android:visibility="invisible"
+            tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/img_offline"
@@ -179,5 +187,6 @@
             android:contentDescription="@string/offline"
             android:src="@drawable/img_offline"
             android:visibility="gone" />
+
     </LinearLayout>
 </layout>

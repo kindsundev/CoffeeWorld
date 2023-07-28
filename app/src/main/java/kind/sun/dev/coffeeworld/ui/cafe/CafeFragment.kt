@@ -26,31 +26,29 @@ class CafeFragment : Fragment() {
     private val cafeViewModel by viewModels<CafeViewModel>()
     @Inject lateinit var loadingDialog: LoadingDialog
     private lateinit var cafeAdapter: CafeAdapter
+    private lateinit var originalListCafe : List<CafeModel>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCafeBinding.inflate(inflater, container, false)
+        cafeAdapter = CafeAdapter(::onCafeClicked)
+        setupDataBinding()
         return binding.root
+    }
+
+    private fun setupDataBinding() {
+        binding.apply {
+            fragment = this@CafeFragment
+            viewModel = cafeViewModel
+            lifecycleOwner = this@CafeFragment
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cafeViewModel.getListCafe()
-        setupInternetLiveData()
         setupListCafeLiveData()
-    }
-
-    private fun setupInternetLiveData() {
-        cafeViewModel.noInternetLiveData.observe(viewLifecycleOwner) { isDisconnected ->
-            if (isDisconnected) {
-                binding.llBody.visibility = View.GONE
-                binding.imgOffline.visibility = View.VISIBLE
-            } else {
-                binding.imgOffline.visibility = View.GONE
-                binding.llBody.visibility = View.VISIBLE
-            }
-        }
     }
 
     private fun setupListCafeLiveData() {
@@ -58,8 +56,12 @@ class CafeFragment : Fragment() {
             when(it) {
                 is NetworkResult.Success -> {
                     loadingDialog.dismiss()
-                    binding.llBody.visibility = View.VISIBLE
-                    initRecyclerView(it.data!!.data)
+                    showBodySection(true)
+                    it.data?.data?.let { list ->
+                        originalListCafe = list
+                        initCoffeeNearHere(cafe = list[0])
+                        initRecyclerViewCafe(list.subList(1, list.size))
+                    }
                 }
                 is NetworkResult.Error -> {
                     loadingDialog.dismiss()
@@ -69,18 +71,6 @@ class CafeFragment : Fragment() {
                     loadingDialog.show(parentFragmentManager, LoadingDialog::class.simpleName)
                 }
             }
-        }
-    }
-
-    private fun initRecyclerView(list: List<CafeModel>) {
-        cafeAdapter = CafeAdapter(::onCafeClicked)
-        cafeAdapter.let {
-            binding.rvCafe.apply {
-                layoutManager = LinearLayoutManager(requireContext())
-                adapter = cafeAdapter
-            }
-            initCoffeeNearHere(list[0])
-            it.submitList(list.subList(1, list.size))
         }
     }
 
@@ -97,13 +87,50 @@ class CafeFragment : Fragment() {
         }
     }
 
+    private fun initRecyclerViewCafe(list: List<CafeModel>) {
+        cafeAdapter.let {
+            binding.rvCafe.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = it
+            }
+            it.submitList(list)
+        }
+    }
+
     private fun onCafeClicked(cafe: CafeModel) {
         Toast.makeText(requireContext(), cafe.id.toString(), Toast.LENGTH_SHORT).show()
+    }
+
+    fun onSearchChanged(name: String) {
+        val searchResult = cafeViewModel.filterListByName(name, originalListCafe)
+        if (name.isNotBlank()) {
+            showBodySection(false)
+            binding.rvCafe.visibility = View.VISIBLE
+            cafeAdapter.submitList(searchResult)
+        } else {
+            showBodySection(true)
+            cafeAdapter.submitList(originalListCafe)
+        }
+    }
+
+    private fun showBodySection(visible : Boolean) {
+        binding.apply {
+            if (visible) {
+                tvCoffeeShopNear.visibility = View.VISIBLE
+                tvOtherCoffee.visibility = View.VISIBLE
+                layoutCoffeeShopNear.root.visibility = View.VISIBLE
+                rvCafe.visibility = View.VISIBLE
+            } else {
+                tvCoffeeShopNear.visibility = View.GONE
+                tvOtherCoffee.visibility = View.GONE
+                layoutCoffeeShopNear.root.visibility = View.GONE
+                rvCafe.visibility = View.GONE
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }

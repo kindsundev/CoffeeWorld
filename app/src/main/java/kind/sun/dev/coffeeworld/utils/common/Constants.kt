@@ -6,6 +6,8 @@ object Constants {
     const val USER_TOKEN = "USER_TOKEN"
     const val NO_INTERNET_CONNECTION = "No internet connection. Please check your network"
     val randomLocations = mapOf(
+        1 to "From here 0,01 km",
+        2 to "From here 0.5 km",
         3 to "From here 0,7 km",
         4 to "From here 1,27 km",
         5 to "From here 1,41 km",
