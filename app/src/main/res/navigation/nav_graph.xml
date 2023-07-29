@@ -29,5 +29,13 @@
         android:id="@+id/cafeFragment"
         android:name="kind.sun.dev.coffeeworld.ui.cafe.CafeFragment"
         android:label="fragment_cafe"
-        tools:layout="@layout/fragment_cafe" />
+        tools:layout="@layout/fragment_cafe" >
+        <action
+            android:id="@+id/action_cafeFragment_to_cafeDetailBottomSheetFragment"
+            app:destination="@id/cafeDetailBottomSheetFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/cafeDetailBottomSheetFragment"
+        android:name="kind.sun.dev.coffeeworld.ui.cafe.CafeDetailBottomSheetFragment"
+        android:label="CafeDetailBottomSheetFragment" />
 </navigation>

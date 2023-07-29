@@ -48,4 +48,8 @@
     <string name="from_here_0_01_km">From here 0.01 km</string>
     <string name="other_coffee_shops">Other Coffee shops</string>
     <string name="offline">Offline</string>
+    <string name="close">Close</string>
+    <string name="share_with_your_friends">Share with your friends</string>
+    <string name="business_hours">Business hours:</string>
+    <string name="rating">Rating</string>
 </resources>

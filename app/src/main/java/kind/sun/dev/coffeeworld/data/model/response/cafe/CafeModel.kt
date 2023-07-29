@@ -1,5 +1,7 @@
 package kind.sun.dev.coffeeworld.data.model.response.cafe
 
+import java.io.Serializable
+
 data class CafeModel(
     val business_hours: String,
     val description: String,
@@ -8,4 +10,4 @@ data class CafeModel(
     val location: String,
     val name: String,
     val rating: Double
-)
+): Serializable
