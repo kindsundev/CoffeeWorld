@@ -52,4 +52,6 @@
     <string name="share_with_your_friends">Share with your friends</string>
     <string name="business_hours">Business hours:</string>
     <string name="rating">Rating</string>
+    <string name="share">Share</string>
+    <string name="description">Description</string>
 </resources>

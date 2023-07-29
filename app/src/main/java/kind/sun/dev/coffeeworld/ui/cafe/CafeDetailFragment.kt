@@ -11,13 +11,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel
-import kind.sun.dev.coffeeworld.databinding.FragmentDialogCafeDetailBottomSheetBinding
+import kind.sun.dev.coffeeworld.databinding.FragmentCafeDetailBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.getSerializableSafe
 
 @AndroidEntryPoint
-class CafeDetailBottomSheetFragment : BottomSheetDialogFragment() {
-    private var _binding : FragmentDialogCafeDetailBottomSheetBinding? = null
+class CafeDetailFragment : BottomSheetDialogFragment() {
+    private var _binding : FragmentCafeDetailBinding? = null
     private val binding get() = _binding!!
     private var cafeModel: CafeModel? = null
 
@@ -49,7 +49,7 @@ class CafeDetailBottomSheetFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDialogCafeDetailBottomSheetBinding.inflate(layoutInflater)
+        _binding = FragmentCafeDetailBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -64,7 +64,7 @@ class CafeDetailBottomSheetFragment : BottomSheetDialogFragment() {
         cafeModel?.let {
             binding.apply {
                 cafeModel = it
-                fragment = this@CafeDetailBottomSheetFragment
+                fragment = this@CafeDetailFragment
             }
         }
     }

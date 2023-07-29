@@ -102,7 +102,7 @@ class CafeFragment : Fragment() {
         val bundle = Bundle().apply {
             putSerializable(Constants.CAFE_KEY, cafe)
         }
-        findNavController().navigate(R.id.action_cafeFragment_to_cafeDetailBottomSheetFragment, bundle)
+        findNavController().navigate(R.id.action_cafeFragment_to_cafeDetailFragment, bundle)
     }
 
     fun onSearchChanged(name: String) {
