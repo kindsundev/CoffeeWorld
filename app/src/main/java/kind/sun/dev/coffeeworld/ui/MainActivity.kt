@@ -8,6 +8,7 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
@@ -34,7 +35,22 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_view)
         navHostFragment?.let {
             val navController = it.findNavController()
+            setVisibilityForMainFragments(navController)
             binding.bottomNavView.setupWithNavController(navController)
+        }
+    }
+
+    private fun setVisibilityForMainFragments(navController: NavController) {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.homeFragment, R.id.cafeFragment, R.id.orderFragment,
+                R.id.cartFragment, R.id.moreFragment -> {
+                    binding.bottomNavView.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.bottomNavView.visibility = View.GONE
+                }
+            }
         }
     }
 
