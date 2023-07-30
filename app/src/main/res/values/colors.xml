@@ -2,7 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="yellow">#FFD700</color>
     <color name="coffee_primary">#4E342E</color>
     <color name="coffee_primary_dark">#8D6E63</color>
     <color name="coffee_accent">#A1887F</color>
@@ -13,7 +12,6 @@
     <color name="coffee_text_secondary">#757575</color>
 
     <color name="blue">#2277BB</color>
-    <color name="red">#D50F0F</color>
     <color name="gray_background">#EDEDED</color>
     <color name="light_gray">#C0C0C0</color>
     <color name="gray">#808080</color>
@@ -21,5 +19,16 @@
     <color name="silver">#D3D3D3</color>
     <color name="gainsboro">#DCDCDC</color>
     <color name="white_light">#E6E6E6</color>
+
+    <color name="blue_dark">#0066cc</color>
+    <color name="green_light">#00cc66</color>
+    <color name="orange">#ff9900</color>
+    <color name="purple_dark">#9933cc</color>
+    <color name="red_dark">#ff3300</color>
+    <color name="grey">#666666</color>
+    <color name="blue_light">#0099cc</color>
+    <color name="yellow">#ffcc00</color>
+    <color name="red">#cc0000</color>
+
 
 </resources>
