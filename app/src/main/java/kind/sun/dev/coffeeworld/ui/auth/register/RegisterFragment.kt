@@ -72,6 +72,7 @@ class RegisterFragment : Fragment() {
         val registerFragment = LoginFragment()
         requireActivity().supportFragmentManager.commit {
             setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+            addToBackStack(null)
             replace(R.id.fragment_container, registerFragment)
         }
     }

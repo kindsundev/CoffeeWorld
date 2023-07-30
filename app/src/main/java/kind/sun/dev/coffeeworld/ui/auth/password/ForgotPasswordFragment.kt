@@ -74,10 +74,10 @@ class ForgotPasswordFragment : Fragment() {
         val registerFragment = LoginFragment()
         requireActivity().supportFragmentManager.commit {
             setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+            addToBackStack(null)
             replace(R.id.fragment_container, registerFragment)
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
