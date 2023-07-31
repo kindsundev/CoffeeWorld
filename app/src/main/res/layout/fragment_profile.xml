@@ -1,21 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="fragment"
+            type="kind.sun.dev.coffeeworld.ui.more.user.ProfileFragment" />
     </data>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white_light"
+        android:orientation="vertical"
         tools:context=".ui.more.user.ProfileFragment">
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
+        <Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/back"
+                app:srcCompat="@drawable/ic_baseline_arrow_back_32" />
+
+            <TextView
+                style="@style/tool_bar_title_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/profile" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/camera"
+                app:srcCompat="@drawable/ic_baseline_diamond_24" />
+        </Toolbar>
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
+            android:scrollbars="none">
 
-    </FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/user"
+                    layout="@layout/item_user_info" />
+
+                <include
+                    android:id="@+id/dashboard"
+                    layout="@layout/item_user_dashboard"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    tools:background="@color/white_light"
+                    tools:paddingBottom="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:text="@string/options"
+                        android:textColor="@color/black"
+                        android:textSize="22sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:background="@drawable/bg_layout_solid_white_border_8"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:id="@+id/switch_account"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/ic_switch_account"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginVertical="16dp"
+                                android:layout_marginStart="16dp"
+                                android:contentDescription="@string/order_reviews"
+                                app:srcCompat="@drawable/ic_baseline_switch_account_24" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginTop="18dp"
+                                android:layout_toStartOf="@id/ic_switch_account_next"
+                                android:layout_toEndOf="@id/ic_switch_account"
+                                android:paddingHorizontal="16dp"
+                                android:text="@string/switch_account"
+                                android:textColor="@color/black"
+                                android:textSize="15sp" />
+
+                            <ImageView
+                                android:id="@+id/ic_switch_account_next"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginEnd="4dp"
+                                android:contentDescription="@string/next"
+                                app:srcCompat="@drawable/ic_baseline_navigate_next_24" />
+
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="1dp"
+                                android:layout_below="@id/ic_switch_account"
+                                android:layout_alignStart="@id/ic_switch_account"
+                                android:background="@color/white_light" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/logout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/ic_logout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginVertical="16dp"
+                                android:layout_marginStart="16dp"
+                                android:contentDescription="@string/logout"
+                                app:srcCompat="@drawable/ic_baseline_exit_to_app_24" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginTop="18dp"
+                                android:layout_toStartOf="@id/ic_logout_next"
+                                android:layout_toEndOf="@id/ic_logout"
+                                android:paddingHorizontal="16dp"
+                                android:text="@string/logout"
+                                android:textColor="@color/black"
+                                android:textSize="15sp" />
+
+                            <ImageView
+                                android:id="@+id/ic_logout_next"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginEnd="4dp"
+                                android:contentDescription="@string/next"
+                                app:srcCompat="@drawable/ic_baseline_navigate_next_24" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 </layout>
