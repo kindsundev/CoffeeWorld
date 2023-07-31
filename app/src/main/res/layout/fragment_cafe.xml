@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/bg_icon_white_circle_border"
+                    android:background="@drawable/bg_icon_white_circle_40"
                     android:contentDescription="@string/notification"
                     android:elevation="4dp"
                     android:src="@drawable/ic_baseline_notifications_24" />

@@ -66,16 +66,14 @@ class MoreFragment : Fragment() {
             settings.setOnClickListener {
                 loadFragment(R.id.action_moreFragment_to_settingsFragment)
             }
-            logout.setOnClickListener { onClickLogout() }
+            payment.setOnClickListener {
+                loadFragment(R.id.action_moreFragment_to_paymentFragment)
+            }
         }
     }
 
     private fun loadFragment(id: Int) {
         findNavController().navigate(id)
-    }
-
-    private fun onClickLogout() {
-
     }
 
     override fun onDestroyView() {

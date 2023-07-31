@@ -42,7 +42,7 @@
                     android:id="@+id/ic_person"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/personal_information"
+                    android:contentDescription="@string/user"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginVertical="16dp"
@@ -57,7 +57,7 @@
                     android:layout_toStartOf="@id/ic_person_next"
                     android:layout_toEndOf="@id/ic_person"
                     android:paddingHorizontal="16dp"
-                    android:text="@string/personal_information"
+                    android:text="@string/user"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
@@ -178,20 +178,20 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/logout"
+                android:id="@+id/payment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/ic_logout"
+                    android:id="@+id/ic_payment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginVertical="16dp"
                     android:layout_marginStart="16dp"
-                    android:contentDescription="@string/logout"
-                    app:srcCompat="@drawable/ic_baseline_exit_to_app_24" />
+                    android:contentDescription="@string/payment"
+                    app:srcCompat="@drawable/ic_baseline_payment_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -199,9 +199,9 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="18dp"
                     android:layout_toStartOf="@id/ic_logout_next"
-                    android:layout_toEndOf="@id/ic_logout"
+                    android:layout_toEndOf="@id/ic_payment"
                     android:paddingHorizontal="16dp"
-                    android:text="@string/logout"
+                    android:text="@string/payment"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 

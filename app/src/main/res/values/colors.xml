@@ -22,12 +22,17 @@
 
     <color name="blue_dark">#0066cc</color>
     <color name="green_light">#00cc66</color>
+    <color name="green_dark">#4CAF50</color>
+    <color name="pink_dark">#CD2394</color>
     <color name="orange">#ff9900</color>
+    <color name="orange_dark">#f57d00</color>
     <color name="purple_dark">#9933cc</color>
     <color name="red_dark">#ff3300</color>
     <color name="grey">#666666</color>
     <color name="blue_light">#0099cc</color>
     <color name="yellow">#ffcc00</color>
+    <color name="yellow_dark">#DDB100</color>
+    <color name="gold">#8B7500</color>
     <color name="red">#cc0000</color>
 
 

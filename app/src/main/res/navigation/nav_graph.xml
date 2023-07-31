@@ -90,6 +90,13 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_moreFragment_to_paymentFragment"
+            app:destination="@id/paymentFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <dialog
         android:id="@+id/cafeDetailFragment"
@@ -127,4 +134,8 @@
         android:id="@+id/termsConditionsFragment"
         android:name="kind.sun.dev.coffeeworld.ui.more.utility.TermsConditionsFragment"
         android:label="TermsConditionsFragment" />
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="kind.sun.dev.coffeeworld.ui.more.user.PaymentFragment"
+        android:label="PaymentFragment" />
 </navigation>

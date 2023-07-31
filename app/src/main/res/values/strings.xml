@@ -67,4 +67,12 @@
     <string name="security">Security</string>
     <string name="logout">Logout</string>
     <string name="next">Next</string>
+    <string name="profile">Profile</string>
+    <string name="camera">Camera</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="phone">Phone</string>
+    <string name="user">User</string>
+    <string name="options">Options</string>
+    <string name="switch_account">Switch Account</string>
+    <string name="payment">Payment</string>
 </resources>
