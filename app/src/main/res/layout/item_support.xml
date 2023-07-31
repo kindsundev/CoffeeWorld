@@ -39,8 +39,8 @@
 
                 <ImageView
                     android:id="@+id/ic_order_review"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginVertical="16dp"
@@ -52,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="20dp"
                     android:layout_toStartOf="@id/ic_order_review_next"
                     android:layout_toEndOf="@id/ic_order_review"
                     android:paddingHorizontal="16dp"
@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="18dp"
                     android:layout_marginEnd="4dp"
                     android:contentDescription="@string/next"
                     app:srcCompat="@drawable/ic_baseline_navigate_next_24" />
@@ -87,8 +87,8 @@
 
                 <ImageView
                     android:id="@+id/ic_contact_and_feedback"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginVertical="16dp"
@@ -100,7 +100,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="20dp"
                     android:layout_toStartOf="@id/ic_contact_and_feedback_next"
                     android:layout_toEndOf="@id/ic_contact_and_feedback"
                     android:paddingHorizontal="16dp"
@@ -114,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="18dp"
                     android:layout_marginEnd="4dp"
                     android:contentDescription="@string/next"
                     app:srcCompat="@drawable/ic_baseline_navigate_next_24" />

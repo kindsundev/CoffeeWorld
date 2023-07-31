@@ -40,20 +40,20 @@
 
                 <ImageView
                     android:id="@+id/ic_person"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/user"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginVertical="16dp"
                     android:layout_marginStart="16dp"
+                    android:contentDescription="@string/user"
                     app:srcCompat="@drawable/ic_baseline_account_circle_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="20dp"
                     android:layout_toStartOf="@id/ic_person_next"
                     android:layout_toEndOf="@id/ic_person"
                     android:paddingHorizontal="16dp"
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="18dp"
                     android:layout_marginEnd="4dp"
                     android:contentDescription="@string/next"
                     app:srcCompat="@drawable/ic_baseline_navigate_next_24" />
@@ -88,8 +88,8 @@
 
                 <ImageView
                     android:id="@+id/ic_security"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginVertical="16dp"
@@ -101,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="20dp"
                     android:layout_toStartOf="@id/ic_security_next"
                     android:layout_toEndOf="@id/ic_security"
                     android:paddingHorizontal="16dp"
@@ -115,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="18dp"
                     android:layout_marginEnd="4dp"
                     android:contentDescription="@string/next"
                     app:srcCompat="@drawable/ic_baseline_navigate_next_24" />
@@ -136,8 +136,8 @@
 
                 <ImageView
                     android:id="@+id/ic_settings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginVertical="16dp"
@@ -149,7 +149,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="20dp"
                     android:layout_toStartOf="@id/ic_settings_next"
                     android:layout_toEndOf="@id/ic_settings"
                     android:paddingHorizontal="16dp"
@@ -163,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="18dp"
                     android:layout_marginEnd="4dp"
                     android:contentDescription="@string/next"
                     app:srcCompat="@drawable/ic_baseline_navigate_next_24" />
@@ -184,8 +184,8 @@
 
                 <ImageView
                     android:id="@+id/ic_payment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginVertical="16dp"
@@ -197,7 +197,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="20dp"
                     android:layout_toStartOf="@id/ic_logout_next"
                     android:layout_toEndOf="@id/ic_payment"
                     android:paddingHorizontal="16dp"
@@ -211,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="18dp"
                     android:layout_marginEnd="4dp"
                     android:contentDescription="@string/next"
                     app:srcCompat="@drawable/ic_baseline_navigate_next_24" />

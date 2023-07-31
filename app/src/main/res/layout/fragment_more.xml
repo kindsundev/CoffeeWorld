@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:title="@string/more"
-            android:titleTextAppearance="@style/tool_bar_title_size" />
+            android:titleTextAppearance="@style/tool_bar_title" />
 
         <ScrollView
             android:layout_width="match_parent"

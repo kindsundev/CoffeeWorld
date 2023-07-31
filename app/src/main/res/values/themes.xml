@@ -20,6 +20,15 @@
         <item name="android:layout_marginTop">-2dp</item>
     </style>
 
+    <style name="tool_bar_title">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">sans-serif-condensed-medium</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
     <style name="image_rounded_corner">
         <item name="cornerSize">8dp</item>
     </style>
@@ -28,13 +37,8 @@
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="tool_bar_title_size">
-        <item name="android:textSize">24sp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily">sans-serif-condensed-medium</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">1</item>
+    <style name="box_icon_start">
+
     </style>
 
 </resources>
