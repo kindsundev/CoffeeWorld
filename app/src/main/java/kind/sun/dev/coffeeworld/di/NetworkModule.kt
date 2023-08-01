@@ -6,12 +6,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kind.sun.dev.coffeeworld.BuildConfig
 import kind.sun.dev.coffeeworld.data.api.AuthService
 import kind.sun.dev.coffeeworld.data.api.CafeService
 import kind.sun.dev.coffeeworld.data.api.UserService
 import kind.sun.dev.coffeeworld.utils.api.AuthInterceptor
 import kind.sun.dev.coffeeworld.utils.network.NetworkStateManager
-import kind.sun.dev.coffeeworld.utils.common.Constants.API_BASE_URL
 import kind.sun.dev.coffeeworld.utils.network.NetworkHelper
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -41,7 +41,7 @@ object NetworkModule {
     fun provideRetrofitBuilder(): Retrofit.Builder {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(API_BASE_URL)
+            .baseUrl(BuildConfig.API_BASE_URL)
     }
 
     @Provides
