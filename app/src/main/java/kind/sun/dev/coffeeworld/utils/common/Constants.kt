@@ -18,4 +18,5 @@ object Constants {
         10 to "From here 3,01 km",
         11 to "From here 4,39 km",
     )
+    const val REQUEST_LOGIN = "Your login session has expired. Please login again to continue using this feature"
 }
