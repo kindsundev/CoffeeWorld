@@ -12,7 +12,7 @@ import retrofit2.http.Path
 
 interface UserService {
 
-    @GET("/user")
+    @GET("/user/{username}")
     suspend fun getUser(@Path("username") username: String): Response<UserResponse>
 
     @PUT("/user/email")
