@@ -17,11 +17,17 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+        buildConfigField "String", "TOKEN_SECRET", "\"${properties.getProperty("TOKEN_SECRET")}\""
+        buildConfigField "String", "API_BASE_URL", "\"${properties.getProperty("API_BASE_URL")}\""
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -34,11 +40,13 @@ android {
     }
     buildFeatures {
         dataBinding true
+        buildConfig true
     }
     kapt {
         correctErrorTypes true
     }
 }
+
 
 dependencies {
 
@@ -61,8 +69,15 @@ dependencies {
     def retrofit_version = "2.9.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+
+    def okhttp3_version = "4.10.0"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
+
+    def json_jwt_version = "0.11.2"
+    implementation "io.jsonwebtoken:jjwt-api:$json_jwt_version"
+    implementation "io.jsonwebtoken:jjwt-impl:$json_jwt_version"
+    implementation "io.jsonwebtoken:jjwt-jackson:$json_jwt_version"
 
     def coroutines_version = "1.7.2"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
@@ -74,4 +89,5 @@ dependencies {
 
     def glide_version = "4.15.1"
     implementation "com.github.bumptech.glide:glide:$glide_version"
+
 }
