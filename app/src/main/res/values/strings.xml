@@ -75,4 +75,6 @@
     <string name="options">Options</string>
     <string name="switch_account">Switch Account</string>
     <string name="payment">Payment</string>
+    <string name="open_gallery">Open Gallery</string>
+    <string name="open_camera">Open Camera</string>
 </resources>

@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.databinding.FragmentProfileBinding
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Logger
@@ -30,7 +32,6 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         profileViewModel.getUser()
@@ -43,7 +44,10 @@ class ProfileFragment : Fragment() {
                 is NetworkResult.Success -> {
                     loadingDialog.dismiss()
                     val user = it.data!!.data
-                    this.binding.user.userModel = user
+                    binding.user.apply {
+                        userModel = user
+                        fragment = this@ProfileFragment
+                    }
                 }
                 is NetworkResult.Error -> {
                     loadingDialog.dismiss()
@@ -54,6 +58,10 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
+    }
+
+    fun onShowAvatarFragment() {
+        findNavController().navigate(R.id.action_profileFragment_to_avatarFragment)
     }
 
     override fun onDestroyView() {
