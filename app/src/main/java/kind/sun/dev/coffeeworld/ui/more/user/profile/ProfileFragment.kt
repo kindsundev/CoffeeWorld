@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.ui.more.user
+package kind.sun.dev.coffeeworld.ui.more.user.profile
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,18 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import dagger.hilt.android.AndroidEntryPoint
-import kind.sun.dev.coffeeworld.databinding.FragmentPaymentBinding
+import kind.sun.dev.coffeeworld.databinding.FragmentProfileBinding
 
 @AndroidEntryPoint
-class PaymentFragment : Fragment() {
-    private var _binding: FragmentPaymentBinding? = null
+class ProfileFragment : Fragment() {
+    private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentPaymentBinding.inflate(layoutInflater)
+        _binding = FragmentProfileBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -29,4 +29,5 @@ class PaymentFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }

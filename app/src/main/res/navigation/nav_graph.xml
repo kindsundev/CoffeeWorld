@@ -104,11 +104,11 @@
         android:label="CafeDetailFragment" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="kind.sun.dev.coffeeworld.ui.more.user.ProfileFragment"
+        android:name="kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileFragment"
         android:label="ProfileFragment" />
     <fragment
         android:id="@+id/securityFragment"
-        android:name="kind.sun.dev.coffeeworld.ui.more.user.SecurityFragment"
+        android:name="kind.sun.dev.coffeeworld.ui.more.user.sercurity.SecurityFragment"
         android:label="SecurityFragment" />
     <fragment
         android:id="@+id/settingsFragment"
@@ -136,6 +136,6 @@
         android:label="TermsConditionsFragment" />
     <fragment
         android:id="@+id/paymentFragment"
-        android:name="kind.sun.dev.coffeeworld.ui.more.user.PaymentFragment"
+        android:name="kind.sun.dev.coffeeworld.ui.more.user.payment.PaymentFragment"
         android:label="PaymentFragment" />
 </navigation>

@@ -151,8 +151,8 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/ic_baseline_location_on_24"
-                            android:contentDescription="@string/location" />
+                            android:contentDescription="@string/location"
+                            app:srcCompat="@drawable/ic_baseline_near_me_24" />
                     </LinearLayout>
 
                     <TextView

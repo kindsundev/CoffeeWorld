@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kind.sun.dev.coffeeworld.data.api.AuthService
 import kind.sun.dev.coffeeworld.data.api.CafeService
+import kind.sun.dev.coffeeworld.data.api.UserService
 import kind.sun.dev.coffeeworld.utils.api.AuthInterceptor
 import kind.sun.dev.coffeeworld.utils.network.NetworkStateManager
 import kind.sun.dev.coffeeworld.utils.common.Constants.API_BASE_URL
@@ -92,7 +93,17 @@ object NetworkModule {
     @Provides
     fun provideCafeService(
         retrofitBuilder: Retrofit.Builder,
-        @WithoutAuthQualifier okHttpClient: OkHttpClient): CafeService {
+        @WithoutAuthQualifier okHttpClient: OkHttpClient
+    ): CafeService {
         return retrofitBuilder.client(okHttpClient).build().create(CafeService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserService(
+        retrofitBuilder: Retrofit.Builder,
+        @WithAuthQualifier okHttpClient: OkHttpClient
+    ): UserService {
+        return retrofitBuilder.client(okHttpClient).build().create(UserService::class.java)
     }
 }
