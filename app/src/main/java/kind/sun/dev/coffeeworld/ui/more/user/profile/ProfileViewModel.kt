@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.data.model.response.user.UserResponse
+import kind.sun.dev.coffeeworld.data.model.response.user.UserUpdateResponse
 import kind.sun.dev.coffeeworld.data.repository.UserRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
+import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.network.NetworkHelper
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,6 +21,9 @@ class ProfileViewModel @Inject constructor(
     val userResponseLiveData : LiveData<NetworkResult<UserResponse>>
         get() = userRepository.userResponseLiveData
 
+    val userUpdateResponseLiveData: LiveData<NetworkResult<UserUpdateResponse>>
+        get() = userRepository.userUpdateResponseLiveData
+
     fun getUser() {
         viewModelScope.launch {
             if (networkHelper.isConnected) {
@@ -27,4 +32,11 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun updateAvatar(base64: String) {
+        viewModelScope.launch {
+            if (networkHelper.isConnected) {
+                TODO("Call Put Request")
+            }
+        }
+    }
 }
