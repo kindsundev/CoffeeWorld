@@ -18,7 +18,6 @@ fun setPasswordInputType(editText: EditText, showPassword: Boolean) {
     editText.setSelection(editText.text.length)
 }
 
-
 @BindingAdapter("app:imageUrl")
 fun loadImageByGlide(imageView: ImageView, imageUrl: String?) {
     if (imageUrl != null) {
