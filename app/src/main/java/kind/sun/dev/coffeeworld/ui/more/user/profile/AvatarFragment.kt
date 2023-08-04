@@ -2,7 +2,9 @@ package kind.sun.dev.coffeeworld.ui.more.user.profile
 
 import android.Manifest
 import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -14,8 +16,10 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.databinding.FragmentAvatarBinding
@@ -23,7 +27,11 @@ import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.common.checkPermission
 import kind.sun.dev.coffeeworld.utils.common.checkSDKTiramisu
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
 
 @AndroidEntryPoint
@@ -116,7 +124,54 @@ class AvatarFragment : BottomSheetDialogFragment() {
     }
 
     private fun onTakeImageCameraResult(result: ActivityResult) {
+        if (result.resultCode == FragmentActivity.RESULT_OK && result.data != null) {
+            try {
+                @Suppress("DEPRECATION") val bitmap = result.data?.extras?.get("data") as Bitmap
+                handleImageResultFromCamera(bitmap)
+            } catch (e: Exception) {
+                Logger.error("takeImageCameraLauncher: ${e.message}")
+            }
+        }
+    }
 
+    private fun handleImageResultFromCamera(bitmap: Bitmap) {
+        lifecycleScope.launch {
+            val fileName = "image_${System.currentTimeMillis()}"
+            val imageUri = savePhotoInternalStorage(fileName, bitmap)
+            imageUri?.let { uri ->
+                if (deletePhotoInternalStorage(fileName)) {
+                    val base64 = uriToBase64(uri, requireContext().contentResolver)
+                    base64?.let { profileViewModel.updateAvatar(it) }
+                }
+            }
+        }
+    }
+
+    private suspend fun savePhotoInternalStorage(filename: String, bmp: Bitmap): Uri? {
+        return withContext(Dispatchers.IO) {
+            try {
+                requireContext().openFileOutput("$filename.jpg", Context.MODE_PRIVATE).use { stream ->
+                    if (!bmp.compress(Bitmap.CompressFormat.JPEG, 95, stream)) {
+                        throw IOException("Couldn't save bitmap")
+                    }
+                    File(requireContext().filesDir, "$filename.jpg").toUri()
+                }
+            } catch (e: Exception) {
+                Logger.error("savePhotoInternalStorage: ${e.message}")
+                null
+            }
+        }
+    }
+
+    private suspend fun deletePhotoInternalStorage(filename: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            try {
+                requireContext().deleteFile(filename)
+                true
+            } catch (e: Exception) {
+                false
+            }
+        }
     }
 
     fun onClickOpenGallery() {
