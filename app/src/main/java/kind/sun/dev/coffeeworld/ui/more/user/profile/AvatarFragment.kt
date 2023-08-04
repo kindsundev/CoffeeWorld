@@ -3,9 +3,7 @@ package kind.sun.dev.coffeeworld.ui.more.user.profile
 import android.Manifest
 import android.content.ContentResolver
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Base64
 import android.view.LayoutInflater
@@ -15,13 +13,14 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.databinding.FragmentAvatarBinding
 import kind.sun.dev.coffeeworld.utils.common.Logger
+import kind.sun.dev.coffeeworld.utils.common.checkPermission
+import kind.sun.dev.coffeeworld.utils.common.checkSDKTiramisu
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
@@ -32,7 +31,7 @@ class AvatarFragment : BottomSheetDialogFragment() {
     private val profileViewModel by viewModels<ProfileViewModel>()
 
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
-    private lateinit var pickImageLauncher:  ActivityResultLauncher<Intent>
+    private lateinit var pickImageGalleryLauncher:  ActivityResultLauncher<Intent>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,7 +51,7 @@ class AvatarFragment : BottomSheetDialogFragment() {
             this::onPermissionResult
         )
 
-        pickImageLauncher = registerForActivityResult(
+        pickImageGalleryLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult(),
             this::onImagePickerResult
         )
@@ -62,7 +61,8 @@ class AvatarFragment : BottomSheetDialogFragment() {
         if (isGranted) {
             openImagePicker()
         } else {
-            Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "App needs photo and video permission for gallery access",
+                Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -101,15 +101,24 @@ class AvatarFragment : BottomSheetDialogFragment() {
     }
 
     fun onClickOpenGallery() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(requireContext(),
-                    Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
-            ) {
-                openImagePicker()
-            } else {
-                requestPermissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+        checkSDKTiramisu(
+            onSDKTiramisu = {
+                checkPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES,
+                    onGranted = { openImagePicker() },
+                    onDenied = {
+                        requestPermissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+                    }
+                )
+            },
+            onNotTiramisu = {
+                checkPermission(requireContext(),  Manifest.permission.READ_EXTERNAL_STORAGE,
+                    onGranted = { openImagePicker() },
+                    onDenied = {
+                        requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    }
+                )
             }
-        }
+        )
     }
 
     private fun openImagePicker() {
@@ -118,14 +127,14 @@ class AvatarFragment : BottomSheetDialogFragment() {
                 action = Intent.ACTION_GET_CONTENT
                 type = "image/*"
             }
-            pickImageLauncher.launch(pickImageIntentPicker)
+            pickImageGalleryLauncher.launch(pickImageIntentPicker)
         } catch (e: Exception) {
-            Logger.error("Launch intent: ${e.message}")
+            Logger.error("pickImageGalleryLauncher: ${e.message}")
         }
     }
 
     fun onClickOpenCamera() {
-        Toast.makeText(requireContext(), "Camera is open", Toast.LENGTH_SHORT).show()
+
     }
 
     override fun onDestroyView() {
