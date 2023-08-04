@@ -5,6 +5,7 @@ import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.databinding.FragmentAvatarBinding
+import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.common.checkPermission
 import kind.sun.dev.coffeeworld.utils.common.checkSDKTiramisu
@@ -32,12 +34,10 @@ class AvatarFragment : BottomSheetDialogFragment() {
 
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var pickImageGalleryLauncher:  ActivityResultLauncher<Intent>
+    private lateinit var takeImageCameraLauncher: ActivityResultLauncher<Intent>
+    private var currentAction = ""
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAvatarBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -48,25 +48,40 @@ class AvatarFragment : BottomSheetDialogFragment() {
 
         requestPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestPermission(),
-            this::onPermissionResult
+            this::onPermissionRequestResult
         )
-
         pickImageGalleryLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult(),
-            this::onImagePickerResult
+            this::onPickImageGalleryResult
+        )
+        takeImageCameraLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult(),
+            this::onTakeImageCameraResult
         )
     }
 
-    private fun onPermissionResult(isGranted: Boolean) {
+    private fun onPermissionRequestResult(isGranted: Boolean) {
         if (isGranted) {
-            openImagePicker()
+            when (currentAction) {
+                Constants.OPEN_GALLERY -> { openImagePicker() }
+                Constants.OPEN_CAMERA -> { captureImageFromCamera() }
+            }
         } else {
-            Toast.makeText(requireContext(), "App needs photo and video permission for gallery access",
-                Toast.LENGTH_SHORT).show()
+            val message: String
+            when (currentAction) {
+                Constants.OPEN_GALLERY -> {
+                    message = "App needs photo and video permission for gallery access"
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                }
+                Constants.OPEN_CAMERA -> {
+                    message = "App needs camera permission for take photo"
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
-    private fun onImagePickerResult(result: ActivityResult) {
+    private fun onPickImageGalleryResult(result: ActivityResult) {
         try {
             if (result.resultCode == FragmentActivity.RESULT_OK && result.data != null) {
                 val selectedImageUri = result.data?.data
@@ -100,7 +115,12 @@ class AvatarFragment : BottomSheetDialogFragment() {
         return null
     }
 
+    private fun onTakeImageCameraResult(result: ActivityResult) {
+
+    }
+
     fun onClickOpenGallery() {
+        currentAction = Constants.OPEN_GALLERY
         checkSDKTiramisu(
             onSDKTiramisu = {
                 checkPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES,
@@ -134,7 +154,20 @@ class AvatarFragment : BottomSheetDialogFragment() {
     }
 
     fun onClickOpenCamera() {
+        currentAction =Constants.OPEN_CAMERA
+        checkPermission(requireContext(), Manifest.permission.CAMERA,
+            onGranted = { captureImageFromCamera() },
+            onDenied = { requestPermissionLauncher.launch(Manifest.permission.CAMERA) }
+        )
+    }
 
+    private fun captureImageFromCamera() {
+        try {
+            val takeImageIntentCapture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            takeImageCameraLauncher.launch(takeImageIntentCapture)
+        } catch (e: Exception) {
+            Logger.error("takeImageCameraLauncher: ${e.message}")
+        }
     }
 
     override fun onDestroyView() {

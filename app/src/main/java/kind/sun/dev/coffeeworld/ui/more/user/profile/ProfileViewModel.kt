@@ -35,7 +35,7 @@ class ProfileViewModel @Inject constructor(
     fun updateAvatar(base64: String) {
         viewModelScope.launch {
             if (networkHelper.isConnected) {
-                TODO("Call Put Request")
+                Logger.error(base64)
             }
         }
     }

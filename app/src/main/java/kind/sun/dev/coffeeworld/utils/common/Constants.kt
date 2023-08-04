@@ -19,4 +19,6 @@ object Constants {
         11 to "From here 4,39 km",
     )
     const val REQUEST_LOGIN = "Your login session has expired. Please login again to continue using this feature"
+    const val OPEN_CAMERA = "openCamera"
+    const val OPEN_GALLERY = "openGallery"
 }
