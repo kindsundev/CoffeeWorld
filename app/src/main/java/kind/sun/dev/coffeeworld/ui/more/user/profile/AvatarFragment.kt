@@ -169,6 +169,7 @@ class AvatarFragment : BottomSheetDialogFragment() {
                 requireContext().deleteFile(filename)
                 true
             } catch (e: Exception) {
+                Logger.error("deletePhotoInternalStorage: ${e.message}")
                 false
             }
         }
