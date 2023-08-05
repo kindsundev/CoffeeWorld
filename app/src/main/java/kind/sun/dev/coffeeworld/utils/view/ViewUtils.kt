@@ -1,10 +1,12 @@
 package kind.sun.dev.coffeeworld.utils.view
 
+import android.graphics.BitmapFactory
 import android.text.InputType
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import android.util.Base64
 import kind.sun.dev.coffeeworld.R
 
 @BindingAdapter("app:passwordInputType")
@@ -28,5 +30,16 @@ fun loadImageByGlide(imageView: ImageView, imageUrl: String?) {
             .into(imageView)
     } else {
         imageView.setImageResource(R.drawable.img_item_cafe)
+    }
+}
+
+@BindingAdapter("app:imageBase64")
+fun loadImageFromBase64(imageView: ImageView, base64: String?) {
+    if (base64 != null) {
+        if (base64.isNotBlank()) {
+            val decodeString : ByteArray = Base64.decode(base64, Base64.DEFAULT)
+            val decodeBitmap = BitmapFactory.decodeByteArray(decodeString, 0, decodeString.size)
+            imageView.setImageBitmap(decodeBitmap)
+        }
     }
 }

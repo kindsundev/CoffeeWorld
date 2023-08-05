@@ -29,6 +29,7 @@
             android:padding="4dp"
             android:onClick="@{() -> fragment.onShowAvatarFragment()}"
             android:scaleType="centerCrop"
+            app:imageBase64="@{userModel.image}"
             android:src="@drawable/img_user_default"
             app:shapeAppearanceOverlay="@style/image_circle"
             app:strokeColor="@color/white_light"
