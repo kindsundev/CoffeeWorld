@@ -8,7 +8,6 @@ import kind.sun.dev.coffeeworld.data.model.response.user.UserResponse
 import kind.sun.dev.coffeeworld.data.model.response.user.UserUpdateResponse
 import kind.sun.dev.coffeeworld.data.repository.UserRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
-import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.network.NetworkHelper
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,7 +34,7 @@ class ProfileViewModel @Inject constructor(
     fun updateAvatar(base64: String) {
         viewModelScope.launch {
             if (networkHelper.isConnected) {
-                Logger.error(base64)
+                userRepository.updateAvatar(base64)
             }
         }
     }

@@ -74,22 +74,33 @@ class UserRepository @Inject constructor(
             withContext(Dispatchers.IO + userExceptionHandler) {
                 val response = username?.let { userService.getUser(it) }
                 withContext(Dispatchers.Main) {
-                    handleGetResponse(response, liveData)
+                    handleResponse(response, liveData)
                 }
             }
         }
     }
 
-    private fun handleGetResponse(
-        response: Response<UserResponse>?,
-        liveData: MutableLiveData<NetworkResult<UserResponse>>
-    ) {
+    suspend fun updateAvatar(base64: String) {
+        _userUpdateResponseLiveData.let { liveData ->
+            liveData.postValue(NetworkResult.Loading())
+            withContext(Dispatchers.IO + userExceptionHandler) {
+                val response = username?.let {
+                    userService.updateAvatar(it, base64)
+                }
+                withContext(Dispatchers.Main) {
+                    handleResponse(response, liveData)
+                }
+            }
+        }
+    }
+
+    private fun <T> handleResponse(response: Response<T>?, liveData: MutableLiveData<NetworkResult<T>>) {
         when {
             response == null -> {
                 liveData.postValue(NetworkResult.Error(Constants.REQUEST_LOGIN))
             }
             response.isSuccessful && response.body() != null -> {
-                liveData.postValue(NetworkResult.Success(response.body()))
+                liveData.postValue(NetworkResult.Success(response.body()!!))
             }
             response.errorBody() != null -> {
                 try {
@@ -105,8 +116,6 @@ class UserRepository @Inject constructor(
             }
         }
     }
-
-
 
 
 }

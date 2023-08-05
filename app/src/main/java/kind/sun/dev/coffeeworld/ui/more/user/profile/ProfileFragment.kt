@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,7 +24,6 @@ class ProfileFragment : Fragment() {
     private val profileViewModel by viewModels<ProfileViewModel>()
     @Inject lateinit var loadingDialog: LoadingDialog
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,6 +36,25 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         profileViewModel.getUser()
         setupUserLiveData()
+        setupUserUpdateLiveData()
+    }
+
+    private fun setupUserUpdateLiveData() {
+        profileViewModel.userUpdateResponseLiveData.observe(viewLifecycleOwner) {
+            when(it) {
+                is NetworkResult.Success -> {
+                    loadingDialog.dismiss()
+                    Toast.makeText(requireContext(), it.data!!.data, Toast.LENGTH_SHORT).show()
+                }
+                is NetworkResult.Error -> {
+                    loadingDialog.dismiss()
+                    Logger.error(it.message.toString())
+                }
+                is NetworkResult.Loading -> {
+                    loadingDialog.show(parentFragmentManager, LoadingDialog::class.simpleName)
+                }
+            }
+        }
     }
 
     private fun setupUserLiveData() {

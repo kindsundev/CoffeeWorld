@@ -97,6 +97,7 @@ class AvatarFragment : BottomSheetDialogFragment() {
                     val base64 = uriToBase64(selectedImageUri, requireContext().contentResolver)
                     base64?.let { profileViewModel.updateAvatar(it) }
                 }
+                onDismissBottomSheet()
             }
         } catch (e: Exception) {
             Logger.error("Error getting selected files ${e.message}")
@@ -142,6 +143,7 @@ class AvatarFragment : BottomSheetDialogFragment() {
                 if (deletePhotoInternalStorage(fileName)) {
                     val base64 = uriToBase64(uri, requireContext().contentResolver)
                     base64?.let { profileViewModel.updateAvatar(it) }
+                    onDismissBottomSheet()
                 }
             }
         }
@@ -225,6 +227,8 @@ class AvatarFragment : BottomSheetDialogFragment() {
             Logger.error("takeImageCameraLauncher: ${e.message}")
         }
     }
+
+    private fun onDismissBottomSheet(): Unit = this.dismiss()
 
     override fun onDestroyView() {
         super.onDestroyView()
