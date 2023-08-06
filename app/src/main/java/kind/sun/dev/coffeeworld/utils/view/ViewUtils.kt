@@ -6,7 +6,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import android.util.Base64
 import kind.sun.dev.coffeeworld.R
 
 @BindingAdapter("app:passwordInputType")
@@ -33,13 +32,10 @@ fun loadImageByGlide(imageView: ImageView, imageUrl: String?) {
     }
 }
 
-@BindingAdapter("app:imageBase64")
-fun loadImageFromBase64(imageView: ImageView, base64: String?) {
-    if (base64 != null) {
-        if (base64.isNotBlank()) {
-            val decodeString : ByteArray = Base64.decode(base64, Base64.DEFAULT)
-            val decodeBitmap = BitmapFactory.decodeByteArray(decodeString, 0, decodeString.size)
-            imageView.setImageBitmap(decodeBitmap)
-        }
+@BindingAdapter("app:imageFromByteArrayToBitmap")
+fun loadImageBitmapFromByteArray(imageView: ImageView, byteArray: ByteArray?) {
+    if (byteArray != null) {
+        val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+        imageView.setImageBitmap(bitmap)
     }
 }
