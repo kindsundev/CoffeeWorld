@@ -1,14 +1,11 @@
-package kind.sun.dev.coffeeworld.ui.more.user.profile
+package kind.sun.dev.coffeeworld.ui.more.user.profile.avatar
 
 import android.Manifest
-import android.content.ContentResolver
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,33 +13,36 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.databinding.FragmentAvatarBinding
+import kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileViewModel
+import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.common.checkPermission
 import kind.sun.dev.coffeeworld.utils.common.checkSDKTiramisu
-import kotlinx.coroutines.Dispatchers
+import kind.sun.dev.coffeeworld.utils.storage.FileInternalStorageUtil
+import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.IOException
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AvatarFragment : BottomSheetDialogFragment() {
     private var _binding: FragmentAvatarBinding? = null
     private val binding get() = _binding!!
     private val profileViewModel by viewModels<ProfileViewModel>()
+    private val fileInternalStorageUtil by lazy { FileInternalStorageUtil(requireContext()) }
 
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var pickImageGalleryLauncher:  ActivityResultLauncher<Intent>
     private lateinit var takeImageCameraLauncher: ActivityResultLauncher<Intent>
+    @Inject lateinit var loadingDialog: LoadingDialog
+    private lateinit var currentFile: File
     private var currentAction = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -66,6 +66,8 @@ class AvatarFragment : BottomSheetDialogFragment() {
             ActivityResultContracts.StartActivityForResult(),
             this::onTakeImageCameraResult
         )
+
+        setupUserUpdateLiveData()
     }
 
     private fun onPermissionRequestResult(isGranted: Boolean) {
@@ -93,35 +95,21 @@ class AvatarFragment : BottomSheetDialogFragment() {
         try {
             if (result.resultCode == FragmentActivity.RESULT_OK && result.data != null) {
                 val selectedImageUri = result.data?.data
-                if (selectedImageUri != null) {
-                    val base64 = uriToBase64(selectedImageUri, requireContext().contentResolver)
-                    base64?.let { profileViewModel.updateAvatar(it) }
-                }
-                onDismissBottomSheet()
+                selectedImageUri?.let { handleImageResultFromGallery(it) }
             }
         } catch (e: Exception) {
             Logger.error("Error getting selected files ${e.message}")
         }
     }
 
-    private fun uriToBase64(uri: Uri, contentResolver: ContentResolver): String? {
-        try {
-            val buffer = ByteArray(1024)
-            val byteArrayOutputStream = ByteArrayOutputStream()
-
-            contentResolver.openInputStream(uri)?.use {stream ->
-                var byteRead: Int
-                while(stream.read(buffer).also { byteRead = it } != -1) {
-                    byteArrayOutputStream.write(buffer, 0, byteRead)
-                }
+    private fun handleImageResultFromGallery(uri: Uri) {
+        lifecycleScope.launch {
+            val avatarFile = fileInternalStorageUtil.savePhotoByUri(uri)
+            if (avatarFile?.exists() == true) {
+                currentFile = avatarFile
+                profileViewModel.updateAvatar(avatarFile)
             }
-
-            val byteArray = byteArrayOutputStream.toByteArray()
-            return Base64.encodeToString(byteArray, Base64.DEFAULT)
-        } catch (e: IOException) {
-            Logger.error(e.message.toString())
         }
-        return null
     }
 
     private fun onTakeImageCameraResult(result: ActivityResult) {
@@ -136,45 +124,7 @@ class AvatarFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleImageResultFromCamera(bitmap: Bitmap) {
-        lifecycleScope.launch {
-            val fileName = "image_${System.currentTimeMillis()}"
-            val imageUri = savePhotoInternalStorage(fileName, bitmap)
-            imageUri?.let { uri ->
-                if (deletePhotoInternalStorage(fileName)) {
-                    val base64 = uriToBase64(uri, requireContext().contentResolver)
-                    base64?.let { profileViewModel.updateAvatar(it) }
-                    onDismissBottomSheet()
-                }
-            }
-        }
-    }
 
-    private suspend fun savePhotoInternalStorage(filename: String, bmp: Bitmap): Uri? {
-        return withContext(Dispatchers.IO) {
-            try {
-                requireContext().openFileOutput("$filename.jpg", Context.MODE_PRIVATE).use { stream ->
-                    if (!bmp.compress(Bitmap.CompressFormat.JPEG, 95, stream)) {
-                        throw IOException("Couldn't save bitmap")
-                    }
-                    File(requireContext().filesDir, "$filename.jpg").toUri()
-                }
-            } catch (e: Exception) {
-                Logger.error("savePhotoInternalStorage: ${e.message}")
-                null
-            }
-        }
-    }
-
-    private suspend fun deletePhotoInternalStorage(filename: String): Boolean {
-        return withContext(Dispatchers.IO) {
-            try {
-                requireContext().deleteFile(filename)
-                true
-            } catch (e: Exception) {
-                Logger.error("deletePhotoInternalStorage: ${e.message}")
-                false
-            }
-        }
     }
 
     fun onClickOpenGallery() {
@@ -225,6 +175,27 @@ class AvatarFragment : BottomSheetDialogFragment() {
             takeImageCameraLauncher.launch(takeImageIntentCapture)
         } catch (e: Exception) {
             Logger.error("takeImageCameraLauncher: ${e.message}")
+        }
+    }
+
+    private fun setupUserUpdateLiveData() {
+        profileViewModel.userUpdateResponseLiveData.observe(viewLifecycleOwner) {
+            when(it) {
+                is NetworkResult.Success -> {
+                    loadingDialog.dismiss()
+                    onDismissBottomSheet()
+                    lifecycleScope.launch {fileInternalStorageUtil.deletePhoto(currentFile.path) }
+                    Toast.makeText(requireContext(), it.data!!.data, Toast.LENGTH_SHORT).show()
+                }
+                is NetworkResult.Error -> {
+                    loadingDialog.dismiss()
+                    onDismissBottomSheet()
+                    Logger.error(it.message.toString())
+                }
+                is NetworkResult.Loading -> {
+                    loadingDialog.show(parentFragmentManager, LoadingDialog::class.simpleName)
+                }
+            }
         }
     }
 

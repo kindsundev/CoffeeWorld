@@ -144,6 +144,6 @@
         android:label="PaymentFragment" />
     <dialog
         android:id="@+id/avatarFragment"
-        android:name="kind.sun.dev.coffeeworld.ui.more.user.profile.AvatarFragment"
+        android:name="kind.sun.dev.coffeeworld.ui.more.user.profile.avatar.AvatarFragment"
         android:label="AvatarFragment" />
 </navigation>

@@ -17,10 +17,14 @@ import kind.sun.dev.coffeeworld.utils.common.Logger
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Response
-import java.lang.Exception
+import java.io.File
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -80,15 +84,18 @@ class UserRepository @Inject constructor(
         }
     }
 
-    suspend fun updateAvatar(base64: String) {
+    suspend fun updateAvatar(avatar: File) {
         _userUpdateResponseLiveData.let { liveData ->
             liveData.postValue(NetworkResult.Loading())
             withContext(Dispatchers.IO + userExceptionHandler) {
-                val response = username?.let {
-                    userService.updateAvatar(it, base64)
-                }
-                withContext(Dispatchers.Main) {
-                    handleResponse(response, liveData)
+                username?.let {
+                    val usernameRequestBody = it.toRequestBody("text/plain".toMediaTypeOrNull())
+                    val avatarRequestBody = avatar.asRequestBody("image/*".toMediaTypeOrNull())
+                    val avatarPart = MultipartBody.Part.createFormData("image", avatar.name, avatarRequestBody)
+                    val response = userService.updateAvatar(usernameRequestBody, avatarPart)
+                    withContext(Dispatchers.Main) {
+                        handleResponse(response, liveData)
+                    }
                 }
             }
         }

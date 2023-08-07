@@ -4,10 +4,14 @@ import kind.sun.dev.coffeeworld.data.model.request.user.UserEmailRequest
 import kind.sun.dev.coffeeworld.data.model.request.user.UserPasswordRequest
 import kind.sun.dev.coffeeworld.data.model.response.user.UserResponse
 import kind.sun.dev.coffeeworld.data.model.response.user.UserUpdateResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface UserService {
@@ -40,9 +44,10 @@ interface UserService {
         @Path("username") username: String, @Body address: String
     ): Response<UserUpdateResponse>
 
-    @PUT("/user/avatar/{username}")
+    @Multipart
+    @PUT("/user/avatar")
     suspend fun updateAvatar(
-        @Path("username") username: String, @Body base64: String
+        @Part("username") username: RequestBody, @Part image: MultipartBody.Part
     ): Response<UserUpdateResponse>
 
 }

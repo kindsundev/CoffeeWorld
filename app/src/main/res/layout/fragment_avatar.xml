@@ -5,7 +5,7 @@
     <data>
         <variable
             name="fragment"
-            type="kind.sun.dev.coffeeworld.ui.more.user.profile.AvatarFragment" />
+            type="kind.sun.dev.coffeeworld.ui.more.user.profile.avatar.AvatarFragment" />
     </data>
 
     <LinearLayout
