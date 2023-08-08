@@ -11,13 +11,13 @@ import java.io.IOException
 class FileInternalStorageUtil(
     private val context: Context
 ) {
+
     suspend fun savePhotoByUri(uri: Uri): File? {
         return withContext(Dispatchers.IO) {
             try {
                 context.contentResolver.openInputStream(uri)?.use { inputStream ->
-                    val fileName = "photo_${System.currentTimeMillis()}.jpg"
-                    val file = File(context.filesDir, fileName)
-                    context.openFileOutput(fileName, Context.MODE_PRIVATE).use { outputStream ->
+                    val file = createFile()
+                    context.openFileOutput(file.name, Context.MODE_PRIVATE).use { outputStream ->
                         inputStream.copyTo(outputStream)
                     }
                     if (file.exists()) file else null
@@ -31,10 +31,9 @@ class FileInternalStorageUtil(
 
     suspend fun savePhotoByBitmap(bitmap: Bitmap): File? {
         return withContext(Dispatchers.IO) {
-            val fileName = "photo_${System.currentTimeMillis()}.jpg"
-            val file = File(context.filesDir, fileName)
             try {
-                context.openFileOutput(fileName, Context.MODE_PRIVATE).use { outputStream ->
+                val file = createFile()
+                context.openFileOutput(file.name, Context.MODE_PRIVATE).use { outputStream ->
                     if (!bitmap.compress(Bitmap.CompressFormat.JPEG, 95, outputStream)) {
                         throw IOException("Couldn't save bitmap")
                     }
@@ -45,6 +44,11 @@ class FileInternalStorageUtil(
                 null
             }
         }
+    }
+
+    private fun createFile(): File {
+        val fileName = "photo_${System.currentTimeMillis()}.jpg"
+        return File(context.filesDir, fileName)
     }
 
     suspend fun deletePhoto(name: String): Boolean {
