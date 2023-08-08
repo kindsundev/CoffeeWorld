@@ -36,14 +36,10 @@ class FileInternalStorageUtil(
         return null
     }
 
-    suspend fun deletePhoto(filePath: String): Boolean {
+    suspend fun deletePhoto(name: String): Boolean {
         return withContext(Dispatchers.IO) {
             try {
-                val file = File(filePath)
-                if (file.exists()) {
-                    file.delete()
-                }
-                true
+                context.deleteFile(name)
             } catch (e: Exception) {
                 e.printStackTrace()
                 false

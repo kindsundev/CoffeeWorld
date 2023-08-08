@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.databinding.FragmentAvatarBinding
@@ -28,7 +29,7 @@ import kind.sun.dev.coffeeworld.utils.common.checkSDKTiramisu
 import kind.sun.dev.coffeeworld.utils.storage.FileInternalStorageUtil
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
 import kotlinx.coroutines.launch
-import java.io.File
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -36,13 +37,13 @@ class AvatarFragment : BottomSheetDialogFragment() {
     private var _binding: FragmentAvatarBinding? = null
     private val binding get() = _binding!!
     private val profileViewModel by viewModels<ProfileViewModel>()
-    private val fileInternalStorageUtil by lazy { FileInternalStorageUtil(requireContext()) }
+    @Inject lateinit var loadingDialog: LoadingDialog
 
+    private val fileInternalStorageUtil by lazy { FileInternalStorageUtil(requireContext()) }
+    private lateinit var currentFileName: String
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var pickImageGalleryLauncher:  ActivityResultLauncher<Intent>
     private lateinit var takeImageCameraLauncher: ActivityResultLauncher<Intent>
-    @Inject lateinit var loadingDialog: LoadingDialog
-    private lateinit var currentFile: File
     private var currentAction = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -106,7 +107,7 @@ class AvatarFragment : BottomSheetDialogFragment() {
         lifecycleScope.launch {
             val avatarFile = fileInternalStorageUtil.savePhotoByUri(uri)
             if (avatarFile?.exists() == true) {
-                currentFile = avatarFile
+                currentFileName = avatarFile.name
                 profileViewModel.updateAvatar(avatarFile)
             }
         }
@@ -179,18 +180,20 @@ class AvatarFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupUserUpdateLiveData() {
-        profileViewModel.userUpdateResponseLiveData.observe(viewLifecycleOwner) {
-            when(it) {
+        profileViewModel.userUpdateResponseLiveData.observe(viewLifecycleOwner) { result ->
+            when(result) {
                 is NetworkResult.Success -> {
-                    loadingDialog.dismiss()
-                    onDismissBottomSheet()
-                    lifecycleScope.launch {fileInternalStorageUtil.deletePhoto(currentFile.path) }
-                    Toast.makeText(requireContext(), it.data!!.data, Toast.LENGTH_SHORT).show()
+                    runBlocking {
+                        fileInternalStorageUtil.deletePhoto(currentFileName)
+                        loadingDialog.dismiss()
+                        onBackToProfileFragment()
+                        Toast.makeText(requireContext(), result.data!!.data, Toast.LENGTH_SHORT).show()
+                    }
                 }
                 is NetworkResult.Error -> {
                     loadingDialog.dismiss()
-                    onDismissBottomSheet()
-                    Logger.error(it.message.toString())
+                    onBackToProfileFragment()
+                    Logger.error(result.message.toString())
                 }
                 is NetworkResult.Loading -> {
                     loadingDialog.show(parentFragmentManager, LoadingDialog::class.simpleName)
@@ -199,7 +202,9 @@ class AvatarFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun onDismissBottomSheet(): Unit = this.dismiss()
+    private fun onBackToProfileFragment() {
+        findNavController().popBackStack()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
