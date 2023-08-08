@@ -30,10 +30,21 @@ class FileInternalStorageUtil(
     }
 
     suspend fun savePhotoByBitmap(bitmap: Bitmap): File? {
-        withContext(Dispatchers.IO) {
-
+        return withContext(Dispatchers.IO) {
+            val fileName = "photo_${System.currentTimeMillis()}.jpg"
+            val file = File(context.filesDir, fileName)
+            try {
+                context.openFileOutput(fileName, Context.MODE_PRIVATE).use { outputStream ->
+                    if (!bitmap.compress(Bitmap.CompressFormat.JPEG, 95, outputStream)) {
+                        throw IOException("Couldn't save bitmap")
+                    }
+                    file
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                null
+            }
         }
-        return null
     }
 
     suspend fun deletePhoto(name: String): Boolean {

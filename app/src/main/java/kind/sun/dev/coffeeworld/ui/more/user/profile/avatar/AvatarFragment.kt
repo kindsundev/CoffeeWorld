@@ -30,6 +30,7 @@ import kind.sun.dev.coffeeworld.utils.storage.FileInternalStorageUtil
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -96,36 +97,42 @@ class AvatarFragment : BottomSheetDialogFragment() {
         try {
             if (result.resultCode == FragmentActivity.RESULT_OK && result.data != null) {
                 val selectedImageUri = result.data?.data
-                selectedImageUri?.let { handleImageResultFromGallery(it) }
+                selectedImageUri?.let { handleImageFromSource(uri = it) }
             }
         } catch (e: Exception) {
             Logger.error("Error getting selected files ${e.message}")
         }
     }
 
-    private fun handleImageResultFromGallery(uri: Uri) {
-        lifecycleScope.launch {
-            val avatarFile = fileInternalStorageUtil.savePhotoByUri(uri)
-            if (avatarFile?.exists() == true) {
-                currentFileName = avatarFile.name
-                profileViewModel.updateAvatar(avatarFile)
-            }
-        }
-    }
-
     private fun onTakeImageCameraResult(result: ActivityResult) {
         if (result.resultCode == FragmentActivity.RESULT_OK && result.data != null) {
             try {
-                @Suppress("DEPRECATION") val bitmap = result.data?.extras?.get("data") as Bitmap
-                handleImageResultFromCamera(bitmap)
+                val bundle = result.data?.extras
+                @Suppress("DEPRECATION") val bitmap = bundle?.get("data") as Bitmap
+                handleImageFromSource(bitmap = bitmap)
             } catch (e: Exception) {
                 Logger.error("takeImageCameraLauncher: ${e.message}")
             }
         }
     }
 
-    private fun handleImageResultFromCamera(bitmap: Bitmap) {
-
+    private fun handleImageFromSource(uri: Uri? = null, bitmap: Bitmap? = null) {
+        if (uri != null && bitmap != null) {
+            throw IllegalArgumentException("Both URI and Bitmap provided. Please provide either URI or Bitmap.")
+        } else {
+            lifecycleScope.launch {
+                var avatarFile: File? = null
+                if (uri != null) {
+                    avatarFile = fileInternalStorageUtil.savePhotoByUri(uri)
+                } else if (bitmap != null) {
+                    avatarFile = fileInternalStorageUtil.savePhotoByBitmap(bitmap)
+                }
+                if (avatarFile?.exists() == true) {
+                    currentFileName = avatarFile.name
+                    profileViewModel.updateAvatar(avatarFile)
+                }
+            }
+        }
     }
 
     fun onClickOpenGallery() {
