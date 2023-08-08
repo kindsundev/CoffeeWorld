@@ -72,7 +72,7 @@ class LoginFragment : Fragment() {
                     binding.tvError.text = it.message
                 }
                 is NetworkResult.Loading -> {
-                    loadingDialog.show(parentFragmentManager, LoadingDialog::class.simpleName)
+                    loadingDialog.show(childFragmentManager, LoadingDialog::class.simpleName)
                 }
             }
         }

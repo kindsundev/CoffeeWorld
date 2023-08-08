@@ -54,7 +54,7 @@ class ProfileFragment : Fragment() {
                     Logger.error(it.message.toString())
                 }
                 is NetworkResult.Loading -> {
-                    loadingDialog.show(parentFragmentManager, LoadingDialog::class.simpleName)
+                    loadingDialog.show(childFragmentManager, LoadingDialog::class.simpleName)
                 }
             }
         }

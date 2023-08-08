@@ -196,7 +196,7 @@ class AvatarFragment : BottomSheetDialogFragment() {
                     Logger.error(result.message.toString())
                 }
                 is NetworkResult.Loading -> {
-                    loadingDialog.show(parentFragmentManager, LoadingDialog::class.simpleName)
+                    loadingDialog.show(childFragmentManager, LoadingDialog::class.simpleName)
                 }
             }
         }

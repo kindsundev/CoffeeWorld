@@ -3,16 +3,16 @@ package kind.sun.dev.coffeeworld.di
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.FragmentComponent
+import dagger.hilt.android.scopes.FragmentScoped
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
-import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(FragmentComponent::class)
 object ViewModule {
 
     @Provides
-    @Singleton
+    @FragmentScoped
     fun provideLoadingDialog(): LoadingDialog {
         return LoadingDialog()
     }

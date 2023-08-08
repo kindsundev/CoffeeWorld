@@ -62,7 +62,7 @@ class RegisterFragment : Fragment() {
                     binding.tvResponse.text = it.message
                 }
                 is NetworkResult.Loading -> {
-                    loadingDialog.show(parentFragmentManager, LoadingDialog::class.simpleName)
+                    loadingDialog.show(childFragmentManager, LoadingDialog::class.simpleName)
                 }
             }
         }
