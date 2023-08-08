@@ -16,11 +16,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.databinding.FragmentAvatarBinding
 import kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileViewModel
+import kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileUpdateCallback
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.Logger
@@ -34,7 +34,9 @@ import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AvatarFragment : BottomSheetDialogFragment() {
+class AvatarFragment(
+    private val listener: ProfileUpdateCallback
+) : BottomSheetDialogFragment() {
     private var _binding: FragmentAvatarBinding? = null
     private val binding get() = _binding!!
     private val profileViewModel by viewModels<ProfileViewModel>()
@@ -46,6 +48,8 @@ class AvatarFragment : BottomSheetDialogFragment() {
     private lateinit var pickImageGalleryLauncher:  ActivityResultLauncher<Intent>
     private lateinit var takeImageCameraLauncher: ActivityResultLauncher<Intent>
     private var currentAction = ""
+    private var uri: Uri? = null
+    private var bitmap: Bitmap? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAvatarBinding.inflate(layoutInflater)
@@ -97,7 +101,10 @@ class AvatarFragment : BottomSheetDialogFragment() {
         try {
             if (result.resultCode == FragmentActivity.RESULT_OK && result.data != null) {
                 val selectedImageUri = result.data?.data
-                selectedImageUri?.let { handleImageFromSource(uri = it) }
+                selectedImageUri?.let {
+                    this.uri = it
+                    handleImageFromSource(uri = it)
+                }
             }
         } catch (e: Exception) {
             Logger.error("Error getting selected files ${e.message}")
@@ -109,6 +116,7 @@ class AvatarFragment : BottomSheetDialogFragment() {
             try {
                 val bundle = result.data?.extras
                 @Suppress("DEPRECATION") val bitmap = bundle?.get("data") as Bitmap
+                this.bitmap = bitmap
                 handleImageFromSource(bitmap = bitmap)
             } catch (e: Exception) {
                 Logger.error("takeImageCameraLauncher: ${e.message}")
@@ -210,7 +218,9 @@ class AvatarFragment : BottomSheetDialogFragment() {
     }
 
     private fun onBackToProfileFragment() {
-        findNavController().popBackStack()
+        uri?.let { listener.onAvatarUpdated(it) }
+        bitmap?.let { listener.onAvatarUpdated(it) }
+        this.dismiss()
     }
 
     override fun onDestroyView() {
