@@ -79,6 +79,26 @@ class ProfileFragment : Fragment(), ProfileUpdateCallback {
         nameDialogFragment.show(childFragmentManager, NameDialogFragment::class.simpleName)
     }
 
+    fun onShowAddressDialog() {
+
+    }
+
+    fun onShowPhoneDialog() {
+
+    }
+
+    fun onShowEmailDialog() {
+
+    }
+
+    fun onShowPasswordDialog() {
+
+    }
+
+    fun onShowProfileDetailFragment() {
+
+    }
+
     fun onBackToMoreFragment() { findNavController().popBackStack() }
 
     override fun onAvatarUpdated(data: Any) {
