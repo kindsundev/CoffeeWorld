@@ -19,7 +19,6 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.databinding.FragmentAvatarBinding
-import kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileViewModel
 import kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileUpdateCallback
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Constants
@@ -34,22 +33,24 @@ import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AvatarFragment(
+class AvatarBottomFragment(
     private val listener: ProfileUpdateCallback
 ) : BottomSheetDialogFragment() {
     private var _binding: FragmentAvatarBinding? = null
     private val binding get() = _binding!!
-    private val profileViewModel by viewModels<ProfileViewModel>()
+
+    private val avatarViewModel by viewModels<AvatarBottomViewModel>()
     @Inject lateinit var loadingDialog: LoadingDialog
 
     private val fileInternalStorageUtil by lazy { FileInternalStorageUtil(requireContext()) }
     private lateinit var currentFileName: String
+    private var bitmap: Bitmap? = null
+    private var uri: Uri? = null
+
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var pickImageGalleryLauncher:  ActivityResultLauncher<Intent>
     private lateinit var takeImageCameraLauncher: ActivityResultLauncher<Intent>
     private var currentAction = ""
-    private var uri: Uri? = null
-    private var bitmap: Bitmap? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAvatarBinding.inflate(layoutInflater)
@@ -137,7 +138,7 @@ class AvatarFragment(
                 }
                 if (avatarFile?.exists() == true) {
                     currentFileName = avatarFile.name
-                    profileViewModel.updateAvatar(avatarFile)
+                    avatarViewModel.updateAvatar(avatarFile)
                 }
             }
         }
@@ -195,7 +196,7 @@ class AvatarFragment(
     }
 
     private fun setupUserUpdateLiveData() {
-        profileViewModel.userUpdateResponseLiveData.observe(viewLifecycleOwner) { result ->
+        avatarViewModel.userUpdateResponseLiveData.observe(viewLifecycleOwner) { result ->
             when(result) {
                 is NetworkResult.Success -> {
                     runBlocking {
