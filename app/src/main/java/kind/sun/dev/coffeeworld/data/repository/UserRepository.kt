@@ -117,6 +117,21 @@ class UserRepository @Inject constructor(
         }
     }
 
+    suspend fun updateAddress(address: String) {
+        _userUpdateResponseLiveData.let { liveData ->
+            liveData.postValue(NetworkResult.Loading())
+            withContext(Dispatchers.IO + userExceptionHandler) {
+                val response = username?.let {
+                    val request = address.toRequestBody("text/plain".toMediaType())
+                    userService.updateAddress(it, request)
+                }
+                withContext(Dispatchers.Main) {
+                    handleResponse(response, liveData)
+                }
+            }
+        }
+    }
+
     private fun <T> handleResponse(response: Response<T>?, liveData: MutableLiveData<NetworkResult<T>>) {
         when {
             response == null -> {

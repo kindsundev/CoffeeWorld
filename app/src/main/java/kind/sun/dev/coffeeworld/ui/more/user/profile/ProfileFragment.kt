@@ -12,8 +12,11 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.databinding.FragmentProfileBinding
+import kind.sun.dev.coffeeworld.ui.more.user.profile.address.AddressDialogFragment
 import kind.sun.dev.coffeeworld.ui.more.user.profile.avatar.AvatarBottomFragment
 import kind.sun.dev.coffeeworld.ui.more.user.profile.name.NameDialogFragment
+import kind.sun.dev.coffeeworld.ui.more.user.profile.phone.PhoneDialogFragment
+import kind.sun.dev.coffeeworld.ui.more.user.profile.phone.PhoneDialogViewModel
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
@@ -80,7 +83,7 @@ class ProfileFragment : Fragment(), ProfileUpdateCallback {
     }
 
     fun onShowAddressDialog() {
-
+        AddressDialogFragment().show(childFragmentManager, AddressDialogFragment::class.simpleName)
     }
 
     fun onShowPhoneDialog() {

@@ -81,4 +81,10 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="please_enter_your_new_name">Please enter your new name</string>
+    <string name="please_enter_your_new_address">Please enter your new address</string>
+    <string name="please_enter_your_new_phone">Please enter your new phone</string>
+    <string name="please_enter_your_new_email">Please enter your new email</string>
+    <string name="please_enter_your_new_password">Please enter your new password</string>
+    <string name="update_address">Update Address</string>
+    <string name="update_phone">Update Phone</string>
 </resources>
