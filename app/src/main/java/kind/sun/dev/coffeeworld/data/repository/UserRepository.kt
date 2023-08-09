@@ -20,6 +20,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONException
@@ -103,50 +104,50 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun updateName(name: String) {
-        _userUpdateResponseLiveData.let { liveData ->
-            liveData.postValue(NetworkResult.Loading())
-            withContext(Dispatchers.IO + userExceptionHandler) {
-                val response = username?.let {
-                    val request = name.toRequestBody("text/plain".toMediaType())
-                    userService.updateName(it, request)
-                }
-                withContext(Dispatchers.Main) {
-                    handleResponse(response, liveData)
-                }
+        updateByTextPlain(
+            { username, requestBody -> userService.updateName(username, requestBody)},
+            name
+        )?.let {
+            withContext(Dispatchers.Main) {
+                handleResponse(it, _userUpdateResponseLiveData)
             }
         }
     }
 
     suspend fun updateAddress(address: String) {
-        _userUpdateResponseLiveData.let { liveData ->
-            liveData.postValue(NetworkResult.Loading())
-            withContext(Dispatchers.IO + userExceptionHandler) {
-                val response = username?.let {
-                    val request = address.toRequestBody("text/plain".toMediaType())
-                    userService.updateAddress(it, request)
-                }
-                withContext(Dispatchers.Main) {
-                    handleResponse(response, liveData)
-                }
+        updateByTextPlain(
+            { username, requestBody -> userService.updateAddress(username, requestBody)},
+            address
+        )?.let {
+            withContext(Dispatchers.Main) {
+                handleResponse(it, _userUpdateResponseLiveData)
             }
         }
     }
 
     suspend fun updatePhone(phone: String) {
-        _userUpdateResponseLiveData.let { liveData ->
-            liveData.postValue(NetworkResult.Loading())
-            withContext(Dispatchers.IO + userExceptionHandler) {
-                val response = username?.let {
-                    val request = phone.toRequestBody("text/plain".toMediaType())
-                    userService.updatePhone(it, request)
-                }
-                withContext(Dispatchers.Main) {
-                    handleResponse(response, liveData)
-                }
+        updateByTextPlain(
+            { username, requestBody -> userService.updatePhone(username, requestBody) },
+            phone
+        )?.let {
+            withContext(Dispatchers.Main) {
+                handleResponse(it, _userUpdateResponseLiveData)
             }
         }
     }
 
+    private suspend fun <T> updateByTextPlain(
+        updateFunction: suspend (username: String, requestBody: RequestBody) -> Response<T>,
+        content: String
+    ): Response<T>? {
+        _userUpdateResponseLiveData.postValue(NetworkResult.Loading())
+        val request = content.toRequestBody("text/plain".toMediaType())
+        return withContext(Dispatchers.IO + userExceptionHandler) {
+            username?.let { username ->
+                updateFunction(username, request)
+            }
+        }
+    }
 
     private fun <T> handleResponse(response: Response<T>?, liveData: MutableLiveData<NetworkResult<T>>) {
         when {
