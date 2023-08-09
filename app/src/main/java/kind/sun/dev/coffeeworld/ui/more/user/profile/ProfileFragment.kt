@@ -16,7 +16,6 @@ import kind.sun.dev.coffeeworld.ui.more.user.profile.address.AddressDialogFragme
 import kind.sun.dev.coffeeworld.ui.more.user.profile.avatar.AvatarBottomFragment
 import kind.sun.dev.coffeeworld.ui.more.user.profile.name.NameDialogFragment
 import kind.sun.dev.coffeeworld.ui.more.user.profile.phone.PhoneDialogFragment
-import kind.sun.dev.coffeeworld.ui.more.user.profile.phone.PhoneDialogViewModel
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
@@ -87,7 +86,7 @@ class ProfileFragment : Fragment(), ProfileUpdateCallback {
     }
 
     fun onShowPhoneDialog() {
-
+        PhoneDialogFragment().show(childFragmentManager, PhoneDialogFragment::class.simpleName)
     }
 
     fun onShowEmailDialog() {
@@ -99,7 +98,7 @@ class ProfileFragment : Fragment(), ProfileUpdateCallback {
     }
 
     fun onShowProfileDetailFragment() {
-
+        PhoneDialogFragment().show(childFragmentManager, PhoneDialogFragment::class.simpleName)
     }
 
     fun onBackToMoreFragment() { findNavController().popBackStack() }

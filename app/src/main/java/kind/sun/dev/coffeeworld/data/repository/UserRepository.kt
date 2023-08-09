@@ -132,6 +132,22 @@ class UserRepository @Inject constructor(
         }
     }
 
+    suspend fun updatePhone(phone: String) {
+        _userUpdateResponseLiveData.let { liveData ->
+            liveData.postValue(NetworkResult.Loading())
+            withContext(Dispatchers.IO + userExceptionHandler) {
+                val response = username?.let {
+                    val request = phone.toRequestBody("text/plain".toMediaType())
+                    userService.updatePhone(it, request)
+                }
+                withContext(Dispatchers.Main) {
+                    handleResponse(response, liveData)
+                }
+            }
+        }
+    }
+
+
     private fun <T> handleResponse(response: Response<T>?, liveData: MutableLiveData<NetworkResult<T>>) {
         when {
             response == null -> {
