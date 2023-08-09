@@ -17,6 +17,7 @@ import kind.sun.dev.coffeeworld.utils.common.Logger
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -96,6 +97,21 @@ class UserRepository @Inject constructor(
                     withContext(Dispatchers.Main) {
                         handleResponse(response, liveData)
                     }
+                }
+            }
+        }
+    }
+
+    suspend fun updateName(name: String) {
+        _userUpdateResponseLiveData.let { liveData ->
+            liveData.postValue(NetworkResult.Loading())
+            withContext(Dispatchers.IO + userExceptionHandler) {
+                val response = username?.let {
+                    val request = name.toRequestBody("text/plain".toMediaType())
+                    userService.updateName(it, request)
+                }
+                withContext(Dispatchers.Main) {
+                    handleResponse(response, liveData)
                 }
             }
         }

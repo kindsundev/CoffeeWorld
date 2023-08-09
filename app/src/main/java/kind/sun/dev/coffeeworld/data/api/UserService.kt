@@ -31,7 +31,7 @@ interface UserService {
 
     @PUT("/user/name/{username}")
     suspend fun updateName(
-        @Path("username") username: String, @Body name: String
+        @Path("username") username: String, @Body name: RequestBody
     ): Response<UserUpdateResponse>
 
     @PUT("/user/phone/{username}")
