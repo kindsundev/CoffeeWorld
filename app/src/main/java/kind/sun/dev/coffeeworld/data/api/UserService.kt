@@ -36,12 +36,12 @@ interface UserService {
 
     @PUT("/user/phone/{username}")
     suspend fun updatePhone(
-        @Path("username") username: String, @Body phone: String
+        @Path("username") username: String, @Body phone: RequestBody
     ): Response<UserUpdateResponse>
 
     @PUT("/user/address/{username}")
     suspend fun updateAddress(
-        @Path("username") username: String, @Body address: String
+        @Path("username") username: String, @Body address: RequestBody
     ): Response<UserUpdateResponse>
 
     @Multipart
