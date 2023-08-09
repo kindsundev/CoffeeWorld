@@ -12,14 +12,15 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.databinding.FragmentProfileBinding
-import kind.sun.dev.coffeeworld.ui.more.user.profile.avatar.AvatarFragment
+import kind.sun.dev.coffeeworld.ui.more.user.profile.avatar.AvatarBottomFragment
+import kind.sun.dev.coffeeworld.ui.more.user.profile.name.NameDialogFragment
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), ProfileUpdateCallback {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -36,9 +37,17 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.fragment = this
+        setupDataBinding()
         profileViewModel.getUser()
         setupUserLiveData()
+    }
+
+    private fun setupDataBinding() {
+        binding.apply {
+            fragment = this@ProfileFragment
+            user.fragment = this@ProfileFragment
+            dashboard.fragment = this@ProfileFragment
+        }
     }
 
     private fun setupUserLiveData() {
@@ -47,10 +56,7 @@ class ProfileFragment : Fragment() {
                 is NetworkResult.Success -> {
                     loadingDialog.dismiss()
                     val user = it.data!!.data
-                    binding.user.apply {
-                        userModel = user
-                        fragment = this@ProfileFragment
-                    }
+                    binding.user.userModel = user
                 }
                 is NetworkResult.Error -> {
                     loadingDialog.dismiss()
@@ -64,22 +70,30 @@ class ProfileFragment : Fragment() {
     }
 
     fun onShowAvatarFragment() {
-        val avatarFragment = AvatarFragment(object : ProfileUpdateCallback {
-            override fun onAvatarUpdated(data: Any) {
-                when(data) {
-                    is Bitmap -> binding.user.imgAvatar.setImageBitmap(data)
-                    is Uri -> Glide.with(requireContext()).load(data).into(binding.user.imgAvatar)
-                }
-            }
-        })
-        avatarFragment.show(childFragmentManager, AvatarFragment::class.simpleName)
+        val avatarBottomFragment = AvatarBottomFragment(this)
+        avatarBottomFragment.show(childFragmentManager, AvatarBottomFragment::class.simpleName)
+    }
+
+    fun onShowNameDialog() {
+        val nameDialogFragment = NameDialogFragment(this)
+        nameDialogFragment.show(childFragmentManager, NameDialogFragment::class.simpleName)
     }
 
     fun onBackToMoreFragment() { findNavController().popBackStack() }
+
+    override fun onAvatarUpdated(data: Any) {
+        when(data) {
+            is Bitmap -> binding.user.imgAvatar.setImageBitmap(data)
+            is Uri -> Glide.with(requireContext()).load(data).into(binding.user.imgAvatar)
+        }
+    }
+
+    override fun onNameUpdated(data: String) {
+        binding.user.tvName.text = data
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }

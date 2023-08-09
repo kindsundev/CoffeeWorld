@@ -4,4 +4,5 @@ interface ProfileUpdateCallback {
 
     fun onAvatarUpdated(data: Any)
 
+    fun onNameUpdated(data: String)
 }
