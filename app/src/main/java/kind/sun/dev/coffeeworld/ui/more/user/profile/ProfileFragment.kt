@@ -11,6 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
+import kind.sun.dev.coffeeworld.R
+import kind.sun.dev.coffeeworld.data.model.response.auth.UserModel
 import kind.sun.dev.coffeeworld.databinding.FragmentProfileBinding
 import kind.sun.dev.coffeeworld.ui.more.user.profile.address.AddressDialogFragment
 import kind.sun.dev.coffeeworld.ui.more.user.profile.avatar.AvatarBottomFragment
@@ -19,6 +21,7 @@ import kind.sun.dev.coffeeworld.ui.more.user.profile.name.NameDialogFragment
 import kind.sun.dev.coffeeworld.ui.more.user.profile.password.PasswordDialogFragment
 import kind.sun.dev.coffeeworld.ui.more.user.profile.phone.PhoneDialogFragment
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
+import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
 import javax.inject.Inject
@@ -27,9 +30,9 @@ import javax.inject.Inject
 class ProfileFragment : Fragment(), ProfileUpdateCallback {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-
     private val profileViewModel by viewModels<ProfileViewModel>()
     @Inject lateinit var loadingDialog: LoadingDialog
+    private lateinit var userModel: UserModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,8 +62,8 @@ class ProfileFragment : Fragment(), ProfileUpdateCallback {
             when(it) {
                 is NetworkResult.Success -> {
                     loadingDialog.dismiss()
-                    val user = it.data!!.data
-                    binding.user.userModel = user
+                    userModel = it.data!!.data
+                    binding.user.userModel = userModel
                 }
                 is NetworkResult.Error -> {
                     loadingDialog.dismiss()
@@ -86,7 +89,8 @@ class ProfileFragment : Fragment(), ProfileUpdateCallback {
     fun onShowPasswordDialog() : Unit = PasswordDialogFragment().show(childFragmentManager, null)
 
     fun onShowProfileDetailFragment() {
-
+        val bundle = Bundle().apply { putParcelable(Constants.USER_KEY, userModel) }
+        findNavController().navigate(R.id.action_profileFragment_to_profileDetailBottomFragment, bundle)
     }
 
     fun onBackToMoreFragment() { findNavController().popBackStack() }

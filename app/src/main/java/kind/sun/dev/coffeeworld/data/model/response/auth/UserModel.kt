@@ -1,5 +1,9 @@
 package kind.sun.dev.coffeeworld.data.model.response.auth
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class UserModel(
     val address: String,
     val email: String,
@@ -8,7 +12,7 @@ data class UserModel(
     val name: String,
     val phone: String,
     val username: String
-) {
+) : Parcelable {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

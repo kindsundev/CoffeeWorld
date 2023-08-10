@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="24dp"
+        android:onClick="@{() -> fragment.onShowProfileDetailFragment()}"
         android:background="@drawable/bg_layout_solid_white_border_16"
         android:padding="8dp">
 

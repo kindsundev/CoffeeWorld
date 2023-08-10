@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="user"
+            type="kind.sun.dev.coffeeworld.data.model.response.auth.UserModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/coffee_background"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@color/coffee_primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="64dp"
+            android:layout_height="2dp"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_avatar"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:padding="4dp"
+            android:layout_marginTop="48dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_user_default"
+            app:imageFromByteArrayToBitmap="@{user.image}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view"
+            app:shapeAppearanceOverlay="@style/image_circle"
+            app:strokeColor="@color/white_light"
+            app:strokeWidth="4dp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_avatar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_layout_solid_white_border_8"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/ic_username"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginVertical="16dp"
+                        android:layout_marginStart="16dp"
+                        android:contentDescription="@string/settings"
+                        app:srcCompat="@drawable/ic_baseline_account_circle_24"
+                        app:tint="@color/gold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="18dp"
+                        android:layout_toEndOf="@id/ic_username"
+                        android:paddingHorizontal="16dp"
+                        android:text="@{user.username}"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        tools:name="@string/username" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/ic_username"
+                        android:layout_alignStart="@id/ic_username"
+                        android:background="@color/white_light" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/ic_name"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginVertical="16dp"
+                        android:layout_marginStart="16dp"
+                        android:contentDescription="@string/name"
+                        app:srcCompat="@drawable/ic_baseline_account_circle_24"
+                        app:tint="@color/purple_dark" />
+
+                    <TextView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="18dp"
+                        android:layout_toEndOf="@id/ic_name"
+                        android:paddingHorizontal="16dp"
+                        android:text="@{user.name}"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/ic_name"
+                        android:layout_alignStart="@id/ic_name"
+                        android:background="@color/white_light" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/ic_email"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginVertical="16dp"
+                        android:layout_marginStart="16dp"
+                        android:contentDescription="@string/security"
+                        app:srcCompat="@drawable/ic_baseline_email_24"
+                        app:tint="@color/orange_dark" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="20dp"
+                        android:layout_toEndOf="@id/ic_email"
+                        android:paddingHorizontal="16dp"
+                        android:text="@{user.email}"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/ic_email"
+                        android:layout_alignStart="@id/ic_email"
+                        android:background="@color/white_light" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/ic_address"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginVertical="16dp"
+                        android:layout_marginStart="16dp"
+                        android:contentDescription="@string/logout"
+                        app:srcCompat="@drawable/ic_baseline_home_24"
+                        app:tint="@color/blue" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="20dp"
+                        android:layout_toEndOf="@id/ic_address"
+                        android:paddingHorizontal="16dp"
+                        android:text="@{user.address}"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/ic_address"
+                        android:layout_alignStart="@id/ic_address"
+                        android:background="@color/white_light" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/ic_phone"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginVertical="16dp"
+                        android:layout_marginStart="16dp"
+                        android:contentDescription="@string/logout"
+                        app:srcCompat="@drawable/ic_baseline_phone_24"
+                        app:tint="@color/green_dark" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="20dp"
+                        android:layout_toEndOf="@id/ic_phone"
+                        android:paddingHorizontal="16dp"
+                        android:text="@{user.phone}"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
