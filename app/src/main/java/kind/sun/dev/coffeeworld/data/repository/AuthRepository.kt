@@ -39,37 +39,32 @@ class AuthRepository @Inject constructor(
     }
 
     suspend fun login(loginRequest: LoginRequest) {
-        _authLoginResponseLiveData.let {
-            it.postValue(NetworkResult.Loading())
-            withContext(Dispatchers.IO + authExceptionHandler) {
-                val response = authService.login(loginRequest)
-                withContext(Dispatchers.Main) {
-                    handleResponse(response, it)
-                }
-            }
+        performAuthOperation(_authLoginResponseLiveData) {
+            authService.login(loginRequest)
         }
     }
 
     suspend fun register(registerRequest: RegisterRequest) {
-        _authRegisterResponseLiveData.let {
-            it.postValue(NetworkResult.Loading())
-            withContext(Dispatchers.IO + authExceptionHandler) {
-                val response = authService.register(registerRequest)
-                withContext(Dispatchers.Main) {
-                    handleResponse(response, it)
-                }
-            }
+        performAuthOperation(_authRegisterResponseLiveData) {
+            authService.register(registerRequest)
         }
     }
 
     suspend fun passwordReset(authRequest: AuthRequest) {
-        _authPasswordResetResponseLiveData.let {
-            it.postValue(NetworkResult.Loading())
-            withContext(Dispatchers.IO + authExceptionHandler) {
-                val response = authService.passwordReset(authRequest)
-                withContext(Dispatchers.Main) {
-                    handleResponse(response, it)
-                }
+        performAuthOperation(_authPasswordResetResponseLiveData) {
+            authService.passwordReset(authRequest)
+        }
+    }
+
+    private suspend fun <T> performAuthOperation(
+        liveData: MutableLiveData<NetworkResult<T>>,
+        operation: suspend () -> Response<T>
+    ) {
+        liveData.postValue(NetworkResult.Loading())
+        withContext(Dispatchers.IO + authExceptionHandler) {
+            val response = operation()
+            withContext(Dispatchers.Main) {
+                handleResponse(response, liveData)
             }
         }
     }
