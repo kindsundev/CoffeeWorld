@@ -16,6 +16,7 @@ import kind.sun.dev.coffeeworld.ui.more.user.profile.address.AddressDialogFragme
 import kind.sun.dev.coffeeworld.ui.more.user.profile.avatar.AvatarBottomFragment
 import kind.sun.dev.coffeeworld.ui.more.user.profile.email.EmailDialogFragment
 import kind.sun.dev.coffeeworld.ui.more.user.profile.name.NameDialogFragment
+import kind.sun.dev.coffeeworld.ui.more.user.profile.password.PasswordDialogFragment
 import kind.sun.dev.coffeeworld.ui.more.user.profile.phone.PhoneDialogFragment
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Logger
@@ -82,9 +83,7 @@ class ProfileFragment : Fragment(), ProfileUpdateCallback {
 
     fun onShowEmailDialog() : Unit = EmailDialogFragment().show(childFragmentManager, null)
 
-    fun onShowPasswordDialog() {
-
-    }
+    fun onShowPasswordDialog() : Unit = PasswordDialogFragment().show(childFragmentManager, null)
 
     fun onShowProfileDetailFragment() {
 
