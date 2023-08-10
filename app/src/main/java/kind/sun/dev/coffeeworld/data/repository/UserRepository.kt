@@ -8,6 +8,8 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.SignatureException
 import kind.sun.dev.coffeeworld.BuildConfig
 import kind.sun.dev.coffeeworld.data.api.UserService
+import kind.sun.dev.coffeeworld.data.model.request.user.UserEmailRequest
+import kind.sun.dev.coffeeworld.data.model.request.user.UserPasswordRequest
 import kind.sun.dev.coffeeworld.data.model.response.user.UserResponse
 import kind.sun.dev.coffeeworld.data.model.response.user.UserUpdateResponse
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
@@ -95,6 +97,36 @@ class UserRepository @Inject constructor(
                     val avatarRequestBody = avatar.asRequestBody("image/*".toMediaTypeOrNull())
                     val avatarPart = MultipartBody.Part.createFormData("image", avatar.name, avatarRequestBody)
                     val response = userService.updateAvatar(usernameRequestBody, avatarPart)
+                    withContext(Dispatchers.Main) {
+                        handleResponse(response, liveData)
+                    }
+                }
+            }
+        }
+    }
+
+    suspend fun updateEmail(email: String, password: String) {
+        _userUpdateResponseLiveData.let { liveData ->
+            liveData.postValue(NetworkResult.Loading())
+            withContext(Dispatchers.IO + userExceptionHandler) {
+                username?.let {
+                    val emailRequest = UserEmailRequest(it, email, password)
+                    val response = userService.updateEmail(emailRequest)
+                    withContext(Dispatchers.Main) {
+                        handleResponse(response, liveData)
+                    }
+                }
+            }
+        }
+    }
+
+    suspend fun updatePassword(currentPassword: String, newPassword: String) {
+        _userUpdateResponseLiveData.let { liveData ->
+            liveData.postValue(NetworkResult.Loading())
+            withContext(Dispatchers.IO + userExceptionHandler) {
+                username?.let {
+                    val passwordRequest = UserPasswordRequest(it, currentPassword, newPassword)
+                    val response = userService.updatePassword(passwordRequest)
                     withContext(Dispatchers.Main) {
                         handleResponse(response, liveData)
                     }

@@ -83,8 +83,13 @@
     <string name="please_enter_your_new_name">Please enter your new name</string>
     <string name="please_enter_your_new_address">Please enter your new address</string>
     <string name="please_enter_your_new_phone">Please enter your new phone</string>
-    <string name="please_enter_your_new_email">Please enter your new email</string>
-    <string name="please_enter_your_new_password">Please enter your new password</string>
+    <string name="please_enter_your_both_email">Please enter new email and your password</string>
+    <string name="please_enter_your_both_password">Please enter your password</string>
     <string name="update_address">Update Address</string>
     <string name="update_phone">Update Phone</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="update_password">Update Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="retype_new_password">Retype new password</string>
 </resources>

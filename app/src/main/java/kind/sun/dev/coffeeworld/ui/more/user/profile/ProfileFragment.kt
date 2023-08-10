@@ -14,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.databinding.FragmentProfileBinding
 import kind.sun.dev.coffeeworld.ui.more.user.profile.address.AddressDialogFragment
 import kind.sun.dev.coffeeworld.ui.more.user.profile.avatar.AvatarBottomFragment
+import kind.sun.dev.coffeeworld.ui.more.user.profile.email.EmailDialogFragment
 import kind.sun.dev.coffeeworld.ui.more.user.profile.name.NameDialogFragment
 import kind.sun.dev.coffeeworld.ui.more.user.profile.phone.PhoneDialogFragment
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
@@ -79,9 +80,7 @@ class ProfileFragment : Fragment(), ProfileUpdateCallback {
 
     fun onShowPhoneDialog() : Unit = PhoneDialogFragment().show(childFragmentManager, null)
 
-    fun onShowEmailDialog() {
-
-    }
+    fun onShowEmailDialog() : Unit = EmailDialogFragment().show(childFragmentManager, null)
 
     fun onShowPasswordDialog() {
 
