@@ -17,7 +17,11 @@ class ProfileDetailBottomFragment : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
     private var userModel: UserModel? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentProfileDetailBinding.inflate(layoutInflater)
         return binding.root
     }

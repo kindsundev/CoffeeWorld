@@ -100,7 +100,7 @@
     </fragment>
     <dialog
         android:id="@+id/cafeDetailFragment"
-        android:name="kind.sun.dev.coffeeworld.ui.cafe.CafeDetailFragment"
+        android:name="kind.sun.dev.coffeeworld.ui.cafe.CafeDetailBottomFragment"
         android:label="CafeDetailFragment" />
     <fragment
         android:id="@+id/profileFragment"

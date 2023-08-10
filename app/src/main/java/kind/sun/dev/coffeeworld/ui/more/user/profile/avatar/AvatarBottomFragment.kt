@@ -52,7 +52,11 @@ class AvatarBottomFragment(
     private lateinit var takeImageCameraLauncher: ActivityResultLauncher<Intent>
     private var currentAction = ""
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentAvatarBinding.inflate(layoutInflater)
         return binding.root
     }

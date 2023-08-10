@@ -16,7 +16,7 @@ import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.getSerializableSafe
 
 @AndroidEntryPoint
-class CafeDetailFragment : BottomSheetDialogFragment() {
+class CafeDetailBottomFragment : BottomSheetDialogFragment() {
     private var _binding : FragmentCafeDetailBinding? = null
     private val binding get() = _binding!!
     private var cafeModel: CafeModel? = null
@@ -64,7 +64,7 @@ class CafeDetailFragment : BottomSheetDialogFragment() {
         cafeModel?.let {
             binding.apply {
                 cafeModel = it
-                fragment = this@CafeDetailFragment
+                fragment = this@CafeDetailBottomFragment
             }
         }
     }

@@ -22,7 +22,7 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
     val usernameLiveData = MutableLiveData<String>("")
     val passwordLiveData = MutableLiveData<String>("")
-    val errorMessageLiveData = MutableLiveData<String>("")
+    val errorMessageLiveData = MutableLiveData<String?>("")
     val isPasswordVisible = MutableLiveData<Boolean>(false)
 
     val loginResponseLiveData: LiveData<NetworkResult<LoginResponse>>
@@ -36,7 +36,7 @@ class LoginViewModel @Inject constructor(
             val loginRequest = LoginRequest(username, password)
             loginUser(loginRequest)
         } else {
-            errorMessageLiveData.value = validationResult.second!!
+            errorMessageLiveData.value = validationResult.second
         }
     }
 

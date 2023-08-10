@@ -26,7 +26,7 @@ class RegisterViewModel @Inject constructor(
     val usernameLiveData = MutableLiveData<String>("")
     val passwordLiveData = MutableLiveData<String>("")
     val confirmPasswordLiveData = MutableLiveData<String>("")
-    val errorMessageLiveData = MutableLiveData<String>("")
+    val errorMessageLiveData = MutableLiveData<String?>("")
     val isPasswordVisible = MutableLiveData<Boolean>(false)
 
     val registerResponseLiveData: LiveData<NetworkResult<RegisterResponse>>
@@ -47,7 +47,7 @@ class RegisterViewModel @Inject constructor(
                 val registerRequest = RegisterRequest(username, password, email, name)
                 registerUser(registerRequest)
             } else {
-                errorMessageLiveData.value = validationResult.second!!
+                errorMessageLiveData.value = validationResult.second
             }
         }
     }
