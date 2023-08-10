@@ -71,23 +71,13 @@ class ProfileFragment : Fragment(), ProfileUpdateCallback {
         }
     }
 
-    fun onShowAvatarFragment() {
-        val avatarBottomFragment = AvatarBottomFragment(this)
-        avatarBottomFragment.show(childFragmentManager, AvatarBottomFragment::class.simpleName)
-    }
+    fun onShowAvatarFragment() : Unit = AvatarBottomFragment(this).show(childFragmentManager, null)
 
-    fun onShowNameDialog() {
-        val nameDialogFragment = NameDialogFragment(this)
-        nameDialogFragment.show(childFragmentManager, NameDialogFragment::class.simpleName)
-    }
+    fun onShowNameDialog() : Unit = NameDialogFragment(this).show(childFragmentManager, null)
 
-    fun onShowAddressDialog() {
-        AddressDialogFragment().show(childFragmentManager, AddressDialogFragment::class.simpleName)
-    }
+    fun onShowAddressDialog() : Unit = AddressDialogFragment().show(childFragmentManager, null)
 
-    fun onShowPhoneDialog() {
-        PhoneDialogFragment().show(childFragmentManager, PhoneDialogFragment::class.simpleName)
-    }
+    fun onShowPhoneDialog() : Unit = PhoneDialogFragment().show(childFragmentManager, null)
 
     fun onShowEmailDialog() {
 
@@ -98,7 +88,7 @@ class ProfileFragment : Fragment(), ProfileUpdateCallback {
     }
 
     fun onShowProfileDetailFragment() {
-        PhoneDialogFragment().show(childFragmentManager, PhoneDialogFragment::class.simpleName)
+
     }
 
     fun onBackToMoreFragment() { findNavController().popBackStack() }
