@@ -104,10 +104,9 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun updateName(name: String) {
-        updateByTextPlain(
-            { username, requestBody -> userService.updateName(username, requestBody)},
-            name
-        )?.let {
+        updateByTextPlain(name) { username, requestBody ->
+            userService.updateName(username, requestBody)
+        }?.let {
             withContext(Dispatchers.Main) {
                 handleResponse(it, _userUpdateResponseLiveData)
             }
@@ -115,10 +114,9 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun updateAddress(address: String) {
-        updateByTextPlain(
-            { username, requestBody -> userService.updateAddress(username, requestBody)},
-            address
-        )?.let {
+        updateByTextPlain(address) { username, requestBody ->
+            userService.updateAddress(username, requestBody)
+        }?.let {
             withContext(Dispatchers.Main) {
                 handleResponse(it, _userUpdateResponseLiveData)
             }
@@ -126,10 +124,9 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun updatePhone(phone: String) {
-        updateByTextPlain(
-            { username, requestBody -> userService.updatePhone(username, requestBody) },
-            phone
-        )?.let {
+        updateByTextPlain(phone) { username, requestBody ->
+            userService.updatePhone(username, requestBody)
+        }?.let {
             withContext(Dispatchers.Main) {
                 handleResponse(it, _userUpdateResponseLiveData)
             }
@@ -137,14 +134,13 @@ class UserRepository @Inject constructor(
     }
 
     private suspend fun <T> updateByTextPlain(
-        updateFunction: suspend (username: String, requestBody: RequestBody) -> Response<T>,
-        content: String
+        content: String, updateData: suspend (username: String, requestBody: RequestBody) -> Response<T>
     ): Response<T>? {
         _userUpdateResponseLiveData.postValue(NetworkResult.Loading())
         val request = content.toRequestBody("text/plain".toMediaType())
         return withContext(Dispatchers.IO + userExceptionHandler) {
-            username?.let { username ->
-                updateFunction(username, request)
+            username?.let {
+                updateData(it, request)
             }
         }
     }
