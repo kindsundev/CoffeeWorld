@@ -1,11 +1,15 @@
 package kind.sun.dev.coffeeworld.utils.view
 
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.text.InputType
+import android.view.Gravity
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kind.sun.dev.coffeeworld.R
 
 @BindingAdapter("app:passwordInputType")
@@ -38,4 +42,27 @@ fun loadImageBitmapFromByteArray(imageView: ImageView, byteArray: ByteArray?) {
         val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
         imageView.setImageBitmap(bitmap)
     }
+}
+
+fun showAlertDialog(
+    context: Context, title: String, message: String,
+    onConfirmListener: () -> Unit
+) {
+    val dialog = MaterialAlertDialogBuilder(context, R.style.confirm_alert_dialog).apply {
+        setTitle(title)
+        setMessage(message)
+        setCancelable(false)
+        setNegativeButton(R.string.cancel) { dialog, _ ->
+            dialog.dismiss()
+        }
+        setPositiveButton(R.string.ok) { dialog, _ ->
+            onConfirmListener.invoke()
+            dialog.dismiss()
+        }
+    }.create()
+    dialog.window?.apply {
+        setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        setGravity(Gravity.CENTER)
+    }
+    dialog.show()
 }

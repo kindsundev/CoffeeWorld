@@ -21,4 +21,10 @@ class TokenManager @Inject constructor(
     fun getToken(): String? {
         return sharedPrefs.getString(USER_TOKEN, null)
     }
+
+    fun removeToken() {
+        sharedPrefs.edit()
+            .remove(USER_TOKEN)
+            .apply()
+    }
 }
