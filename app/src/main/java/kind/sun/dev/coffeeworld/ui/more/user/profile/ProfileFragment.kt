@@ -1,7 +1,5 @@
 package kind.sun.dev.coffeeworld.ui.more.user.profile
 
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.data.model.response.auth.UserModel
@@ -80,11 +77,11 @@ class ProfileFragment : Fragment(), ProfileUpdateCallback {
 
     fun onShowNameDialog() : Unit = NameDialogFragment(this).show(childFragmentManager, null)
 
-    fun onShowAddressDialog() : Unit = AddressDialogFragment().show(childFragmentManager, null)
+    fun onShowAddressDialog() : Unit = AddressDialogFragment(this).show(childFragmentManager, null)
 
-    fun onShowPhoneDialog() : Unit = PhoneDialogFragment().show(childFragmentManager, null)
+    fun onShowPhoneDialog() : Unit = PhoneDialogFragment(this).show(childFragmentManager, null)
 
-    fun onShowEmailDialog() : Unit = EmailDialogFragment().show(childFragmentManager, null)
+    fun onShowEmailDialog() : Unit = EmailDialogFragment(this).show(childFragmentManager, null)
 
     fun onShowPasswordDialog() : Unit = PasswordDialogFragment().show(childFragmentManager, null)
 
@@ -95,16 +92,7 @@ class ProfileFragment : Fragment(), ProfileUpdateCallback {
 
     fun onBackToMoreFragment() { findNavController().popBackStack() }
 
-    override fun onAvatarUpdated(data: Any) {
-        when(data) {
-            is Bitmap -> binding.user.imgAvatar.setImageBitmap(data)
-            is Uri -> Glide.with(requireContext()).load(data).into(binding.user.imgAvatar)
-        }
-    }
-
-    override fun onNameUpdated(data: String) {
-        binding.user.tvName.text = data
-    }
+    override fun onDataUpdated() { profileViewModel.getUser() }
 
     override fun onDestroyView() {
         super.onDestroyView()

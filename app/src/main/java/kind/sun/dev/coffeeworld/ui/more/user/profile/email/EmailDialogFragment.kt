@@ -17,12 +17,15 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.databinding.DialogUpdateEmailBinding
+import kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileUpdateCallback
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class EmailDialogFragment : DialogFragment() {
+class EmailDialogFragment(
+    private val listener: ProfileUpdateCallback
+) : DialogFragment() {
     private var _binding: DialogUpdateEmailBinding? = null
     private val binding get() = _binding!!
 
@@ -73,6 +76,7 @@ class EmailDialogFragment : DialogFragment() {
                     loadingDialog.dismiss()
                     Toast.makeText(requireContext(), it.data!!.data, Toast.LENGTH_SHORT).show()
                     onCancel()
+                    listener.onDataUpdated()
                 }
                 is NetworkResult.Error -> {
                     loadingDialog.dismiss()

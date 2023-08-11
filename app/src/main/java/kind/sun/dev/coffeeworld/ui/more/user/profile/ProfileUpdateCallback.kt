@@ -1,8 +1,5 @@
 package kind.sun.dev.coffeeworld.ui.more.user.profile
 
 interface ProfileUpdateCallback {
-
-    fun onAvatarUpdated(data: Any)
-
-    fun onNameUpdated(data: String)
+    fun onDataUpdated()
 }

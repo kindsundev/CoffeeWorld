@@ -71,9 +71,9 @@ class NameDialogFragment(
             when(it) {
                 is NetworkResult.Success -> {
                     loadingDialog.dismiss()
-                    setupNameObserver()
                     Toast.makeText(requireContext(), it.data!!.data, Toast.LENGTH_SHORT).show()
                     onCancel()
+                    listener.onDataUpdated()
                 }
                 is NetworkResult.Error -> {
                     loadingDialog.dismiss()
@@ -83,12 +83,6 @@ class NameDialogFragment(
                     loadingDialog.show(childFragmentManager, LoadingDialog::class.simpleName)
                 }
             }
-        }
-    }
-
-    private fun setupNameObserver() {
-        nameViewModel.nameLiveData.observe(viewLifecycleOwner) {
-            listener.onNameUpdated(it)
         }
     }
 

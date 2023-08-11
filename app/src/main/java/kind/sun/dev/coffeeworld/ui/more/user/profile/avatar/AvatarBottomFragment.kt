@@ -206,13 +206,12 @@ class AvatarBottomFragment(
                     runBlocking {
                         fileInternalStorageUtil.deletePhoto(currentFileName)
                         loadingDialog.dismiss()
-                        onBackToProfileFragment()
+                        listener.onDataUpdated()
                         Toast.makeText(requireContext(), result.data!!.data, Toast.LENGTH_SHORT).show()
                     }
                 }
                 is NetworkResult.Error -> {
                     loadingDialog.dismiss()
-                    onBackToProfileFragment()
                     Logger.error(result.message.toString())
                 }
                 is NetworkResult.Loading -> {
@@ -220,12 +219,6 @@ class AvatarBottomFragment(
                 }
             }
         }
-    }
-
-    private fun onBackToProfileFragment() {
-        uri?.let { listener.onAvatarUpdated(it) }
-        bitmap?.let { listener.onAvatarUpdated(it) }
-        this.dismiss()
     }
 
     override fun onDestroyView() {
