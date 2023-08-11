@@ -77,37 +77,25 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun getUser() {
-        _userResponseLiveData.let { liveData ->
-            liveData.postValue(NetworkResult.Loading())
-            withContext(Dispatchers.IO + userExceptionHandler) {
-                val response = username?.let { userService.getUser(it) }
-                withContext(Dispatchers.Main) {
-                    handleResponse(response, liveData)
-                }
-            }
+        username?.let {
+            performUserAction(_userResponseLiveData) { userService.getUser(it) }
         }
     }
 
     suspend fun updateAvatar(avatar: File) {
-        _userUpdateResponseLiveData.let { liveData ->
-            liveData.postValue(NetworkResult.Loading())
-            withContext(Dispatchers.IO + userExceptionHandler) {
-                username?.let {
-                    val usernameRequestBody = it.toRequestBody("text/plain".toMediaTypeOrNull())
-                    val avatarRequestBody = avatar.asRequestBody("image/*".toMediaTypeOrNull())
-                    val avatarPart = MultipartBody.Part.createFormData("image", avatar.name, avatarRequestBody)
-                    val response = userService.updateAvatar(usernameRequestBody, avatarPart)
-                    withContext(Dispatchers.Main) {
-                        handleResponse(response, liveData)
-                    }
-                }
+        username?.let {
+            performUserAction(_userUpdateResponseLiveData) {
+                val usernameRequestBody = it.toRequestBody("text/plain".toMediaTypeOrNull())
+                val avatarRequestBody = avatar.asRequestBody("image/*".toMediaTypeOrNull())
+                val avatarPart = MultipartBody.Part.createFormData("image", avatar.name, avatarRequestBody)
+                userService.updateAvatar(usernameRequestBody, avatarPart)
             }
         }
     }
 
     suspend fun updateEmail(email: String, password: String) {
         username?.let {
-            updateByBodyObject {
+            performUserAction(_userUpdateResponseLiveData) {
                 userService.updateEmail(UserEmailRequest(it, email, password))
             }
         }
@@ -115,43 +103,44 @@ class UserRepository @Inject constructor(
 
     suspend fun updatePassword(currentPassword: String, newPassword: String) {
         username?.let {
-            updateByBodyObject {
+            performUserAction(_userUpdateResponseLiveData) {
                 userService.updatePassword(UserPasswordRequest(it, currentPassword, newPassword))
             }
         }
     }
 
-    private suspend fun updateByBodyObject(updateData: suspend () -> Response<UserUpdateResponse>) {
-        _userUpdateResponseLiveData.let { liveData ->
-            liveData.postValue(NetworkResult.Loading())
-            withContext(Dispatchers.IO + userExceptionHandler) {
-                val response = updateData()
-                withContext(Dispatchers.Main) {
-                    handleResponse(response, liveData)
-                }
+    private suspend fun <T> performUserAction(
+        liveData: MutableLiveData<NetworkResult<T>>,
+        action: suspend () -> Response<T>
+    ) {
+        liveData.postValue(NetworkResult.Loading())
+        withContext(Dispatchers.IO + userExceptionHandler) {
+            val response = action()
+            withContext(Dispatchers.Main) {
+                handleResponse(response, liveData)
             }
         }
     }
 
     suspend fun updateName(name: String) {
-        updateByTextPlain(name) { username, requestBody ->
+        updateWithTextPlain(name) { username, requestBody ->
             userService.updateName(username, requestBody)
         }
     }
 
     suspend fun updateAddress(address: String) {
-        updateByTextPlain(address) { username, requestBody ->
+        updateWithTextPlain(address) { username, requestBody ->
             userService.updateAddress(username, requestBody)
         }
     }
 
     suspend fun updatePhone(phone: String) {
-        updateByTextPlain(phone) { username, requestBody ->
+        updateWithTextPlain(phone) { username, requestBody ->
             userService.updatePhone(username, requestBody)
         }
     }
 
-    private suspend fun updateByTextPlain(
+    private suspend fun updateWithTextPlain(
         content: String,
         updateData: suspend (username: String, requestBody: RequestBody) -> Response<UserUpdateResponse>
     ) {
