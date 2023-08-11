@@ -53,13 +53,17 @@ class RegisterFragment : Fragment() {
         registerViewModel.registerResponseLiveData.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
-                    loadingDialog.dismiss()
-                    binding.tvResponse.text = it.data!!.data
-                    backToLoginFragment()
+                    if (loadingDialog.isAdded) {
+                        loadingDialog.dismiss()
+                        binding.tvResponse.text = it.data!!.data
+                        backToLoginFragment()
+                    }
                 }
                 is NetworkResult.Error -> {
-                    loadingDialog.dismiss()
-                    binding.tvResponse.text = it.message
+                    if (loadingDialog.isAdded) {
+                        loadingDialog.dismiss()
+                        binding.tvResponse.text = it.message
+                    }
                 }
                 is NetworkResult.Loading -> {
                     loadingDialog.show(childFragmentManager, LoadingDialog::class.simpleName)

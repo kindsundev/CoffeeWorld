@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel
+import kind.sun.dev.coffeeworld.data.model.response.cafe.ListCafeResponse
 import kind.sun.dev.coffeeworld.databinding.FragmentCafeBinding
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Constants
@@ -56,22 +57,30 @@ class CafeFragment : Fragment() {
         cafeViewModel.cafeResponseLiveData.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
-                    loadingDialog.dismiss()
-                    showBodySection(true)
-                    it.data?.data?.let { list ->
-                        originalListCafe = list
-                        initCoffeeNearHere(cafe = list[0])
-                        initRecyclerViewCafe(list.subList(1, list.size))
+                    if (loadingDialog.isAdded) {
+                        loadingDialog.dismiss()
+                        showBodySection(true)
+                        bindDataResult(it)
                     }
                 }
                 is NetworkResult.Error -> {
-                    loadingDialog.dismiss()
-                    Logger.error(it.message.toString())
+                    if (loadingDialog.isAdded) {
+                        loadingDialog.dismiss()
+                        Logger.error(it.message.toString())
+                    }
                 }
                 is NetworkResult.Loading -> {
                     loadingDialog.show(childFragmentManager, LoadingDialog::class.simpleName)
                 }
             }
+        }
+    }
+
+    private fun bindDataResult(networkResult: NetworkResult.Success<ListCafeResponse>) {
+        networkResult.data?.data?.let { list ->
+            originalListCafe = list
+            initCoffeeNearHere(cafe = list[0])
+            initRecyclerViewCafe(list.subList(1, list.size))
         }
     }
 

@@ -50,12 +50,16 @@ class ForgotPasswordFragment : Fragment() {
         passwordViewModel.passwordResetResponseLiveData.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
-                    loadingDialog.dismiss()
-                    binding.tvResponse.text = it.data!!.data
+                    if (loadingDialog.isAdded) {
+                        loadingDialog.dismiss()
+                        binding.tvResponse.text = it.data!!.data
+                    }
                 }
                 is NetworkResult.Error -> {
-                    loadingDialog.dismiss()
-                    binding.tvResponse.text = it.message
+                    if (loadingDialog.isAdded) {
+                        loadingDialog.dismiss()
+                        binding.tvResponse.text = it.message
+                    }
                 }
                 is NetworkResult.Loading -> {
                     loadingDialog.show(childFragmentManager, LoadingDialog::class.simpleName)

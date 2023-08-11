@@ -71,13 +71,17 @@ class PasswordDialogFragment : DialogFragment() {
         passwordViewModel.userUpdateResponseLiveData.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
-                    loadingDialog.dismiss()
-                    Toast.makeText(requireContext(), it.data!!.data, Toast.LENGTH_SHORT).show()
-                    onCancel()
+                    if (loadingDialog.isAdded) {
+                        loadingDialog.dismiss()
+                        Toast.makeText(requireContext(), it.data!!.data, Toast.LENGTH_SHORT).show()
+                        onCancel()
+                    }
                 }
                 is NetworkResult.Error -> {
-                    loadingDialog.dismiss()
-                    binding.tvError.text = it.message
+                    if (loadingDialog.isAdded) {
+                        loadingDialog.dismiss()
+                        binding.tvError.text = it.message
+                    }
                 }
                 is NetworkResult.Loading -> {
                     loadingDialog.show(childFragmentManager, LoadingDialog::class.simpleName)

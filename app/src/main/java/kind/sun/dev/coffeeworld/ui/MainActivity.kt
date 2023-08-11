@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         setupBottomNavController()
     }
 
@@ -84,8 +84,4 @@ class MainActivity : AppCompatActivity() {
         }.show()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        networkStateManager.unregisterNetworkReceiver()
-    }
 }

@@ -63,13 +63,17 @@ class LoginFragment : Fragment() {
         loginViewModel.loginResponseLiveData.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
-                    loadingDialog.dismiss()
-                    tokenManager.saveToken(it.data!!.data.token)
-                    startMainActivity()
+                    if (loadingDialog.isAdded) {
+                        loadingDialog.dismiss()
+                        tokenManager.saveToken(it.data!!.data.token)
+                        startMainActivity()
+                    }
                 }
                 is NetworkResult.Error -> {
-                    loadingDialog.dismiss()
-                    binding.tvError.text = it.message
+                    if (loadingDialog.isAdded) {
+                        loadingDialog.dismiss()
+                        binding.tvError.text = it.message
+                    }
                 }
                 is NetworkResult.Loading -> {
                     loadingDialog.show(childFragmentManager, LoadingDialog::class.simpleName)

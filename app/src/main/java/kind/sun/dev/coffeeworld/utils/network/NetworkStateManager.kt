@@ -35,10 +35,6 @@ class NetworkStateManager @Inject constructor(
         updateConnectionStatus()
     }
 
-    fun unregisterNetworkReceiver() {
-        context.unregisterReceiver(this)
-    }
-
     private fun updateConnectionStatus() {
         val networkCapabilities = connectivityManager.getNetworkCapabilities(
             connectivityManager.activeNetwork

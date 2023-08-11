@@ -58,13 +58,17 @@ class ProfileFragment : Fragment(), ProfileUpdateCallback {
         profileViewModel.userResponseLiveData.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
-                    loadingDialog.dismiss()
-                    userModel = it.data!!.data
-                    binding.user.userModel = userModel
+                    if (loadingDialog.isAdded) {
+                        loadingDialog.dismiss()
+                        userModel = it.data!!.data
+                        binding.user.userModel = userModel
+                    }
                 }
                 is NetworkResult.Error -> {
-                    loadingDialog.dismiss()
-                    Logger.error(it.message.toString())
+                    if (loadingDialog.isAdded) {
+                        loadingDialog.dismiss()
+                        Logger.error(it.message.toString())
+                    }
                 }
                 is NetworkResult.Loading -> {
                     loadingDialog.show(childFragmentManager, LoadingDialog::class.simpleName)

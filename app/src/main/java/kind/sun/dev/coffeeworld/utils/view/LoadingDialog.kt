@@ -21,7 +21,7 @@ class LoadingDialog : DialogFragment() {
         _binding = DialogLoadingBinding.inflate(layoutInflater)
 
         val dialog = MaterialAlertDialogBuilder(
-            requireActivity(), R.style.Theme_CoffeeWorld).apply {
+            requireContext(), R.style.Theme_CoffeeWorld).apply {
             setCancelable(false)
             setView(binding.root)
         }.create()

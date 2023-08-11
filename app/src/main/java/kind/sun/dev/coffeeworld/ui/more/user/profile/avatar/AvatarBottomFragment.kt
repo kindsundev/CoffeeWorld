@@ -203,16 +203,20 @@ class AvatarBottomFragment(
         avatarViewModel.userUpdateResponseLiveData.observe(viewLifecycleOwner) { result ->
             when(result) {
                 is NetworkResult.Success -> {
-                    runBlocking {
-                        fileInternalStorageUtil.deletePhoto(currentFileName)
-                        loadingDialog.dismiss()
-                        listener.onDataUpdated()
-                        Toast.makeText(requireContext(), result.data!!.data, Toast.LENGTH_SHORT).show()
+                    if (loadingDialog.isAdded) {
+                        runBlocking {
+                            fileInternalStorageUtil.deletePhoto(currentFileName)
+                            loadingDialog.dismiss()
+                            listener.onDataUpdated()
+                            Toast.makeText(requireContext(), result.data!!.data, Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
                 is NetworkResult.Error -> {
-                    loadingDialog.dismiss()
-                    Logger.error(result.message.toString())
+                    if (loadingDialog.isAdded) {
+                        loadingDialog.dismiss()
+                        Logger.error(result.message.toString())
+                    }
                 }
                 is NetworkResult.Loading -> {
                     loadingDialog.show(childFragmentManager, LoadingDialog::class.simpleName)
