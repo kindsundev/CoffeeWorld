@@ -28,7 +28,6 @@ import kind.sun.dev.coffeeworld.utils.common.checkSDKTiramisu
 import kind.sun.dev.coffeeworld.utils.storage.FileInternalStorageUtil
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.io.File
 import javax.inject.Inject
 
@@ -204,12 +203,7 @@ class AvatarBottomFragment(
             when(result) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {
-                        runBlocking {
-                            fileInternalStorageUtil.deletePhoto(currentFileName)
-                            loadingDialog.dismiss()
-                            listener.onDataUpdated()
-                            Toast.makeText(requireContext(), result.data!!.data, Toast.LENGTH_SHORT).show()
-                        }
+                        handleDeleteInternalFile(message = result.data!!.data)
                     }
                 }
                 is NetworkResult.Error -> {
@@ -223,6 +217,22 @@ class AvatarBottomFragment(
                 }
             }
         }
+    }
+
+    private fun handleDeleteInternalFile(message: String) {
+        lifecycleScope.launch {
+            val deleted = fileInternalStorageUtil.deletePhoto(currentFileName)
+            if (deleted) {
+                loadingDialog.dismiss()
+                listener.onDataUpdated()
+                onBackToProfileFragment()
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun onBackToProfileFragment() {
+        this.dismiss()
     }
 
     override fun onDestroyView() {
