@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kind.sun.dev.coffeeworld.data.model.response.user.UserUpdateResponse
+import kind.sun.dev.coffeeworld.data.model.response.common.MessageResponse
 import kind.sun.dev.coffeeworld.data.repository.UserRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.network.NetworkHelper
@@ -17,8 +17,8 @@ class PasswordDialogViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val networkHelper: NetworkHelper
 ): ViewModel() {
-    val userUpdateResponseLiveData: LiveData<NetworkResult<UserUpdateResponse>>
-        get() = userRepository.userUpdateResponseLiveData
+    val userUpdate: LiveData<NetworkResult<MessageResponse>>
+        get() = userRepository.userUpdate
 
     val currentPasswordLiveData = MutableLiveData<String>("")
     val newPasswordLiveData = MutableLiveData<String>("")

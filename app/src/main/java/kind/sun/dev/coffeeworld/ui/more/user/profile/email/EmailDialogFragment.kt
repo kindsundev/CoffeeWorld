@@ -70,7 +70,7 @@ class EmailDialogFragment(
     }
 
     private fun setupUserUpdateObserver() {
-        emailViewModel.userUpdateResponseLiveData.observe(viewLifecycleOwner) {
+        emailViewModel.userUpdate.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {

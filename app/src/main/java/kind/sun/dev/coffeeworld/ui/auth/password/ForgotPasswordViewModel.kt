@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.data.model.request.auth.AuthRequest
-import kind.sun.dev.coffeeworld.data.model.response.auth.AuthResponse
+import kind.sun.dev.coffeeworld.data.model.response.common.MessageResponse
 import kind.sun.dev.coffeeworld.data.repository.AuthRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Constants
@@ -23,10 +23,10 @@ class ForgotPasswordViewModel @Inject constructor(
 ): ViewModel() {
     val usernameLiveData = MutableLiveData<String>("")
     val emailLiveData = MutableLiveData<String>("")
-    val errorMessageLiveData = MutableLiveData<String>("")
+    val errorMessageLiveData = MutableLiveData<String?>("")
 
-    val passwordResetResponseLiveData : LiveData<NetworkResult<AuthResponse>>
-        get() = authRepository.authPasswordResetResponseLiveData
+    val passwordResetResponseLiveData : LiveData<NetworkResult<MessageResponse>>
+        get() = authRepository.authPasswordReset
 
     fun onClickConfirm() {
         val username = usernameLiveData.value.toString().trim()
@@ -36,7 +36,7 @@ class ForgotPasswordViewModel @Inject constructor(
             val registerRequest = AuthRequest(username, email)
             passwordReset(registerRequest)
         } else {
-            errorMessageLiveData.value = validationResult.second!!
+            errorMessageLiveData.value = validationResult.second
         }
     }
 

@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.data.model.request.auth.RegisterRequest
-import kind.sun.dev.coffeeworld.data.model.response.auth.RegisterResponse
+import kind.sun.dev.coffeeworld.data.model.response.common.MessageResponse
 import kind.sun.dev.coffeeworld.data.repository.AuthRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Constants
@@ -29,8 +29,8 @@ class RegisterViewModel @Inject constructor(
     val errorMessageLiveData = MutableLiveData<String?>("")
     val isPasswordVisible = MutableLiveData<Boolean>(false)
 
-    val registerResponseLiveData: LiveData<NetworkResult<RegisterResponse>>
-        get() = authRepository.authRegisterResponseLiveData
+    val registerResponseLiveData: LiveData<NetworkResult<MessageResponse>>
+        get() = authRepository.authRegister
 
     fun onClickRegister() {
         val name = nameLiveData.value.toString().trim()

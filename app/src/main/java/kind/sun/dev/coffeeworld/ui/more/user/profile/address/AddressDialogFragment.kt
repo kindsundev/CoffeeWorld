@@ -68,7 +68,7 @@ class AddressDialogFragment(
     }
 
     private fun setupUserUpdateObserver() {
-        addressViewModel.userUpdateResponseLiveData.observe(viewLifecycleOwner) {
+        addressViewModel.userUpdate.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {

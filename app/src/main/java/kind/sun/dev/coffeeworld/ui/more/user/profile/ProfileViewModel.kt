@@ -17,7 +17,7 @@ class ProfileViewModel @Inject constructor(
     private val networkHelper: NetworkHelper
 ): ViewModel(){
     val userResponseLiveData : LiveData<NetworkResult<UserResponse>>
-        get() = userRepository.userResponseLiveData
+        get() = userRepository.user
 
     fun getUser() {
         viewModelScope.launch {

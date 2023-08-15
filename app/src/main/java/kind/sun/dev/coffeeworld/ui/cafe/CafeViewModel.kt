@@ -17,8 +17,8 @@ class CafeViewModel @Inject constructor(
     private val cafeRepository: CafeRepository,
     private val networkHelper: NetworkHelper
 ): ViewModel() {
-    val cafeResponseLiveData: LiveData<NetworkResult<CafeListResponse>>
-        get() = cafeRepository.cafeResponseLiveData
+    val cafe: LiveData<NetworkResult<CafeListResponse>>
+        get() = cafeRepository.cafe
 
     fun getListCafe() {
         viewModelScope.launch {

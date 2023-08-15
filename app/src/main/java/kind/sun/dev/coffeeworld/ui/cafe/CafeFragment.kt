@@ -54,7 +54,7 @@ class CafeFragment : Fragment() {
     }
 
     private fun setupListCafeLiveData() {
-        cafeViewModel.cafeResponseLiveData.observe(viewLifecycleOwner) {
+        cafeViewModel.cafe.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {

@@ -10,8 +10,8 @@ import kind.sun.dev.coffeeworld.BuildConfig
 import kind.sun.dev.coffeeworld.data.api.UserService
 import kind.sun.dev.coffeeworld.data.model.request.user.UserEmailRequest
 import kind.sun.dev.coffeeworld.data.model.request.user.UserPasswordRequest
+import kind.sun.dev.coffeeworld.data.model.response.common.MessageResponse
 import kind.sun.dev.coffeeworld.data.model.response.user.UserResponse
-import kind.sun.dev.coffeeworld.data.model.response.user.UserUpdateResponse
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.api.TokenManager
 import kind.sun.dev.coffeeworld.utils.common.Constants
@@ -37,17 +37,13 @@ class UserRepository @Inject constructor(
 ) {
     private val username: String?
 
-    init {
-        username = getUserNameFromJWTToken()
-    }
+    init { username = getUserNameFromJWTToken() }
 
-    private val _userResponseLiveData = MutableLiveData<NetworkResult<UserResponse>>()
-    val userResponseLiveData: LiveData<NetworkResult<UserResponse>>
-        get() = _userResponseLiveData
+    private val _user = MutableLiveData<NetworkResult<UserResponse>>()
+    val user: LiveData<NetworkResult<UserResponse>> get() = _user
 
-    private val _userUpdateResponseLiveData = MutableLiveData<NetworkResult<UserUpdateResponse>>()
-    val userUpdateResponseLiveData: LiveData<NetworkResult<UserUpdateResponse>>
-        get() = _userUpdateResponseLiveData
+    private val _userUpdate = MutableLiveData<NetworkResult<MessageResponse>>()
+    val userUpdate: LiveData<NetworkResult<MessageResponse>> get() = _userUpdate
 
     private val userExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Logger.error("UserException: ${throwable.message}")
@@ -78,13 +74,13 @@ class UserRepository @Inject constructor(
 
     suspend fun getUser() {
         username?.let {
-            performUserAction(_userResponseLiveData) { userService.getUser(it) }
+            performUserAction(_user) { userService.getUser(it) }
         }
     }
 
     suspend fun updateAvatar(avatar: File) {
         username?.let {
-            performUserAction(_userUpdateResponseLiveData) {
+            performUserAction(_userUpdate) {
                 val usernameRequestBody = it.toRequestBody("text/plain".toMediaTypeOrNull())
                 val avatarRequestBody = avatar.asRequestBody("image/*".toMediaTypeOrNull())
                 val avatarPart = MultipartBody.Part.createFormData("image", avatar.name, avatarRequestBody)
@@ -95,7 +91,7 @@ class UserRepository @Inject constructor(
 
     suspend fun updateEmail(email: String, password: String) {
         username?.let {
-            performUserAction(_userUpdateResponseLiveData) {
+            performUserAction(_userUpdate) {
                 userService.updateEmail(UserEmailRequest(it, email, password))
             }
         }
@@ -103,7 +99,7 @@ class UserRepository @Inject constructor(
 
     suspend fun updatePassword(currentPassword: String, newPassword: String) {
         username?.let {
-            performUserAction(_userUpdateResponseLiveData) {
+            performUserAction(_userUpdate) {
                 userService.updatePassword(UserPasswordRequest(it, currentPassword, newPassword))
             }
         }
@@ -142,15 +138,15 @@ class UserRepository @Inject constructor(
 
     private suspend fun updateWithTextPlain(
         content: String,
-        updateData: suspend (username: String, requestBody: RequestBody) -> Response<UserUpdateResponse>
+        updateData: suspend (username: String, requestBody: RequestBody) -> Response<MessageResponse>
     ) {
-        _userUpdateResponseLiveData.postValue(NetworkResult.Loading())
+        _userUpdate.postValue(NetworkResult.Loading())
         val request = content.toRequestBody("text/plain".toMediaType())
         withContext(Dispatchers.IO + userExceptionHandler) {
             username?.let {
                 val response = updateData(it, request)
                 withContext(Dispatchers.Main) {
-                    handleResponse(response, _userUpdateResponseLiveData)
+                    handleResponse(response, _userUpdate)
                 }
             }
         }

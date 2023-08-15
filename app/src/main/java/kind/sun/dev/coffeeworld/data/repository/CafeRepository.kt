@@ -17,16 +17,16 @@ import javax.inject.Inject
 class CafeRepository @Inject constructor(
     private val cafeService: CafeService
 ) {
-    private val _cafeResponseLiveData = MutableLiveData<NetworkResult<CafeListResponse>>()
-    val cafeResponseLiveData : LiveData<NetworkResult<CafeListResponse>>
-        get() = _cafeResponseLiveData
+    private val _cafe = MutableLiveData<NetworkResult<CafeListResponse>>()
+    val cafe : LiveData<NetworkResult<CafeListResponse>>
+        get() = _cafe
 
     private val cafeExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Logger.error("CafeException: ${throwable.message}")
     }
 
     suspend fun getListCafe() {
-        _cafeResponseLiveData.let {
+        _cafe.let {
             it.postValue(NetworkResult.Loading())
             withContext(Dispatchers.IO + cafeExceptionHandler) {
                 val response = cafeService.getCafeList()

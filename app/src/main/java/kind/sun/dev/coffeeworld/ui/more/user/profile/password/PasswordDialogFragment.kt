@@ -68,7 +68,7 @@ class PasswordDialogFragment : DialogFragment() {
     }
 
     private fun setupUserUpdateObserver() {
-        passwordViewModel.userUpdateResponseLiveData.observe(viewLifecycleOwner) {
+        passwordViewModel.userUpdate.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {

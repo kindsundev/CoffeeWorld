@@ -69,7 +69,7 @@ class PhoneDialogFragment(
     }
 
     private fun setupUserUpdateObserver() {
-        phoneViewModel.userUpdateResponseLiveData.observe(viewLifecycleOwner) {
+        phoneViewModel.userUpdate.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {

@@ -67,7 +67,7 @@ class NameDialogFragment(
     }
 
     private fun setupUserUpdateObserver() {
-        nameViewModel.userUpdateResponseLiveData.observe(viewLifecycleOwner) {
+        nameViewModel.userUpdate.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {

@@ -26,7 +26,7 @@ class LoginViewModel @Inject constructor(
     val isPasswordVisible = MutableLiveData<Boolean>(false)
 
     val loginResponseLiveData: LiveData<NetworkResult<LoginResponse>>
-        get() = authRepository.authLoginResponseLiveData
+        get() = authRepository.authLogin
 
     fun onClickLogin() {
         val username = usernameLiveData.value.toString().trim()

@@ -6,9 +6,8 @@ import kind.sun.dev.coffeeworld.data.api.AuthService
 import kind.sun.dev.coffeeworld.data.model.request.auth.AuthRequest
 import kind.sun.dev.coffeeworld.data.model.request.auth.LoginRequest
 import kind.sun.dev.coffeeworld.data.model.request.auth.RegisterRequest
-import kind.sun.dev.coffeeworld.data.model.response.auth.AuthResponse
 import kind.sun.dev.coffeeworld.data.model.response.auth.LoginResponse
-import kind.sun.dev.coffeeworld.data.model.response.auth.RegisterResponse
+import kind.sun.dev.coffeeworld.data.model.response.common.MessageResponse
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -22,36 +21,36 @@ import javax.inject.Inject
 class AuthRepository @Inject constructor(
     private val authService: AuthService
 ) {
-    private val _authLoginResponseLiveData = MutableLiveData<NetworkResult<LoginResponse>>()
-    val authLoginResponseLiveData: LiveData<NetworkResult<LoginResponse>>
-        get() = _authLoginResponseLiveData
+    private val _authLogin = MutableLiveData<NetworkResult<LoginResponse>>()
+    val authLogin: LiveData<NetworkResult<LoginResponse>>
+        get() = _authLogin
 
-    private val _authRegisterResponseLiveData = MutableLiveData<NetworkResult<RegisterResponse>>()
-    val authRegisterResponseLiveData: LiveData<NetworkResult<RegisterResponse>>
-        get() = _authRegisterResponseLiveData
+    private val _authRegister = MutableLiveData<NetworkResult<MessageResponse>>()
+    val authRegister: LiveData<NetworkResult<MessageResponse>>
+        get() = _authRegister
 
-    private val _authPasswordResetResponseLiveData = MutableLiveData<NetworkResult<AuthResponse>>()
-    val authPasswordResetResponseLiveData: LiveData<NetworkResult<AuthResponse>>
-        get() = _authPasswordResetResponseLiveData
+    private val _authPasswordReset = MutableLiveData<NetworkResult<MessageResponse>>()
+    val authPasswordReset: LiveData<NetworkResult<MessageResponse>>
+        get() = _authPasswordReset
 
     private val authExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Logger.error("AuthException: ${throwable.message}")
     }
 
     suspend fun login(loginRequest: LoginRequest) {
-        performAuthOperation(_authLoginResponseLiveData) {
+        performAuthOperation(_authLogin) {
             authService.login(loginRequest)
         }
     }
 
     suspend fun register(registerRequest: RegisterRequest) {
-        performAuthOperation(_authRegisterResponseLiveData) {
+        performAuthOperation(_authRegister) {
             authService.register(registerRequest)
         }
     }
 
     suspend fun passwordReset(authRequest: AuthRequest) {
-        performAuthOperation(_authPasswordResetResponseLiveData) {
+        performAuthOperation(_authPasswordReset) {
             authService.passwordReset(authRequest)
         }
     }

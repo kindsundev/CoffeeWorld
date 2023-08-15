@@ -5,13 +5,13 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UserModel(
-    val address: String,
-    val email: String,
     val id: Int,
-    val image: ByteArray,
+    val username: String,
     val name: String,
-    val phone: String,
-    val username: String
+    val address: String?,
+    val email: String,
+    val image: ByteArray,
+    val phone: String?
 ) : Parcelable {
 
     override fun equals(other: Any?): Boolean {
@@ -32,13 +32,13 @@ data class UserModel(
     }
 
     override fun hashCode(): Int {
-        var result = address.hashCode()
-        result = 31 * result + email.hashCode()
-        result = 31 * result + id
-        result = 31 * result + image.contentHashCode()
-        result = 31 * result + name.hashCode()
-        result = 31 * result + phone.hashCode()
+        var result = id
         result = 31 * result + username.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + (address?.hashCode() ?: 0)
+        result = 31 * result + email.hashCode()
+        result = 31 * result + image.contentHashCode()
+        result = 31 * result + (phone?.hashCode() ?: 0)
         return result
     }
 
