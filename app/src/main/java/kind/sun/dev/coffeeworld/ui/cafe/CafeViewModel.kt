@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel
-import kind.sun.dev.coffeeworld.data.model.response.cafe.ListCafeResponse
+import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeListResponse
 import kind.sun.dev.coffeeworld.data.repository.CafeRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.network.NetworkHelper
@@ -17,7 +17,7 @@ class CafeViewModel @Inject constructor(
     private val cafeRepository: CafeRepository,
     private val networkHelper: NetworkHelper
 ): ViewModel() {
-    val cafeResponseLiveData: LiveData<NetworkResult<ListCafeResponse>>
+    val cafeResponseLiveData: LiveData<NetworkResult<CafeListResponse>>
         get() = cafeRepository.cafeResponseLiveData
 
     fun getListCafe() {

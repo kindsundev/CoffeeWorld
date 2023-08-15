@@ -1,13 +1,15 @@
 package kind.sun.dev.coffeeworld.data.model.response.cafe
 
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class CafeModel(
-    val business_hours: String,
-    val description: String,
     val id: Int,
-    val image: String,
-    val location: String,
     val name: String,
-    val rating: Double
+    val image: String,
+    val description: String,
+    val location: String,
+    val rating: Double,
+    @SerializedName("business_hours")
+    val businessHours: String
 ): Serializable

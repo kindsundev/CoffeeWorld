@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel
-import kind.sun.dev.coffeeworld.data.model.response.cafe.ListCafeResponse
+import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeListResponse
 import kind.sun.dev.coffeeworld.databinding.FragmentCafeBinding
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Constants
@@ -76,7 +76,7 @@ class CafeFragment : Fragment() {
         }
     }
 
-    private fun bindDataResult(networkResult: NetworkResult.Success<ListCafeResponse>) {
+    private fun bindDataResult(networkResult: NetworkResult.Success<CafeListResponse>) {
         networkResult.data?.data?.let { list ->
             originalListCafe = list
             initCoffeeNearHere(cafe = list[0])

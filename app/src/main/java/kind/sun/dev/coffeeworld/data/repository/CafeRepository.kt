@@ -3,7 +3,7 @@ package kind.sun.dev.coffeeworld.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kind.sun.dev.coffeeworld.data.api.CafeService
-import kind.sun.dev.coffeeworld.data.model.response.cafe.ListCafeResponse
+import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeListResponse
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -17,8 +17,8 @@ import javax.inject.Inject
 class CafeRepository @Inject constructor(
     private val cafeService: CafeService
 ) {
-    private val _cafeResponseLiveData = MutableLiveData<NetworkResult<ListCafeResponse>>()
-    val cafeResponseLiveData : LiveData<NetworkResult<ListCafeResponse>>
+    private val _cafeResponseLiveData = MutableLiveData<NetworkResult<CafeListResponse>>()
+    val cafeResponseLiveData : LiveData<NetworkResult<CafeListResponse>>
         get() = _cafeResponseLiveData
 
     private val cafeExceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -29,7 +29,7 @@ class CafeRepository @Inject constructor(
         _cafeResponseLiveData.let {
             it.postValue(NetworkResult.Loading())
             withContext(Dispatchers.IO + cafeExceptionHandler) {
-                val response = cafeService.getListCafe()
+                val response = cafeService.getCafeList()
                 withContext(Dispatchers.Main) {
                     handleResponse(response, it)
                 }
@@ -37,7 +37,10 @@ class CafeRepository @Inject constructor(
         }
     }
 
-    private fun handleResponse(response: Response<ListCafeResponse>, liveData: MutableLiveData<NetworkResult<ListCafeResponse>>) {
+    private fun handleResponse(
+        response: Response<CafeListResponse>,
+        liveData: MutableLiveData<NetworkResult<CafeListResponse>>)
+    {
         if (response.isSuccessful && response.body() != null) {
             liveData.postValue(NetworkResult.Success(response.body()))
         } else if (response.errorBody() != null) {
