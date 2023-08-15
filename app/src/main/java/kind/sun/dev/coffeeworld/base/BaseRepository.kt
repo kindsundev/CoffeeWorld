@@ -41,7 +41,7 @@ open class BaseRepository {
         }
     }
 
-    protected fun <T> handleNetworkResponse(
+    private fun <T> handleNetworkResponse(
         response: Response<T>?,
         liveData: MutableLiveData<NetworkResult<T>>
     ) {
