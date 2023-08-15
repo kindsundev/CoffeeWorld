@@ -23,7 +23,7 @@ class CafeViewModel @Inject constructor(
     fun getListCafe() {
         viewModelScope.launch {
             if (networkHelper.isConnected) {
-                cafeRepository.getListCafe()
+                cafeRepository.getCafeList()
             }
         }
     }

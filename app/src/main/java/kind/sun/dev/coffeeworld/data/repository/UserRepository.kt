@@ -7,6 +7,7 @@ import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.SignatureException
 import kind.sun.dev.coffeeworld.BuildConfig
+import kind.sun.dev.coffeeworld.base.BaseRepository
 import kind.sun.dev.coffeeworld.data.api.UserService
 import kind.sun.dev.coffeeworld.data.model.request.user.UserEmailRequest
 import kind.sun.dev.coffeeworld.data.model.request.user.UserPasswordRequest
@@ -14,40 +15,29 @@ import kind.sun.dev.coffeeworld.data.model.response.common.MessageResponse
 import kind.sun.dev.coffeeworld.data.model.response.user.UserResponse
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.api.TokenManager
-import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.Logger
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONException
-import org.json.JSONObject
-import retrofit2.Response
 import java.io.File
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
     private val userService: UserService,
     private val tokenManager: TokenManager
-) {
+): BaseRepository() {
     private val username: String?
 
     init { username = getUserNameFromJWTToken() }
 
     private val _user = MutableLiveData<NetworkResult<UserResponse>>()
-    val user: LiveData<NetworkResult<UserResponse>> get() = _user
+    val user: LiveData<NetworkResult<UserResponse>>
+        get() = _user
 
     private val _userUpdate = MutableLiveData<NetworkResult<MessageResponse>>()
-    val userUpdate: LiveData<NetworkResult<MessageResponse>> get() = _userUpdate
+    val userUpdate: LiveData<NetworkResult<MessageResponse>>
+        get() = _userUpdate
 
-    private val userExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        Logger.error("UserException: ${throwable.message}")
-    }
 
     private fun getUserNameFromJWTToken(): String? {
         val token = tokenManager.getToken()
@@ -74,16 +64,17 @@ class UserRepository @Inject constructor(
 
     suspend fun getUser() {
         username?.let {
-            performUserAction(_user) { userService.getUser(it) }
+            performNetworkOperation(_user) { userService.getUser(it) }
         }
     }
 
     suspend fun updateAvatar(avatar: File) {
         username?.let {
-            performUserAction(_userUpdate) {
-                val usernameRequestBody = it.toRequestBody("text/plain".toMediaTypeOrNull())
+            performNetworkOperation(_userUpdate) {
+                val usernameRequestBody = convertToTextRequestBody(it)
                 val avatarRequestBody = avatar.asRequestBody("image/*".toMediaTypeOrNull())
-                val avatarPart = MultipartBody.Part.createFormData("image", avatar.name, avatarRequestBody)
+                val avatarPart =
+                    MultipartBody.Part.createFormData("image", avatar.name, avatarRequestBody)
                 userService.updateAvatar(usernameRequestBody, avatarPart)
             }
         }
@@ -91,7 +82,7 @@ class UserRepository @Inject constructor(
 
     suspend fun updateEmail(email: String, password: String) {
         username?.let {
-            performUserAction(_userUpdate) {
+            performNetworkOperation(_userUpdate) {
                 userService.updateEmail(UserEmailRequest(it, email, password))
             }
         }
@@ -99,81 +90,34 @@ class UserRepository @Inject constructor(
 
     suspend fun updatePassword(currentPassword: String, newPassword: String) {
         username?.let {
-            performUserAction(_userUpdate) {
+            performNetworkOperation(_userUpdate) {
                 userService.updatePassword(UserPasswordRequest(it, currentPassword, newPassword))
             }
         }
     }
 
-    private suspend fun <T> performUserAction(
-        liveData: MutableLiveData<NetworkResult<T>>,
-        action: suspend () -> Response<T>
-    ) {
-        liveData.postValue(NetworkResult.Loading())
-        withContext(Dispatchers.IO + userExceptionHandler) {
-            val response = action()
-            withContext(Dispatchers.Main) {
-                handleResponse(response, liveData)
-            }
-        }
-    }
-
     suspend fun updateName(name: String) {
-        updateWithTextPlain(name) { username, requestBody ->
-            userService.updateName(username, requestBody)
+        username?.let {
+            performNetworkOperation(_userUpdate) {
+                userService.updateName(it, convertToTextRequestBody(name))
+            }
         }
     }
 
     suspend fun updateAddress(address: String) {
-        updateWithTextPlain(address) { username, requestBody ->
-            userService.updateAddress(username, requestBody)
+        username?.let {
+            performNetworkOperation(_userUpdate) {
+                userService.updateAddress(it, convertToTextRequestBody(address))
+            }
         }
     }
 
     suspend fun updatePhone(phone: String) {
-        updateWithTextPlain(phone) { username, requestBody ->
-            userService.updatePhone(username, requestBody)
-        }
-    }
-
-    private suspend fun updateWithTextPlain(
-        content: String,
-        updateData: suspend (username: String, requestBody: RequestBody) -> Response<MessageResponse>
-    ) {
-        _userUpdate.postValue(NetworkResult.Loading())
-        val request = content.toRequestBody("text/plain".toMediaType())
-        withContext(Dispatchers.IO + userExceptionHandler) {
-            username?.let {
-                val response = updateData(it, request)
-                withContext(Dispatchers.Main) {
-                    handleResponse(response, _userUpdate)
-                }
+        username?.let {
+            performNetworkOperation(_userUpdate) {
+                userService.updatePhone(it, convertToTextRequestBody(phone))
             }
         }
     }
-
-    private fun <T> handleResponse(response: Response<T>?, liveData: MutableLiveData<NetworkResult<T>>) {
-        when {
-            response == null -> {
-                liveData.postValue(NetworkResult.Error(Constants.REQUEST_LOGIN))
-            }
-            response.isSuccessful && response.body() != null -> {
-                liveData.postValue(NetworkResult.Success(response.body()!!))
-            }
-            response.errorBody() != null -> {
-                try {
-                    val errorJSON = JSONObject(response.errorBody()!!.string())
-                    val errorMessage = errorJSON.getString("message")
-                    liveData.postValue(NetworkResult.Error(errorMessage))
-                } catch (e: JSONException) {
-                    Logger.error("JSONException: ${e.message.toString()}")
-                }
-            }
-            else -> {
-                liveData.postValue(NetworkResult.Error("Something went wrong"))
-            }
-        }
-    }
-
 
 }
