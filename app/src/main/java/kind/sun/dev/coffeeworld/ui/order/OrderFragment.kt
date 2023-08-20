@@ -61,7 +61,7 @@ class OrderFragment : Fragment() {
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                     val cafeModel = p0?.getItemAtPosition(p2) as CafeModel
-                    Logger.error("id: ${cafeModel.id} - name: ${cafeModel.name}")
+                    orderViewModel.getCategoryList(cafeModel.id)
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -71,6 +71,29 @@ class OrderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupCategoriesObserver()
+    }
+
+    private fun setupCategoriesObserver() {
+        orderViewModel.categories.observe(viewLifecycleOwner) {
+            when(it) {
+                is NetworkResult.Success -> {
+                    if (loadingDialog.isAdded) {
+                        loadingDialog.dismiss()
+                        Logger.error(it.data?.data?.size.toString())
+                    }
+                }
+                is NetworkResult.Error -> {
+                    if (loadingDialog.isAdded) {
+                        loadingDialog.dismiss()
+                        Logger.error(it.message.toString())
+                    }
+                }
+                is NetworkResult.Loading -> {
+                    loadingDialog.show(childFragmentManager, LoadingDialog::class.simpleName)
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

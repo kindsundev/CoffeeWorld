@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeCategoriesResponse
 import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeListResponse
 import kind.sun.dev.coffeeworld.data.repository.CafeRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
@@ -20,10 +21,21 @@ class OrderViewModel @Inject constructor(
     val cafe: LiveData<NetworkResult<CafeListResponse>>
         get() = cafeRepository.cafe
 
+    val categories: LiveData<NetworkResult<CafeCategoriesResponse>>
+        get() = cafeRepository.categories
+
     fun getListCafe() {
         viewModelScope.launch {
             if (networkHelper.isConnected) {
                 cafeRepository.getCafeList()
+            }
+        }
+    }
+
+    fun getCategoryList(cafeId: Int) {
+        viewModelScope.launch {
+            if (networkHelper.isConnected) {
+                cafeRepository.getCategoryList(cafeId)
             }
         }
     }
