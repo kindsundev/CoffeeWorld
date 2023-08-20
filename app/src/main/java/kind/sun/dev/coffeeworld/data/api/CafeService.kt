@@ -9,7 +9,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PUT
-import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface CafeService {
 
@@ -17,16 +17,16 @@ interface CafeService {
     suspend fun getCafeList(): Response<CafeListResponse>
 
     @GET("/cafes/{cafe_id}/categories")
-    suspend fun getCategoryList(@Part("cafe_id") cafeId: Int): Response<CafeCategoriesResponse>
+    suspend fun getCategoryList(@Path("cafe_id") cafeId: Int): Response<CafeCategoriesResponse>
 
     @GET("/cafes/{cafe_id}/category/{category_id}/drinks")
     suspend fun getDrinksListInCategory(
-        @Part("cafe_id") cafeId: Int, @Part("category_id") categoryId: Int
+        @Path("cafe_id") cafeId: Int, @Path("category_id") categoryId: Int
     ): Response<CafeDrinksResponse>
 
     @PUT("/drinks/{id}/quantity")
     suspend fun updateQuantityDrinks(
-        @Part("id") id: Int, @Body quantity: RequestBody
+        @Path("id") id: Int, @Body quantity: RequestBody
     ): Response<MessageResponse>
 
 }
