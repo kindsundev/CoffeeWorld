@@ -92,4 +92,8 @@
     <string name="update_password">Update Password</string>
     <string name="current_password">Current Password</string>
     <string name="retype_new_password">Retype new password</string>
+    <string name="favorite">Favorite</string>
+    <string name="swap">Swap</string>
+    <string name="drop_down">Drop down</string>
+    <string name="dropdown">Dropdown</string>
 </resources>
