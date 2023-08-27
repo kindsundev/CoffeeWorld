@@ -59,28 +59,21 @@ class OrderFragment : Fragment() {
         }
     }
 
-    private fun setupCafeSpinner(data: List<CafeModel>) {
-        binding.spinner.apply {
-            adapter = CafeSpinnerAdapter(requireContext(), R.layout.item_seleted_spinner, data)
-            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    val cafeModel = p0?.getItemAtPosition(p2) as CafeModel
-                    orderViewModel.getCategoryList(cafeModel.id)
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {}
+    private fun setupCafeSpinner(data: List<CafeModel>) = binding.spinner.apply {
+        adapter = CafeSpinnerAdapter(requireContext(), R.layout.item_seleted_spinner, data)
+        onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                val cafeModel = p0?.getItemAtPosition(p2) as CafeModel
+                orderViewModel.getCategoryList(cafeModel.id)
             }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupCategoryRecyclerView()
         setupCategoriesObserver()
-    }
-
-    private fun setupCategoryRecyclerView() = binding.rvCategory.apply {
-        layoutManager = GridLayoutManager(requireContext(), 4)
     }
 
     private fun setupCategoriesObserver() {
@@ -89,7 +82,7 @@ class OrderFragment : Fragment() {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {
                         loadingDialog.dismiss()
-                        onCategoriesData(it.data?.data)
+                        setupCategoryRecyclerView(it.data?.data)
                     }
                 }
                 is NetworkResult.Error -> {
@@ -105,9 +98,10 @@ class OrderFragment : Fragment() {
         }
     }
 
-    private fun onCategoriesData(data: List<CategoryModel>?) {
+    private fun setupCategoryRecyclerView(data: List<CategoryModel>?) = binding.rvCategory.apply {
+        layoutManager = GridLayoutManager(requireContext(), 4)
         if (data != null) {
-            binding.rvCategory.adapter = CategoryAdapter(
+            adapter = CategoryAdapter(
                 data, ::onCategoryClick, ::onMoreClick
             )
         }
