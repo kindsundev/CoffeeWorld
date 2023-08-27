@@ -52,7 +52,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_toStartOf="@id/btn_favorite"
                 android:background="@android:color/transparent"
-                android:contentDescription="@string/favorite"
+                android:contentDescription="@string/search"
                 app:srcCompat="@drawable/ic_baseline_search_24"
                 app:tint="@color/gray" />
 
@@ -63,7 +63,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
-                android:contentDescription="@string/search"
+                android:contentDescription="@string/favorite"
                 app:srcCompat="@drawable/ic_baseline_favorite_border_24"
                 app:tint="@color/gray" />
 

@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel
 import kind.sun.dev.coffeeworld.databinding.FragmentOrderBinding
+import kind.sun.dev.coffeeworld.ui.order.adapter.CafeSpinnerAdapter
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
@@ -80,6 +81,8 @@ class OrderFragment : Fragment() {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {
                         loadingDialog.dismiss()
+                        val category = it.data?.data
+                        category?.forEach { obj -> Logger.error(obj.name) }
                         Logger.error(it.data?.data?.size.toString())
                     }
                 }

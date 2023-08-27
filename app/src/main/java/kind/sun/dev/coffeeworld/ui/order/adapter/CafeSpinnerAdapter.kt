@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.ui.order
+package kind.sun.dev.coffeeworld.ui.order.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
