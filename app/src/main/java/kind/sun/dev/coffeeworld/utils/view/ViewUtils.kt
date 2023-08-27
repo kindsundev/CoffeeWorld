@@ -7,6 +7,7 @@ import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -42,6 +43,17 @@ fun loadImageBitmapFromByteArray(imageView: ImageView, byteArray: ByteArray?) {
         val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
         imageView.setImageBitmap(bitmap)
     }
+}
+
+@BindingAdapter("textWithEllipsis")
+fun setTextWithEllipsis(textView: TextView, text: String) {
+    val maxLength = 9
+    val newText = if (text.length > maxLength) {
+        "${text.substring(0, maxLength - 3)}..."
+    } else {
+        text
+    }
+    textView.text = newText
 }
 
 fun showAlertDialog(

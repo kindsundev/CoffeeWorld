@@ -5,14 +5,12 @@
 
     <data>
 
-        <variable
-            name="category"
-            type="kind.sun.dev.coffeeworld.data.model.response.cafe.CategoryModel" />
     </data>
 
     <LinearLayout
         android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:layout_margin="4dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="8dp">
@@ -20,17 +18,18 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/img_coffee"
-            app:imageFromByteArrayToBitmap="@{category.image}"
-            app:shapeAppearanceOverlay="@style/image_circle" />
+            android:background="@color/light_gray"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/image_circle"
+            app:srcCompat="@drawable/ic_baseline_more_horiz_24" />
 
         <TextView
+            android:id="@+id/tv_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:fontFamily="sans-serif-medium"
-            app:textWithEllipsis="@{category.name}"
-            tools:text="Name" />
+            tools:text="More" />
 
     </LinearLayout>
 </layout>

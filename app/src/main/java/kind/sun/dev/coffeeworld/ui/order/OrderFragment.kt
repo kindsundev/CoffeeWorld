@@ -7,11 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel
+import kind.sun.dev.coffeeworld.data.model.response.cafe.CategoryModel
 import kind.sun.dev.coffeeworld.databinding.FragmentOrderBinding
 import kind.sun.dev.coffeeworld.ui.order.adapter.CafeSpinnerAdapter
+import kind.sun.dev.coffeeworld.ui.order.adapter.CategoryAdapter
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
@@ -72,7 +75,12 @@ class OrderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupCategoryRecyclerView()
         setupCategoriesObserver()
+    }
+
+    private fun setupCategoryRecyclerView() = binding.rvCategory.apply {
+        layoutManager = GridLayoutManager(requireContext(), 4)
     }
 
     private fun setupCategoriesObserver() {
@@ -81,9 +89,7 @@ class OrderFragment : Fragment() {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {
                         loadingDialog.dismiss()
-                        val category = it.data?.data
-                        category?.forEach { obj -> Logger.error(obj.name) }
-                        Logger.error(it.data?.data?.size.toString())
+                        onCategoriesData(it.data?.data)
                     }
                 }
                 is NetworkResult.Error -> {
@@ -97,6 +103,24 @@ class OrderFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun onCategoriesData(data: List<CategoryModel>?) {
+        if (data != null) {
+            binding.rvCategory.adapter = CategoryAdapter(
+                data, ::onCategoryClick, ::onMoreClick
+            )
+        }
+    }
+
+    private fun onCategoryClick(category: CategoryModel) {
+        // move to drinks list of category name
+        Logger.info(category.name)
+    }
+
+    private fun onMoreClick() {
+        // show bottom sheet dialog (full category list)
+        Logger.info("More clicked")
     }
 
     override fun onDestroyView() {

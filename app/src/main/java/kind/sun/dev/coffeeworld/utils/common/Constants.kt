@@ -22,4 +22,5 @@ object Constants {
     const val REQUEST_LOGIN = "Your login session has expired. Please login again to continue using this feature"
     const val OPEN_CAMERA = "openCamera"
     const val OPEN_GALLERY = "openGallery"
+    const val MORE = "More"
 }
