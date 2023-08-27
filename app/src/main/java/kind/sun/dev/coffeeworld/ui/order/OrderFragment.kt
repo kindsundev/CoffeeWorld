@@ -32,7 +32,7 @@ class OrderFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentOrderBinding.inflate(inflater, container, false)
-        orderViewModel.getListCafe()
+        orderViewModel.getCafeList()
         setupCafeObserver()
         return binding.root
     }

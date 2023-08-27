@@ -24,7 +24,7 @@ class OrderViewModel @Inject constructor(
     val categories: LiveData<NetworkResult<CafeCategoriesResponse>>
         get() = cafeRepository.categories
 
-    fun getListCafe() {
+    fun getCafeList() {
         viewModelScope.launch {
             if (networkHelper.isConnected) {
                 cafeRepository.getCafeList()
