@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+        <variable
+            name="first"
+            type="kind.sun.dev.coffeeworld.ui.more.adapter.MoreRecyclerViewItem.Item" />
+        <variable
+            name="second"
+            type="kind.sun.dev.coffeeworld.ui.more.adapter.MoreRecyclerViewItem.Item" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="8dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <RelativeLayout
+            android:id="@+id/first_option"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_layout_solid_white_border_8"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/img_first_icon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:contentDescription="@string/hunt_for_deals"
+                app:imgResId="@{first.resLogo}"
+                tools:srcCompat="@drawable/ic_baseline_dashboard_24" />
+
+            <TextView
+                android:id="@+id/tv_fist_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_first_icon"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="8dp"
+                app:textResId="@{first.resName}"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:text="Name" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/second_option"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_layout_solid_white_border_8"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/img_second_icon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:contentDescription="@string/hunt_for_deals"
+                app:imgResId="@{second.resLogo}"
+                tools:srcCompat="@drawable/ic_baseline_price_change_24" />
+
+            <TextView
+                android:id="@+id/tv_second_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_second_icon"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="8dp"
+                app:textResId="@{second.resName}"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:text="Name" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</layout>

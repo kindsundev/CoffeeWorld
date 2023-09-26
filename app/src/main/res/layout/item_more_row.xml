@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="item"
+            type="kind.sun.dev.coffeeworld.ui.more.adapter.MoreRecyclerViewItem.Item" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/img_icon_logo"
+            android:layout_width="@dimen/size_image_icon"
+            android:layout_height="@dimen/size_image_icon"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginVertical="@dimen/margin_image_icon"
+            android:layout_marginStart="@dimen/margin_image_icon"
+            android:contentDescription="@string/logo"
+            app:imgResId="@{item.resLogo}"
+            tools:srcCompat="@drawable/ic_baseline_account_circle_24" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:layout_toStartOf="@id/img_icon_next"
+            android:layout_toEndOf="@id/img_icon_logo"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:textResId="@{item.resName}"
+            tools:text="Name" />
+
+        <ImageView
+            android:id="@+id/img_icon_next"
+            android:layout_width="@dimen/size_image_icon"
+            android:layout_height="@dimen/size_image_icon"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/margin_image_icon"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="@string/next"
+            app:srcCompat="@drawable/ic_baseline_navigate_next_24" />
+
+        <View
+            android:id="@+id/view_divider"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_below="@id/img_icon_logo"
+            android:layout_alignStart="@id/img_icon_logo"
+            android:background="@color/white_light" />
+
+    </RelativeLayout>
+</layout>

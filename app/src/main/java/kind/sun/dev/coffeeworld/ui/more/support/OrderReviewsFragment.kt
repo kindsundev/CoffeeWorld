@@ -6,17 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import dagger.hilt.android.AndroidEntryPoint
-import kind.sun.dev.coffeeworld.databinding.FragmentOrderBinding
+import kind.sun.dev.coffeeworld.databinding.FragmentOrderReviewsBinding
 
 @AndroidEntryPoint
 class OrderReviewsFragment : Fragment() {
-    private var _binding: FragmentOrderBinding? = null
+    private var _binding: FragmentOrderReviewsBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentOrderBinding.inflate(layoutInflater)
+        _binding = FragmentOrderReviewsBinding.inflate(layoutInflater)
         return binding.root
     }
 

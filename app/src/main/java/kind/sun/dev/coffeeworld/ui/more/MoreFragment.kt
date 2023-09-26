@@ -6,12 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.databinding.FragmentMoreBinding
+import kind.sun.dev.coffeeworld.ui.more.adapter.MoreRecyclerViewAdapter
+import kind.sun.dev.coffeeworld.utils.data.MoreOptionUtils
 
 @AndroidEntryPoint
-class MoreFragment : Fragment() {
+class MoreFragment : Fragment(){
 
     private var _binding: FragmentMoreBinding? = null
     private val binding get() = _binding!!
@@ -25,48 +28,47 @@ class MoreFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initUtilityListeners()
-        initSupportListeners()
-        initProfileListeners()
+        initRecyclerViewOptions()
     }
 
-    private fun initUtilityListeners() {
-        binding.utility.apply {
-            explore.setOnClickListener {
-                loadFragment(R.id.action_moreFragment_to_exploreFragment)
+    private fun initRecyclerViewOptions() = binding.rvMoreOptions.apply {
+        setHasFixedSize(true)
+        layoutManager = LinearLayoutManager(requireContext())
+        adapter = MoreRecyclerViewAdapter().apply {
+            items = MoreOptionUtils.getMoreOptions()
+            onItemClickListener = { itemId ->
+                navigateFragment(itemId)
             }
-            huntForDeals.setOnClickListener {
-                loadFragment(R.id.action_moreFragment_to_huntDealsFragment)
-            }
-            termsAndConditions.setOnClickListener {
+        }
+    }
+
+    private fun navigateFragment(id: MoreOptionUtils.Id) {
+        when(id) {
+            MoreOptionUtils.Id.TERMS_AND_CONDITIONS -> {
                 loadFragment(R.id.action_moreFragment_to_termsConditionsFragment)
             }
-        }
-    }
-
-    private fun initSupportListeners() {
-        binding.support.apply {
-            contactAndFeedback.setOnClickListener {
-                loadFragment(R.id.action_moreFragment_to_feedbackFragment)
+            MoreOptionUtils.Id.EXPLORE -> {
+                loadFragment(R.id.action_moreFragment_to_exploreFragment)
             }
-            orderReview.setOnClickListener {
+            MoreOptionUtils.Id.HUNTER_FOR_DEALS -> {
+                loadFragment(R.id.action_moreFragment_to_huntDealsFragment)
+            }
+            MoreOptionUtils.Id.ORDER_REVIEWS -> {
                 loadFragment(R.id.action_moreFragment_to_orderReviewsFragment)
             }
-        }
-    }
-
-    private fun initProfileListeners() {
-        binding.account.apply {
-            info.setOnClickListener {
-                loadFragment(R.id.action_moreFragment_to_profileFragment)
+            MoreOptionUtils.Id.CONTACT_AND_FEEDBACK -> {
+                loadFragment(R.id.action_moreFragment_to_feedbackFragment)
             }
-            security.setOnClickListener {
+            MoreOptionUtils.Id.USER -> {
+                 loadFragment(R.id.action_moreFragment_to_profileFragment)
+            }
+            MoreOptionUtils.Id.SECURITY -> {
                 loadFragment(R.id.action_moreFragment_to_securityFragment)
             }
-            settings.setOnClickListener {
+            MoreOptionUtils.Id.SETTINGS -> {
                 loadFragment(R.id.action_moreFragment_to_settingsFragment)
             }
-            payment.setOnClickListener {
+            MoreOptionUtils.Id.PAYMENT -> {
                 loadFragment(R.id.action_moreFragment_to_paymentFragment)
             }
         }
@@ -80,5 +82,7 @@ class MoreFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
 
 }

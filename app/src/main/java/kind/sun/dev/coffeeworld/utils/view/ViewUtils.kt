@@ -45,15 +45,18 @@ fun loadImageBitmapFromByteArray(imageView: ImageView, byteArray: ByteArray?) {
     }
 }
 
-@BindingAdapter("textWithEllipsis")
-fun setTextWithEllipsis(textView: TextView, text: String) {
-    val maxLength = 9
-    val newText = if (text.length > maxLength) {
-        "${text.substring(0, maxLength - 3)}..."
-    } else {
-        text
+@BindingAdapter("app:textResId")
+fun setTextResId(view: TextView, resId: Int?) {
+    resId?.let {
+        view.text = view.resources.getString(it)
     }
-    textView.text = newText
+}
+
+@BindingAdapter("app:imgResId")
+fun setImageResId(view: ImageView, resId: Int?) {
+    resId?.let {
+        view.setImageResource(it)
+    }
 }
 
 fun showAlertDialog(

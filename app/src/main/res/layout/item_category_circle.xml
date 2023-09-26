@@ -29,7 +29,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:fontFamily="sans-serif-medium"
-            app:textWithEllipsis="@{category.name}"
+            android:text="@{category.name}"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="4sp"
+            app:autoSizeStepGranularity="0.5sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:autoSizeTextType="uniform"
             tools:text="Name" />
 
     </LinearLayout>

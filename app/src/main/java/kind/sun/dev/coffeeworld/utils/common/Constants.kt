@@ -23,4 +23,6 @@ object Constants {
     const val OPEN_CAMERA = "openCamera"
     const val OPEN_GALLERY = "openGallery"
     const val MORE = "More"
+    const val DURATION_SHORT = 100L
+    const val SCALE_LOW = 0.96f
 }
