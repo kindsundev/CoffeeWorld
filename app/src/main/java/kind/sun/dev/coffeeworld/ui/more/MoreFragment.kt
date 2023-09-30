@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.databinding.FragmentMoreBinding
-import kind.sun.dev.coffeeworld.ui.more.adapter.MoreRecyclerViewAdapter
+import kind.sun.dev.coffeeworld.ui.more.adapter.MoreAdapter
 import kind.sun.dev.coffeeworld.utils.data.MoreOptionUtils
 
 @AndroidEntryPoint
@@ -34,7 +34,7 @@ class MoreFragment : Fragment(){
     private fun initRecyclerViewOptions() = binding.rvMoreOptions.apply {
         setHasFixedSize(true)
         layoutManager = LinearLayoutManager(requireContext())
-        adapter = MoreRecyclerViewAdapter().apply {
+        adapter = MoreAdapter().apply {
             items = MoreOptionUtils.getMoreOptions()
             onItemClickListener = { itemId ->
                 navigateFragment(itemId)

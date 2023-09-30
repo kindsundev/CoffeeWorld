@@ -7,10 +7,10 @@
     <data>
         <variable
             name="first"
-            type="kind.sun.dev.coffeeworld.ui.more.adapter.MoreRecyclerViewItem.Item" />
+            type="kind.sun.dev.coffeeworld.ui.more.adapter.MoreViewItem.Item" />
         <variable
             name="second"
-            type="kind.sun.dev.coffeeworld.ui.more.adapter.MoreRecyclerViewItem.Item" />
+            type="kind.sun.dev.coffeeworld.ui.more.adapter.MoreViewItem.Item" />
     </data>
 
     <LinearLayout

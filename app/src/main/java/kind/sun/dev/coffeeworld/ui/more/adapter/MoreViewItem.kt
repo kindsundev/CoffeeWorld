@@ -2,7 +2,7 @@ package kind.sun.dev.coffeeworld.ui.more.adapter
 
 import kind.sun.dev.coffeeworld.utils.data.MoreOptionUtils
 
-sealed class MoreRecyclerViewItem {
+sealed class MoreViewItem {
 
     companion object {
         const val ROW_TYPE = 0
@@ -10,16 +10,14 @@ sealed class MoreRecyclerViewItem {
         const val BOX_DOUBLE_TYPE = 2
     }
 
-    data class Title(
-        val resTitle: Int
-    ) : MoreRecyclerViewItem()
+    data class Title(val resTitle: Int) : MoreViewItem()
 
     data class Item(
         val id: MoreOptionUtils.Id,
         val resLogo: Int,
         val resName: Int,
         val type: Int
-    ) : MoreRecyclerViewItem()
+    ) : MoreViewItem()
 
-    data object Temp : MoreRecyclerViewItem()
+    data object Temp : MoreViewItem()
 }
