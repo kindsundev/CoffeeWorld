@@ -5,9 +5,6 @@
 
     <data>
         <variable
-            name="fragment"
-            type="kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileFragment" />
-        <variable
             name="userModel"
             type="kind.sun.dev.coffeeworld.data.model.response.auth.UserModel" />
     </data>
@@ -17,7 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="24dp"
-        android:onClick="@{() -> fragment.onShowProfileDetailFragment()}"
         android:background="@drawable/bg_layout_solid_white_border_16"
         android:padding="8dp">
 
@@ -28,7 +24,6 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:padding="4dp"
-            android:onClick="@{() -> fragment.onShowAvatarFragment()}"
             android:scaleType="centerCrop"
             app:imageFromByteArrayToBitmap="@{userModel.image}"
             android:src="@drawable/img_user_default"

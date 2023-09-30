@@ -19,7 +19,6 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.databinding.FragmentAvatarBinding
-import kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileUpdateCallback
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.Logger
@@ -33,7 +32,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class AvatarBottomFragment(
-    private val listener: ProfileUpdateCallback
+    private val onUpdateSuccess: () -> Unit
 ) : BottomSheetDialogFragment() {
     private var _binding: FragmentAvatarBinding? = null
     private val binding get() = _binding!!
@@ -224,7 +223,7 @@ class AvatarBottomFragment(
             val deleted = fileInternalStorageUtil.deletePhoto(currentFileName)
             if (deleted) {
                 loadingDialog.dismiss()
-                listener.onDataUpdated()
+                onUpdateSuccess.invoke()
                 onBackToProfileFragment()
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             }

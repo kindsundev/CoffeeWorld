@@ -35,7 +35,7 @@ class MoreFragment : Fragment(){
         setHasFixedSize(true)
         layoutManager = LinearLayoutManager(requireContext())
         adapter = MoreAdapter().apply {
-            items = MoreOptionUtils.getMoreOptions()
+            items = MoreOptionUtils.getMoreFragmentOptions()
             onItemClickListener = { itemId ->
                 navigateFragment(itemId)
             }
@@ -71,8 +71,10 @@ class MoreFragment : Fragment(){
             MoreOptionUtils.Id.PAYMENT -> {
                 loadFragment(R.id.action_moreFragment_to_paymentFragment)
             }
+            else -> {}
         }
     }
+
 
     private fun loadFragment(id: Int) {
         findNavController().navigate(id)
