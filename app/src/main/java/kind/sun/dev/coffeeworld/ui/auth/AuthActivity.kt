@@ -2,6 +2,8 @@ package kind.sun.dev.coffeeworld.ui.auth
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commit
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,10 +17,10 @@ class AuthActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen().apply { setKeepOnScreenCondition { false } }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_auth)
         initLoginFragment()
     }
-
 
     private fun initLoginFragment() {
         val loginFragment = LoginFragment()

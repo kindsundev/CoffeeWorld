@@ -12,9 +12,12 @@
 
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
+
     </style>
 
-    <style name="Theme.CoffeeWorld" parent="Base.Theme.CoffeeWorld" />
+    <style name="Theme.CoffeeWorld" parent="Base.Theme.CoffeeWorld" >
+
+    </style>
 
     <style name="bottom_nav" parent="Widget.Design.BottomNavigationView">
         <item name="android:layout_marginTop">-2dp</item>
