@@ -1,10 +1,9 @@
-package kind.sun.dev.coffeeworld.ui.more.user.profile.email
+package kind.sun.dev.coffeeworld.ui.more.user.profile.dialog
 
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.text.InputType
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -12,28 +11,27 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
-import kind.sun.dev.coffeeworld.databinding.DialogUpdateEmailBinding
+import kind.sun.dev.coffeeworld.databinding.DialogUpdateNameBinding
+import kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileViewModel
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class EmailDialogFragment(
+class NameDialogFragment(
     private val onUpdateSuccess: () -> Unit
 ) : DialogFragment() {
-    private var _binding: DialogUpdateEmailBinding? = null
+    private var _binding: DialogUpdateNameBinding? = null
     private val binding get() = _binding!!
 
-    private val emailViewModel by viewModels<EmailDialogViewModel>()
+    private val profileViewModel by viewModels<ProfileViewModel>()
     @Inject lateinit var loadingDialog: LoadingDialog
-    val isPasswordVisible = MutableLiveData<Boolean>(false)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        _binding = DialogUpdateEmailBinding.inflate(layoutInflater)
+        _binding = DialogUpdateNameBinding.inflate(layoutInflater)
         val dialog = MaterialAlertDialogBuilder(
             requireActivity(), R.style.dialog_material).apply {
             setCancelable(false)
@@ -56,11 +54,11 @@ class EmailDialogFragment(
 
     private fun setupDataBinding() {
         binding.fragment = this
-        binding.viewModel = emailViewModel
+        binding.viewModel = profileViewModel
     }
 
     private fun setupErrorValidationObserver() {
-        emailViewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
+        profileViewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
             binding.tvError.apply {
                 visibility = View.VISIBLE
                 text = it
@@ -69,7 +67,7 @@ class EmailDialogFragment(
     }
 
     private fun setupUserUpdateObserver() {
-        emailViewModel.userUpdate.observe(viewLifecycleOwner) {
+        profileViewModel.userUpdate.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {
@@ -94,19 +92,9 @@ class EmailDialogFragment(
 
     fun onCancel() : Unit = this.dismiss()
 
-    fun onShowPasswordChecked(isChecked: Boolean) {
-        binding.edtPassword.apply {
-            inputType = if (isChecked) {
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            } else {
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            }
-            text?.let { setSelection(it.length) }
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 }

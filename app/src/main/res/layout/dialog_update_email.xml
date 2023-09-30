@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <variable
-            name="text"
-            type="android.text.InputType" />
-        <variable
             name="fragment"
-            type="kind.sun.dev.coffeeworld.ui.more.user.profile.email.EmailDialogFragment" />
-
+            type="kind.sun.dev.coffeeworld.ui.more.user.profile.dialog.EmailDialogFragment" />
         <variable
             name="viewModel"
-            type="kind.sun.dev.coffeeworld.ui.more.user.profile.email.EmailDialogViewModel" />
+            type="kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileViewModel" />
     </data>
 
     <LinearLayout
@@ -79,7 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:text="@={viewModel.passwordLiveData}" />
+                    android:text="@={viewModel.emailPasswordLiveData}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

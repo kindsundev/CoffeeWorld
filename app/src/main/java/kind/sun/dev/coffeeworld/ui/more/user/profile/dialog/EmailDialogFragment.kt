@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.ui.more.user.profile.password
+package kind.sun.dev.coffeeworld.ui.more.user.profile.dialog
 
 import android.app.Dialog
 import android.graphics.Color
@@ -16,23 +16,25 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
-import kind.sun.dev.coffeeworld.databinding.DialogUpdatePasswordBinding
+import kind.sun.dev.coffeeworld.databinding.DialogUpdateEmailBinding
+import kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileViewModel
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PasswordDialogFragment : DialogFragment() {
-    private var _binding: DialogUpdatePasswordBinding? = null
+class EmailDialogFragment(
+    private val onUpdateSuccess: () -> Unit
+) : DialogFragment() {
+    private var _binding: DialogUpdateEmailBinding? = null
     private val binding get() = _binding!!
 
-    private val passwordViewModel by viewModels<PasswordDialogViewModel>()
-    @Inject
-    lateinit var loadingDialog: LoadingDialog
+    private val profileViewModel by viewModels<ProfileViewModel>()
+    @Inject lateinit var loadingDialog: LoadingDialog
     val isPasswordVisible = MutableLiveData<Boolean>(false)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        _binding = DialogUpdatePasswordBinding.inflate(layoutInflater)
+        _binding = DialogUpdateEmailBinding.inflate(layoutInflater)
         val dialog = MaterialAlertDialogBuilder(
             requireActivity(), R.style.dialog_material).apply {
             setCancelable(false)
@@ -55,11 +57,11 @@ class PasswordDialogFragment : DialogFragment() {
 
     private fun setupDataBinding() {
         binding.fragment = this
-        binding.viewModel = passwordViewModel
+        binding.viewModel = profileViewModel
     }
 
     private fun setupErrorValidationObserver() {
-        passwordViewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
+        profileViewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
             binding.tvError.apply {
                 visibility = View.VISIBLE
                 text = it
@@ -68,13 +70,14 @@ class PasswordDialogFragment : DialogFragment() {
     }
 
     private fun setupUserUpdateObserver() {
-        passwordViewModel.userUpdate.observe(viewLifecycleOwner) {
+        profileViewModel.userUpdate.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {
                         loadingDialog.dismiss()
                         Toast.makeText(requireContext(), it.data!!.data, Toast.LENGTH_SHORT).show()
                         onCancel()
+                        onUpdateSuccess.invoke()
                     }
                 }
                 is NetworkResult.Error -> {
@@ -93,24 +96,13 @@ class PasswordDialogFragment : DialogFragment() {
     fun onCancel() : Unit = this.dismiss()
 
     fun onShowPasswordChecked(isChecked: Boolean) {
-        val newInputType = if (isChecked) {
-            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-        } else {
-            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        }
-        binding.apply {
-            edtCurrentPassword.apply {
-                inputType = newInputType
-                text?.let { setSelection(it.length) }
+        binding.edtPassword.apply {
+            inputType = if (isChecked) {
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            } else {
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             }
-            edtNewPassword.apply {
-                inputType = newInputType
-                text?.let { setSelection(it.length) }
-            }
-            edtReNewPassword.apply {
-                inputType = newInputType
-                text?.let { setSelection(it.length) }
-            }
+            text?.let { setSelection(it.length) }
         }
     }
 

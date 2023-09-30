@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.ui.more.user.profile.avatar
+package kind.sun.dev.coffeeworld.ui.more.user.profile.dialog
 
 import android.Manifest
 import android.content.Intent
@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.databinding.FragmentAvatarBinding
+import kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileViewModel
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.Logger
@@ -37,7 +38,7 @@ class AvatarBottomFragment(
     private var _binding: FragmentAvatarBinding? = null
     private val binding get() = _binding!!
 
-    private val avatarViewModel by viewModels<AvatarBottomViewModel>()
+    private val profileViewModel by viewModels<ProfileViewModel>()
     @Inject lateinit var loadingDialog: LoadingDialog
 
     private val fileInternalStorageUtil by lazy { FileInternalStorageUtil(requireContext()) }
@@ -140,7 +141,7 @@ class AvatarBottomFragment(
                 }
                 if (avatarFile?.exists() == true) {
                     currentFileName = avatarFile.name
-                    avatarViewModel.updateAvatar(avatarFile)
+                    profileViewModel.onUpdateAvatar(avatarFile)
                 }
             }
         }
@@ -198,7 +199,7 @@ class AvatarBottomFragment(
     }
 
     private fun setupUserUpdateLiveData() {
-        avatarViewModel.userUpdate.observe(viewLifecycleOwner) { result ->
+        profileViewModel.userUpdate.observe(viewLifecycleOwner) { result ->
             when(result) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {

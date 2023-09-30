@@ -96,6 +96,12 @@ sealed class ProfileViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(b
                             }
                         }
                     }
+                    MoreOptionUtils.Id.SWITCH_ACCOUNT -> {
+                        root.setBackgroundResource(R.drawable.bg_layout_solid_white_border_top_8)
+                    }
+                    MoreOptionUtils.Id.LOG_OUT -> {
+                        root.setBackgroundResource(R.drawable.bg_layout_solid_white_border_bottom_8)
+                    }
                     else -> {}
                 }
             }

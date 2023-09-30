@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.ui.more.user.profile.phone
+package kind.sun.dev.coffeeworld.ui.more.user.profile.dialog
 
 import android.app.Dialog
 import android.graphics.Color
@@ -15,6 +15,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.databinding.DialogUpdatePhoneBinding
+import kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileViewModel
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
 import javax.inject.Inject
@@ -26,7 +27,7 @@ class PhoneDialogFragment(
 ) : DialogFragment() {
     private var _binding: DialogUpdatePhoneBinding? = null
     private val binding get() = _binding!!
-    private val phoneViewModel by viewModels<PhoneDialogViewModel>()
+    private val profileViewModel by viewModels<ProfileViewModel>()
     @Inject lateinit var loadingDialog: LoadingDialog
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -54,12 +55,12 @@ class PhoneDialogFragment(
     private fun setupDataBinding() {
         binding.apply {
             fragment = this@PhoneDialogFragment
-            viewModel = phoneViewModel
+            viewModel = profileViewModel
         }
     }
 
     private fun setupErrorValidationObserver() {
-        phoneViewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
+        profileViewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
             binding.tvError.apply {
                 visibility = View.VISIBLE
                 text = it
@@ -68,7 +69,7 @@ class PhoneDialogFragment(
     }
 
     private fun setupUserUpdateObserver() {
-        phoneViewModel.userUpdate.observe(viewLifecycleOwner) {
+        profileViewModel.userUpdate.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {

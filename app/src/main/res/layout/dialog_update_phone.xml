@@ -4,10 +4,10 @@
     <data>
         <variable
             name="fragment"
-            type="kind.sun.dev.coffeeworld.ui.more.user.profile.phone.PhoneDialogFragment" />
+            type="kind.sun.dev.coffeeworld.ui.more.user.profile.dialog.PhoneDialogFragment" />
         <variable
             name="viewModel"
-            type="kind.sun.dev.coffeeworld.ui.more.user.profile.phone.PhoneDialogViewModel" />
+            type="kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileViewModel" />
     </data>
 
     <LinearLayout

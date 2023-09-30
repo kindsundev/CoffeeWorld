@@ -1,9 +1,10 @@
-package kind.sun.dev.coffeeworld.ui.more.user.profile.address
+package kind.sun.dev.coffeeworld.ui.more.user.profile.dialog
 
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.InputType
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -11,27 +12,30 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
-import kind.sun.dev.coffeeworld.databinding.DialogUpdateAddressBinding
+import kind.sun.dev.coffeeworld.databinding.DialogUpdatePasswordBinding
+import kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileViewModel
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddressDialogFragment(
-    private val onUpdateSuccess: () -> Unit
-) : DialogFragment() {
-    private var _binding: DialogUpdateAddressBinding? = null
+class PasswordDialogFragment : DialogFragment() {
+    private var _binding: DialogUpdatePasswordBinding? = null
     private val binding get() = _binding!!
-    private val addressViewModel by viewModels<AddressDialogViewModel>()
-    @Inject lateinit var loadingDialog: LoadingDialog
+
+    private val profileViewModel by viewModels<ProfileViewModel>()
+    @Inject
+    lateinit var loadingDialog: LoadingDialog
+    val isPasswordVisible = MutableLiveData<Boolean>(false)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        _binding = DialogUpdateAddressBinding.inflate(layoutInflater)
+        _binding = DialogUpdatePasswordBinding.inflate(layoutInflater)
         val dialog = MaterialAlertDialogBuilder(
-            requireContext(), R.style.dialog_material).apply {
+            requireActivity(), R.style.dialog_material).apply {
             setCancelable(false)
             setView(binding.root)
         }.create()
@@ -51,14 +55,12 @@ class AddressDialogFragment(
     }
 
     private fun setupDataBinding() {
-        binding.apply {
-            fragment = this@AddressDialogFragment
-            viewModel = addressViewModel
-        }
+        binding.fragment = this
+        binding.viewModel = profileViewModel
     }
 
     private fun setupErrorValidationObserver() {
-        addressViewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
+        profileViewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
             binding.tvError.apply {
                 visibility = View.VISIBLE
                 text = it
@@ -67,14 +69,13 @@ class AddressDialogFragment(
     }
 
     private fun setupUserUpdateObserver() {
-        addressViewModel.userUpdate.observe(viewLifecycleOwner) {
+        profileViewModel.userUpdate.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {
                         loadingDialog.dismiss()
                         Toast.makeText(requireContext(), it.data!!.data, Toast.LENGTH_SHORT).show()
                         onCancel()
-                        onUpdateSuccess.invoke()
                     }
                 }
                 is NetworkResult.Error -> {
@@ -91,6 +92,28 @@ class AddressDialogFragment(
     }
 
     fun onCancel() : Unit = this.dismiss()
+
+    fun onShowPasswordChecked(isChecked: Boolean) {
+        val newInputType = if (isChecked) {
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+        } else {
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        }
+        binding.apply {
+            edtCurrentPassword.apply {
+                inputType = newInputType
+                text?.let { setSelection(it.length) }
+            }
+            edtNewPassword.apply {
+                inputType = newInputType
+                text?.let { setSelection(it.length) }
+            }
+            edtReNewPassword.apply {
+                inputType = newInputType
+                text?.let { setSelection(it.length) }
+            }
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

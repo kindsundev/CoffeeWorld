@@ -4,10 +4,10 @@
     <data>
         <variable
             name="fragment"
-            type="kind.sun.dev.coffeeworld.ui.more.user.profile.name.NameDialogFragment" />
+            type="kind.sun.dev.coffeeworld.ui.more.user.profile.dialog.NameDialogFragment" />
         <variable
             name="viewModel"
-            type="kind.sun.dev.coffeeworld.ui.more.user.profile.name.NameDialogViewModel" />
+            type="kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileViewModel" />
     </data>
 
     <LinearLayout
@@ -55,6 +55,7 @@
                 android:hint="@string/name">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_name"
                     android:layout_width="match_parent"
                     android:text="@={viewModel.nameLiveData}"
                     android:layout_height="wrap_content" />

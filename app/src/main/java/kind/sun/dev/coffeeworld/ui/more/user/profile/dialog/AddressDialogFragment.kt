@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.ui.more.user.profile.name
+package kind.sun.dev.coffeeworld.ui.more.user.profile.dialog
 
 import android.app.Dialog
 import android.graphics.Color
@@ -14,25 +14,25 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
-import kind.sun.dev.coffeeworld.databinding.DialogUpdateNameBinding
+import kind.sun.dev.coffeeworld.databinding.DialogUpdateAddressBinding
+import kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileViewModel
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class NameDialogFragment(
+class AddressDialogFragment(
     private val onUpdateSuccess: () -> Unit
 ) : DialogFragment() {
-    private var _binding: DialogUpdateNameBinding? = null
+    private var _binding: DialogUpdateAddressBinding? = null
     private val binding get() = _binding!!
-
-    private val nameViewModel by viewModels<NameDialogViewModel>()
+    private val profileViewModel by viewModels<ProfileViewModel>()
     @Inject lateinit var loadingDialog: LoadingDialog
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        _binding = DialogUpdateNameBinding.inflate(layoutInflater)
+        _binding = DialogUpdateAddressBinding.inflate(layoutInflater)
         val dialog = MaterialAlertDialogBuilder(
-            requireActivity(), R.style.dialog_material).apply {
+            requireContext(), R.style.dialog_material).apply {
             setCancelable(false)
             setView(binding.root)
         }.create()
@@ -52,12 +52,14 @@ class NameDialogFragment(
     }
 
     private fun setupDataBinding() {
-        binding.fragment = this
-        binding.viewModel = nameViewModel
+        binding.apply {
+            fragment = this@AddressDialogFragment
+            viewModel = profileViewModel
+        }
     }
 
     private fun setupErrorValidationObserver() {
-        nameViewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
+        profileViewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
             binding.tvError.apply {
                 visibility = View.VISIBLE
                 text = it
@@ -66,7 +68,7 @@ class NameDialogFragment(
     }
 
     private fun setupUserUpdateObserver() {
-        nameViewModel.userUpdate.observe(viewLifecycleOwner) {
+        profileViewModel.userUpdate.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {
@@ -95,5 +97,4 @@ class NameDialogFragment(
         super.onDestroyView()
         _binding = null
     }
-
 }
