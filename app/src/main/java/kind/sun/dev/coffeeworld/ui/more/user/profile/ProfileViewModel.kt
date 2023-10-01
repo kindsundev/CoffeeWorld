@@ -21,18 +21,18 @@ class ProfileViewModel @Inject constructor(
     private val validator: ProfileValidator
 ) : ViewModel(), ProfileContract.Service {
 
-    val nameLiveData = MutableLiveData<String>("")
-    val addressLiveData = MutableLiveData<String>("")
-    val phoneLiveData = MutableLiveData<String>("")
+    val nameLiveData  by lazy { MutableLiveData<String>() }
+    val addressLiveData by lazy { MutableLiveData<String>() }
+    val phoneLiveData by lazy { MutableLiveData<String>() }
 
-    val emailLiveData = MutableLiveData<String>("")
-    val emailPasswordLiveData = MutableLiveData<String>("")
+    val emailLiveData by lazy { MutableLiveData<String>() }
+    val emailPasswordLiveData by lazy { MutableLiveData<String>() }
 
-    val currentPasswordLiveData = MutableLiveData<String>("")
-    val newPasswordLiveData = MutableLiveData<String>("")
-    val retypeNewPasswordLiveData = MutableLiveData<String>("")
+    val currentPasswordLiveData by lazy { MutableLiveData<String>() }
+    val newPasswordLiveData by lazy { MutableLiveData<String>() }
+    val retypeNewPasswordLiveData by lazy { MutableLiveData<String>() }
 
-    val errorMessageLiveData = MutableLiveData<String?>("")
+    val errorMessageLiveData  by lazy { MutableLiveData<String>() }
     val userResponseLiveData : LiveData<NetworkResult<UserResponse>>
         get() = userRepository.user
     val userUpdate: LiveData<NetworkResult<MessageResponse>>

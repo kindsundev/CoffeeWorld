@@ -1,21 +1,20 @@
 package kind.sun.dev.coffeeworld.ui.auth.login
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.databinding.FragmentLoginBinding
-import kind.sun.dev.coffeeworld.ui.MainActivity
-import kind.sun.dev.coffeeworld.ui.auth.password.ForgotPasswordFragment
-import kind.sun.dev.coffeeworld.ui.auth.register.RegisterFragment
+import kind.sun.dev.coffeeworld.ui.auth.AuthViewModel
+import kind.sun.dev.coffeeworld.utils.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.api.TokenManager
+import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
 import javax.inject.Inject
 
@@ -25,7 +24,7 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
     @Inject lateinit var loadingDialog: LoadingDialog
 
-    private val loginViewModel by viewModels<LoginViewModel>()
+    private val authViewModel by viewModels<AuthViewModel>()
     @Inject lateinit var tokenManager: TokenManager
 
     override fun onCreateView(
@@ -38,13 +37,17 @@ class LoginFragment : Fragment() {
     }
 
     private fun initDataBinding() {
-        binding.fragment = this
-        binding.viewModel = loginViewModel
-        binding.lifecycleOwner = this
+        binding.apply {
+            fragment = this@LoginFragment
+            viewModel = authViewModel
+            lifecycleOwner = this@LoginFragment
+        }
     }
 
     private fun checkTokenAndRedirect() {
-        if(tokenManager.getToken() != null) { startMainActivity() }
+        if(tokenManager.getToken() != null) {
+            navigateToFragment(R.id.action_loginFragment_to_homeFragment)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,19 +57,19 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupErrorValidationObserver() {
-        loginViewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
+        authViewModel.errorMessage.observe(viewLifecycleOwner) {
             binding.tvError.text = it
         }
     }
 
     private fun setupLoginResponseObserver() {
-        loginViewModel.loginResponseLiveData.observe(viewLifecycleOwner) {
+        authViewModel.loginResponse.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {
                         loadingDialog.dismiss()
                         tokenManager.saveToken(it.data!!.data.token)
-                        startMainActivity()
+                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     }
                 }
                 is NetworkResult.Error -> {
@@ -82,29 +85,26 @@ class LoginFragment : Fragment() {
         }
     }
 
-    fun onClickRegister() {
-        val registerFragment = RegisterFragment()
-        requireActivity().supportFragmentManager.commit {
-            setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-            addToBackStack(null)
-            replace(R.id.fragment_container, registerFragment)
+    fun onClickRegister(view: View) {
+        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
+            navigateToFragment(R.id.action_loginFragment_to_registerFragment)
+        }
+
+    }
+
+    fun onClickForgotPassword(view: View) {
+        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
+            navigateToFragment(R.id.action_loginFragment_to_forgotPasswordFragment)
         }
     }
 
-    fun onClickForgotPassword() {
-        val passwordFragment = ForgotPasswordFragment()
-        requireActivity().supportFragmentManager.commit {
-            setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-            addToBackStack(null)
-            replace(R.id.fragment_container, passwordFragment)
+    fun onCLickLogin(view: View) {
+        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
+            authViewModel.onLogin()
         }
     }
 
-    private fun startMainActivity() {
-        startActivity(Intent(requireContext(), MainActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK )
-        })
-    }
+    private fun navigateToFragment(resId: Int) : Unit = findNavController().navigate(resId)
 
     override fun onDestroyView() {
         super.onDestroyView()

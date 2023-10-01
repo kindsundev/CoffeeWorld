@@ -27,9 +27,6 @@
         tools:targetApi="tiramisu">
         <activity
             android:name=".ui.MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.auth.AuthActivity"
             android:exported="true"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
             <intent-filter>

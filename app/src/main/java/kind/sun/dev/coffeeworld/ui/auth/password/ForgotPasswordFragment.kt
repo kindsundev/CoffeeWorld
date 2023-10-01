@@ -4,14 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.databinding.FragmentForgotPasswordBinding
-import kind.sun.dev.coffeeworld.ui.auth.login.LoginFragment
+import kind.sun.dev.coffeeworld.ui.auth.AuthViewModel
+import kind.sun.dev.coffeeworld.utils.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
+import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
 import javax.inject.Inject
 
@@ -21,7 +23,7 @@ class ForgotPasswordFragment : Fragment() {
     private val binding get() = _binding!!
 
     @Inject lateinit var loadingDialog: LoadingDialog
-    private val passwordViewModel by viewModels<ForgotPasswordViewModel>()
+    private val authViewModel by viewModels<AuthViewModel>()
 
 
     override fun onCreateView(
@@ -35,9 +37,11 @@ class ForgotPasswordFragment : Fragment() {
     }
 
     private fun initDataBinding() {
-        binding.fragment = this
-        binding.viewModel = passwordViewModel
-        binding.lifecycleOwner = this
+        binding.apply {
+            fragment = this@ForgotPasswordFragment
+            lifecycleOwner = this@ForgotPasswordFragment
+            viewModel = authViewModel
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,12 +51,13 @@ class ForgotPasswordFragment : Fragment() {
     }
 
     private fun setupPasswordResetResponseObserver() {
-        passwordViewModel.passwordResetResponseLiveData.observe(viewLifecycleOwner) {
+        authViewModel.passwordResetResponse.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {
                         loadingDialog.dismiss()
-                        binding.tvResponse.text = it.data!!.data
+                        Toast.makeText(activity, it.data!!.data, Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack()
                     }
                 }
                 is NetworkResult.Error -> {
@@ -69,17 +74,20 @@ class ForgotPasswordFragment : Fragment() {
     }
 
     private fun setupErrorValidationObserver() {
-        passwordViewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
+        authViewModel.errorMessage.observe(viewLifecycleOwner) {
             binding.tvResponse.text = it
         }
     }
 
-    fun backToLoginFragment() {
-        val registerFragment = LoginFragment()
-        requireActivity().supportFragmentManager.commit {
-            setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-            addToBackStack(null)
-            replace(R.id.fragment_container, registerFragment)
+    fun onCLickForgotPassword(view: View) {
+        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
+            authViewModel.onPasswordReset()
+        }
+    }
+
+    fun backToLoginFragment(view: View) {
+        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
+            findNavController().popBackStack()
         }
     }
 

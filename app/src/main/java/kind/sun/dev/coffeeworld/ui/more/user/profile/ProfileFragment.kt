@@ -1,6 +1,5 @@
 package kind.sun.dev.coffeeworld.ui.more.user.profile
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,7 +12,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.data.model.response.auth.UserModel
 import kind.sun.dev.coffeeworld.databinding.FragmentProfileBinding
-import kind.sun.dev.coffeeworld.ui.auth.AuthActivity
 import kind.sun.dev.coffeeworld.ui.more.user.profile.adapter.ProfileAdapter
 import kind.sun.dev.coffeeworld.ui.more.user.profile.dialog.AddressDialogFragment
 import kind.sun.dev.coffeeworld.ui.more.user.profile.dialog.AvatarBottomFragment
@@ -124,9 +122,7 @@ class ProfileFragment : Fragment() {
     private fun onClickLogout() {
         showAlertDialog(requireContext(), "Logout", "Are you sure you want to log out?") {
             tokenManager.removeToken()
-            startActivity(Intent(requireContext(), AuthActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK )
-            })
+            findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         }
     }
 

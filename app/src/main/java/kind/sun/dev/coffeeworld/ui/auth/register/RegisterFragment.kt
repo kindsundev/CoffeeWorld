@@ -5,13 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.commit
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.databinding.FragmentRegisterBinding
-import kind.sun.dev.coffeeworld.ui.auth.login.LoginFragment
+import kind.sun.dev.coffeeworld.ui.auth.AuthViewModel
+import kind.sun.dev.coffeeworld.utils.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
+import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.view.LoadingDialog
 import javax.inject.Inject
 
@@ -21,7 +23,7 @@ class RegisterFragment : Fragment() {
     private val binding get() = _binding!!
 
     @Inject lateinit var loadingDialog: LoadingDialog
-    private val registerViewModel by viewModels<RegisterViewModel>()
+    private val authViewModel by viewModels<AuthViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -32,9 +34,11 @@ class RegisterFragment : Fragment() {
     }
 
     private fun initDataBinding() {
-        binding.fragment = this
-        binding.viewModel = registerViewModel
-        binding.lifecycleOwner = this
+        binding.apply {
+            fragment = this@RegisterFragment
+            lifecycleOwner = this@RegisterFragment
+            viewModel = authViewModel
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,19 +48,19 @@ class RegisterFragment : Fragment() {
     }
 
     private fun setupErrorValidationObserver() {
-        registerViewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
+        authViewModel.errorMessage.observe(viewLifecycleOwner) {
             binding.tvResponse.text = it
         }
     }
 
     private fun setupRegisterResponseObserver() {
-        registerViewModel.registerResponseLiveData.observe(viewLifecycleOwner) {
-            when(it) {
+        authViewModel.registerResponse.observe(viewLifecycleOwner) {
+            when (it) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {
                         loadingDialog.dismiss()
-                        binding.tvResponse.text = it.data!!.data
-                        backToLoginFragment()
+                        Toast.makeText(activity, it.data!!.data, Toast.LENGTH_LONG).show()
+                        findNavController().popBackStack()
                     }
                 }
                 is NetworkResult.Error -> {
@@ -72,12 +76,15 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    fun backToLoginFragment() {
-        val registerFragment = LoginFragment()
-        requireActivity().supportFragmentManager.commit {
-            setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-            addToBackStack(null)
-            replace(R.id.fragment_container, registerFragment)
+    fun onCLickRegister(view: View) {
+        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
+            authViewModel.onRegister()
+        }
+    }
+
+    fun backToLoginFragment(view: View) {
+        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
+            findNavController().popBackStack()
         }
     }
 
