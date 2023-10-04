@@ -3,7 +3,7 @@ package kind.sun.dev.coffeeworld.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kind.sun.dev.coffeeworld.base.BaseRepository
-import kind.sun.dev.coffeeworld.data.api.AuthService
+import kind.sun.dev.coffeeworld.api.AuthService
 import kind.sun.dev.coffeeworld.data.model.request.auth.AuthRequest
 import kind.sun.dev.coffeeworld.data.model.request.auth.LoginRequest
 import kind.sun.dev.coffeeworld.data.model.request.auth.RegisterRequest

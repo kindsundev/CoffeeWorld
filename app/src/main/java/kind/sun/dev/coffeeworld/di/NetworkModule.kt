@@ -7,12 +7,14 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kind.sun.dev.coffeeworld.BuildConfig
-import kind.sun.dev.coffeeworld.data.api.AuthService
-import kind.sun.dev.coffeeworld.data.api.CafeService
-import kind.sun.dev.coffeeworld.data.api.UserService
+import kind.sun.dev.coffeeworld.api.AuthService
+import kind.sun.dev.coffeeworld.api.CafeService
+import kind.sun.dev.coffeeworld.api.UserService
 import kind.sun.dev.coffeeworld.utils.api.AuthInterceptor
-import kind.sun.dev.coffeeworld.utils.network.NetworkStateManager
-import kind.sun.dev.coffeeworld.utils.network.NetworkHelper
+import kind.sun.dev.coffeeworld.utils.custom.WithAuthQualifier
+import kind.sun.dev.coffeeworld.utils.custom.WithoutAuthQualifier
+import kind.sun.dev.coffeeworld.utils.helper.network.NetworkReceiverHelper
+import kind.sun.dev.coffeeworld.utils.helper.network.NetworkHelper
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -26,8 +28,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideNetworkStateManager(@ApplicationContext context: Context): NetworkStateManager {
-        return NetworkStateManager(context)
+    fun provideNetworkStateManager(@ApplicationContext context: Context): NetworkReceiverHelper {
+        return NetworkReceiverHelper(context)
     }
 
     @Singleton

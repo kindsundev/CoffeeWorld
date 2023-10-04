@@ -1,5 +1,6 @@
 package kind.sun.dev.coffeeworld.utils.api
 
+import kind.sun.dev.coffeeworld.utils.helper.storage.TokenPreferencesHelper
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Protocol
@@ -12,7 +13,7 @@ import javax.inject.Inject
 class AuthInterceptor @Inject constructor() : Interceptor {
 
     @Inject
-    lateinit var tokenManager: TokenManager
+    lateinit var tokenManager: TokenPreferencesHelper
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request().newBuilder()

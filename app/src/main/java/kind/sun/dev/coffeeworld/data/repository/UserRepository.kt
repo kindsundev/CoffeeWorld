@@ -8,13 +8,13 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.SignatureException
 import kind.sun.dev.coffeeworld.BuildConfig
 import kind.sun.dev.coffeeworld.base.BaseRepository
-import kind.sun.dev.coffeeworld.data.api.UserService
+import kind.sun.dev.coffeeworld.api.UserService
 import kind.sun.dev.coffeeworld.data.model.request.user.UserEmailRequest
 import kind.sun.dev.coffeeworld.data.model.request.user.UserPasswordRequest
 import kind.sun.dev.coffeeworld.data.model.response.common.MessageResponse
 import kind.sun.dev.coffeeworld.data.model.response.user.UserResponse
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
-import kind.sun.dev.coffeeworld.utils.api.TokenManager
+import kind.sun.dev.coffeeworld.utils.helper.storage.TokenPreferencesHelper
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 class UserRepository @Inject constructor(
     private val userService: UserService,
-    private val tokenManager: TokenManager
+    private val tokenManager: TokenPreferencesHelper
 ): BaseRepository() {
     private val username: String?
 

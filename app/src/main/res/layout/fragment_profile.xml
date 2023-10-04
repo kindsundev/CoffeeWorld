@@ -6,7 +6,7 @@
     <data>
         <variable
             name="fragment"
-            type="kind.sun.dev.coffeeworld.ui.more.user.profile.ProfileFragment" />
+            type="kind.sun.dev.coffeeworld.view.fragment.more.user.profile.ProfileFragment" />
     </data>
 
     <LinearLayout
@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:background="@color/white_light"
         android:orientation="vertical"
-        tools:context=".ui.more.user.profile.ProfileFragment">
+        tools:context=".view.more.user.profile.ProfileFragment">
 
         <Toolbar
             android:layout_width="match_parent"

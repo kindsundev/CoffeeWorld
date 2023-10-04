@@ -6,7 +6,7 @@
     <data>
         <variable
             name="fragment"
-            type="kind.sun.dev.coffeeworld.ui.cafe.CafeDetailBottomFragment" />
+            type="kind.sun.dev.coffeeworld.view.fragment.cafe.CafeDetailBottomFragment" />
         <variable
             name="cafeModel"
             type="kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel" />
@@ -15,7 +15,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="ui.cafe.CafeDetailBottomFragment">
+        tools:context="view.cafe.CafeDetailBottomFragment">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

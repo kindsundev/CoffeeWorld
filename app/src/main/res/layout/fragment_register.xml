@@ -7,11 +7,11 @@
 
         <variable
             name="fragment"
-            type="kind.sun.dev.coffeeworld.ui.auth.register.RegisterFragment" />
+            type="kind.sun.dev.coffeeworld.view.fragment.auth.RegisterFragment" />
 
         <variable
             name="viewModel"
-            type="kind.sun.dev.coffeeworld.ui.auth.AuthViewModel" />
+            type="kind.sun.dev.coffeeworld.viewmodel.AuthViewModel" />
     </data>
 
     <LinearLayout

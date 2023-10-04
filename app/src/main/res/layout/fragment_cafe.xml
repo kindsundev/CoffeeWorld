@@ -5,11 +5,11 @@
     <data>
         <variable
             name="fragment"
-            type="kind.sun.dev.coffeeworld.ui.cafe.CafeFragment" />
+            type="kind.sun.dev.coffeeworld.view.fragment.cafe.CafeFragment" />
 
         <variable
             name="viewModel"
-            type="kind.sun.dev.coffeeworld.ui.cafe.CafeViewModel" />
+            type="kind.sun.dev.coffeeworld.viewmodel.CafeViewModel" />
     </data>
 
     <LinearLayout
