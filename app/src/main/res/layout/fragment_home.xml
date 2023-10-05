@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -11,11 +12,13 @@
         android:layout_height="match_parent"
         tools:context=".view.home.HomeFragment">
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
+        <!--current test view, which will then delete it-->
+        <kind.sun.dev.coffeeworld.utils.custom.CustomInputCardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
+            android:layout_height="wrap_content"
+            app:icv_img_src="@drawable/ic_baseline_account_circle_24"
+            app:icv_text_hint="Name"
+            app:icv_input_type="name"/>
 
     </FrameLayout>
 </layout>

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.text.Editable
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -73,3 +74,5 @@ fun showAlertDialog(
     }
     dialog.show()
 }
+
+fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)

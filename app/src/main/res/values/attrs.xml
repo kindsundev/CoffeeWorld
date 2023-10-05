@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomInputCardView">
+        <attr name="icv_input_type" format="string" />
+        <attr name="icv_img_src" format="reference" />
+        <attr name="icv_text" format="string" />
+        <attr name="icv_text_hint" format="string" />
+    </declare-styleable>
+</resources>
