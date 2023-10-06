@@ -13,12 +13,13 @@
         tools:context=".view.home.HomeFragment">
 
         <!--current test view, which will then delete it-->
-        <kind.sun.dev.coffeeworld.utils.custom.CustomInputCardView
+        <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:icv_img_src="@drawable/ic_baseline_account_circle_24"
-            app:icv_text_hint="Name"
-            app:icv_input_type="name"/>
+            app:etv_background_custom_src="@drawable/bg_edt_border_selector"
+            app:etv_icon_custom_src="@drawable/ic_email_selector"
+            app:etv_input_type="password"
+            app:etv_text_hint="Password" />
 
     </FrameLayout>
 </layout>
