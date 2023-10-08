@@ -17,4 +17,8 @@ object Logger {
     fun warning(message: String) {
         Log.w(TAG, message)
     }
+
+    fun debug(message: String) {
+        Log.d(TAG, message)
+    }
 }

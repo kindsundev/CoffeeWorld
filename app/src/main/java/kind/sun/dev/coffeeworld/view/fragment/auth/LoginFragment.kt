@@ -58,7 +58,10 @@ class LoginFragment : Fragment() {
 
     private fun setupErrorValidationObserver() {
         authViewModel.errorMessage.observe(viewLifecycleOwner) {
-            binding.tvError.text = it
+            binding.tvError.apply {
+                visibility = View.VISIBLE
+                text = it
+            }
         }
     }
 
@@ -75,6 +78,7 @@ class LoginFragment : Fragment() {
                 is NetworkResult.Error -> {
                     if (loadingDialog.isAdded) {
                         loadingDialog.dismiss()
+                        binding.tvError.visibility = View.VISIBLE
                         binding.tvError.text = it.message
                     }
                 }

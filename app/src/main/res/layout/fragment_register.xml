@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="fragment"
             type="kind.sun.dev.coffeeworld.view.fragment.auth.RegisterFragment" />
@@ -14,13 +12,12 @@
             type="kind.sun.dev.coffeeworld.viewmodel.AuthViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <ImageButton
+            android:id="@+id/imageButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="start"
@@ -29,280 +26,140 @@
             android:background="@android:color/transparent"
             android:contentDescription="@string/back"
             android:onClick="@{(view) -> fragment.backToLoginFragment(view)}"
-            android:src="@drawable/ic_baseline_arrow_back_28" />
+            android:src="@drawable/ic_baseline_arrow_back_28"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_welcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/let_s_get_started"
-            android:textSize="32sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/create_an_account_to_experience_coffee_world"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-        <androidx.cardview.widget.CardView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="32dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp">
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageButton">
 
             <LinearLayout
-                android:id="@+id/ll_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <ImageView
+                <TextView
+                    android:id="@+id/tv_welcome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:contentDescription="@string/logo"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/ic_baseline_person_24" />
+                    android:layout_marginTop="8dp"
+                    android:text="@string/let_s_get_started"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/edt_name"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:autofillHints=""
-                    android:background="@android:color/transparent"
-                    android:hint="@string/name"
-                    android:inputType="textPersonName"
-                    android:minHeight="48dp"
-                    android:text="@={viewModel.nameRegister}"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/create_an_account_to_experience_coffee_world"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
-            </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="24dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp">
-
-            <LinearLayout
-                android:id="@+id/ll_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:contentDescription="@string/logo"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/ic_baseline_email_24" />
-
-                <EditText
-                    android:id="@+id/edt_email"
+                <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:autofillHints=""
-                    android:background="@android:color/transparent"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress"
-                    android:minHeight="48dp"
-                    android:text="@={viewModel.emailRegister}"
-                    android:textSize="16sp" />
-            </LinearLayout>
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="48dp"
+                    app:etv_icon_custom_src="@drawable/ic_baseline_person_selector"
+                    app:etv_input_type="name"
+                    app:etv_text_hint="Name"
+                    app:textValue="@={viewModel.nameRegister}" />
 
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="24dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp">
-
-            <LinearLayout
-                android:id="@+id/ll_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:contentDescription="@string/logo"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/ic_baseline_person_24" />
-
-                <EditText
-                    android:id="@+id/edt_username"
+                <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:autofillHints=""
-                    android:background="@android:color/transparent"
-                    android:hint="@string/username"
-                    android:inputType="text"
-                    android:minHeight="48dp"
-                    android:text="@={viewModel.usernameRegister}"
-                    android:textSize="16sp" />
-            </LinearLayout>
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="24dp"
+                    app:etv_icon_custom_src="@drawable/ic_baseline_email_selector"
+                    app:etv_input_type="email"
+                    app:etv_text_hint="Email"
+                    app:textValue="@={viewModel.emailRegister}" />
 
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="24dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp">
-
-            <LinearLayout
-                android:id="@+id/ll_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:contentDescription="@string/logo"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/ic_baseline_lock_24" />
-
-                <EditText
-                    android:id="@+id/edt_password"
+                <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:autofillHints=""
-                    android:background="@android:color/transparent"
-                    android:hint="@string/password"
-                    android:inputType="textPassword"
-                    android:minHeight="48dp"
-                    android:text="@={viewModel.passwordRegister}"
-                    android:textSize="16sp"
-                    app:passwordInputType="@{viewModel.isPasswordRegisterVisible}" />
-            </LinearLayout>
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="24dp"
+                    app:etv_icon_custom_src="@drawable/ic_baseline_person_selector"
+                    app:etv_input_type="name"
+                    app:etv_text_hint="Username"
+                    app:textValue="@={viewModel.usernameRegister}" />
 
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp">
-
-            <LinearLayout
-                android:id="@+id/ll_confirm_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:contentDescription="@string/logo"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/ic_baseline_lock_24" />
-
-                <EditText
-                    android:id="@+id/edt_confirm_password"
+                <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:autofillHints=""
-                    android:background="@android:color/transparent"
-                    android:hint="@string/confirm_password"
-                    android:inputType="textPassword"
-                    android:minHeight="48dp"
-                    android:text="@={viewModel.confirmPasswordRegister}"
-                    android:textSize="16sp"
-                    app:passwordInputType="@{viewModel.isPasswordRegisterVisible}" />
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="24dp"
+                    app:etv_icon_custom_src="@drawable/ic_baseline_lock_selector"
+                    app:etv_input_type="password"
+                    app:etv_text_hint="Password"
+                    app:textValue="@={viewModel.passwordRegister}" />
+
+                <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="24dp"
+                    app:etv_icon_custom_src="@drawable/ic_baseline_lock_selector"
+                    app:etv_input_type="password"
+                    app:etv_text_hint="Confirm Password"
+                    app:textValue="@={viewModel.confirmPasswordRegister}" />
+
+                <TextView
+                    android:id="@+id/tv_response"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:layout_marginVertical="16dp"
+                    android:textColor="@color/red"
+                    android:visibility="gone" />
+
+                <Button
+                    android:layout_width="300dp"
+                    android:layout_height="64dp"
+                    android:layout_margin="16dp"
+                    android:onClick="@{(view) -> fragment.onCLickRegister(view)}"
+                    android:text="@string/register"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/already_have_an_account"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:onClick="@{(view) -> fragment.backToLoginFragment(view)}"
+                        android:text="@string/login"
+                        android:textColor="@color/blue"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="24dp"
-            android:checked="@={viewModel.isPasswordRegisterVisible}"
-            android:onCheckedChanged="@{(button, isClicked) -> viewModel.onShowPasswordRegisterChecked(isClicked)}"
-            android:text="@string/show_password"
-            android:textSize="14sp" />
+        </ScrollView>
 
-        <TextView
-            android:id="@+id/tv_response"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:textColor="@color/red" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="24dp"
-            android:onClick="@{(view) -> fragment.onCLickRegister(view)}"
-            android:text="@string/register"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/already_have_an_account"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:onClick="@{(view) -> fragment.backToLoginFragment(view)}"
-                android:text="@string/login"
-                android:textColor="@color/blue"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-    </LinearLayout>
 
 </layout>

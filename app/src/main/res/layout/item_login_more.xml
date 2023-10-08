@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginHorizontal="48dp"
+    android:layout_marginTop="8dp"
+    android:orientation="horizontal"
+    android:weightSum="3">
+
+    <ImageView
+        android:id="@+id/facebook"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="4dp"
+        android:layout_weight="1"
+        android:contentDescription="@string/facebook"
+        android:src="@drawable/img_facebook" />
+
+    <ImageView
+        android:id="@+id/google"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="4dp"
+        android:layout_weight="1"
+        android:contentDescription="@string/google"
+        android:src="@drawable/img_google" />
+
+    <ImageView
+        android:id="@+id/telegram"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="4dp"
+        android:layout_weight="1"
+        android:contentDescription="@string/telegram"
+        android:src="@drawable/img_telegram" />
+
+</LinearLayout>

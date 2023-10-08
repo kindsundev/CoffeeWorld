@@ -29,7 +29,6 @@ class AuthViewModel @Inject constructor(
         get() = authRepository.authLogin
     val usernameLogin by lazy { MutableLiveData<String>() }
     val passwordLogin by lazy { MutableLiveData<String>() }
-    val isPasswordLoginVisible by lazy { MutableLiveData(false) }
 
     val registerResponse: LiveData<NetworkResult<MessageResponse>>
         get() = authRepository.authRegister
@@ -38,7 +37,6 @@ class AuthViewModel @Inject constructor(
     val usernameRegister by lazy { MutableLiveData<String>() }
     val passwordRegister by lazy { MutableLiveData<String>() }
     val confirmPasswordRegister by lazy { MutableLiveData<String>() }
-    val isPasswordRegisterVisible by lazy { MutableLiveData(false) }
 
     val passwordResetResponse : LiveData<NetworkResult<MessageResponse>>
         get() = authRepository.authPasswordReset
@@ -116,14 +114,6 @@ class AuthViewModel @Inject constructor(
                 errorMessage.value = Constants.NO_INTERNET_CONNECTION
             }
         }
-    }
-
-    fun onShowPasswordLoginChecked(isChecked: Boolean) {
-        isPasswordLoginVisible.value = isChecked
-    }
-
-    fun onShowPasswordRegisterChecked(isChecked: Boolean) {
-        isPasswordRegisterVisible.value = isChecked
     }
 
 }

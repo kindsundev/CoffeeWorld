@@ -7,19 +7,9 @@
 
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.home.HomeFragment">
+        android:layout_height="match_parent">
 
-        <!--current test view, which will then delete it-->
-        <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:etv_background_custom_src="@drawable/bg_edt_border_selector"
-            app:etv_icon_custom_src="@drawable/ic_email_selector"
-            app:etv_input_type="password"
-            app:etv_text_hint="Password" />
-
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

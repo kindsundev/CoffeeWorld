@@ -49,7 +49,10 @@ class RegisterFragment : Fragment() {
 
     private fun setupErrorValidationObserver() {
         authViewModel.errorMessage.observe(viewLifecycleOwner) {
-            binding.tvResponse.text = it
+            binding.tvResponse.apply {
+                visibility = View.VISIBLE
+                text = it
+            }
         }
     }
 
@@ -66,6 +69,7 @@ class RegisterFragment : Fragment() {
                 is NetworkResult.Error -> {
                     if (loadingDialog.isAdded) {
                         loadingDialog.dismiss()
+                        binding.tvResponse.visibility = View.VISIBLE
                         binding.tvResponse.text = it.message
                     }
                 }
