@@ -1,10 +1,11 @@
 package kind.sun.dev.coffeeworld.view.adapter.more
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kind.sun.dev.coffeeworld.R
+import kind.sun.dev.coffeeworld.base.BaseDiffUtil
 import kind.sun.dev.coffeeworld.databinding.ItemMoreBoxDoubleBinding
 import kind.sun.dev.coffeeworld.databinding.ItemMoreBoxOnlyBinding
 import kind.sun.dev.coffeeworld.databinding.ItemMoreRowBinding
@@ -19,10 +20,10 @@ class MoreAdapter : RecyclerView.Adapter<MoreViewHolder>() {
     var onItemClickListener: ((itemId: MoreDataSet.Id) -> Unit)? = null
 
     var items = listOf<MoreViewItem>()
-        @SuppressLint("NotifyDataSetChanged")
         set(value) {
+            val diffResult = DiffUtil.calculateDiff(BaseDiffUtil(field, value))
             field = value
-            notifyDataSetChanged()
+            diffResult.dispatchUpdatesTo(this)
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoreViewHolder {
