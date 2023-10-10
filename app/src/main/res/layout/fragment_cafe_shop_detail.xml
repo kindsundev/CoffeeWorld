@@ -6,7 +6,7 @@
     <data>
         <variable
             name="fragment"
-            type="kind.sun.dev.coffeeworld.view.fragment.cafe.CafeDetailBottomFragment" />
+            type="kind.sun.dev.coffeeworld.view.fragment.cafe.CafeShopDetailFragment" />
         <variable
             name="cafeModel"
             type="kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel" />
@@ -26,6 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="24dp"
+                android:clipToPadding="false"
                 android:background="@color/white">
 
                 <ImageView

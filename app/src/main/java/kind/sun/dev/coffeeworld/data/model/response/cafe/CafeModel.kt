@@ -1,8 +1,10 @@
 package kind.sun.dev.coffeeworld.data.model.response.cafe
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class CafeModel(
     val id: Int,
     val name: String,
@@ -11,5 +13,5 @@ data class CafeModel(
     val location: String,
     val rating: Double,
     @SerializedName("business_hours")
-    val businessHours: String
-): Serializable
+    val businessHours: String,
+): Parcelable

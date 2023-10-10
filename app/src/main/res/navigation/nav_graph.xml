@@ -58,11 +58,11 @@
     <fragment
         android:id="@+id/cafeFragment"
         android:name="kind.sun.dev.coffeeworld.view.fragment.cafe.CafeFragment"
-        android:label="fragment_cafe"
+        android:label="fragment_coffee_shop"
         tools:layout="@layout/fragment_cafe">
         <action
             android:id="@+id/action_cafeFragment_to_cafeDetailFragment"
-            app:destination="@id/cafeDetailFragment" />
+            app:destination="@id/cafeShopDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/moreFragment"
@@ -134,14 +134,14 @@
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <dialog
-        android:id="@+id/cafeDetailFragment"
-        android:name="kind.sun.dev.coffeeworld.view.fragment.cafe.CafeDetailBottomFragment"
-        android:label="CafeDetailFragment"
-        tools:layout="@layout/fragment_cafe_detail" />
+        android:id="@+id/cafeShopDetailFragment"
+        android:name="kind.sun.dev.coffeeworld.view.fragment.cafe.CafeShopDetailFragment"
+        android:label="cafe_shop_detail_fragment"
+        tools:layout="@layout/fragment_cafe_shop_detail" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="kind.sun.dev.coffeeworld.view.fragment.more.user.profile.ProfileFragment"
-        android:label="ProfileFragment"
+        android:label="profile_fragment"
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profileFragment_to_profileDetailBottomFragment"
@@ -155,56 +155,56 @@
     <fragment
         android:id="@+id/securityFragment"
         android:name="kind.sun.dev.coffeeworld.view.fragment.more.user.sercurity.SecurityFragment"
-        android:label="SecurityFragment"
+        android:label="security_fragment"
         tools:layout="@layout/fragment_security" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="kind.sun.dev.coffeeworld.view.fragment.more.settings.SettingsFragment"
-        android:label="SettingsFragment"
+        android:label="settings_fragment"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/feedbackFragment"
         android:name="kind.sun.dev.coffeeworld.view.fragment.more.support.FeedbackFragment"
-        android:label="FeedbackFragment"
+        android:label="feedback_fragment"
         tools:layout="@layout/fragment_feedback" />
     <fragment
         android:id="@+id/orderReviewsFragment"
         android:name="kind.sun.dev.coffeeworld.view.fragment.more.support.OrderReviewsFragment"
-        android:label="OrderReviewsFragment"
+        android:label="order_reviews_fragment"
         tools:layout="@layout/fragment_order_reviews" />
     <fragment
         android:id="@+id/huntDealsFragment"
         android:name="kind.sun.dev.coffeeworld.view.fragment.more.utility.HuntDealsFragment"
-        android:label="HuntDealsFragment"
+        android:label="hunt_deals_fragment"
         tools:layout="@layout/fragment_hunt_deals" />
     <fragment
         android:id="@+id/exploreFragment"
         android:name="kind.sun.dev.coffeeworld.view.fragment.more.utility.ExploreFragment"
-        android:label="ExploreFragment"
+        android:label="explore_fragment"
         tools:layout="@layout/fragment_explore" />
     <fragment
         android:id="@+id/termsConditionsFragment"
         android:name="kind.sun.dev.coffeeworld.view.fragment.more.utility.TermsConditionsFragment"
-        android:label="TermsConditionsFragment"
+        android:label="terms_conditions_fragment"
         tools:layout="@layout/fragment_terms_conditions" />
     <fragment
         android:id="@+id/paymentFragment"
         android:name="kind.sun.dev.coffeeworld.view.fragment.more.user.payment.PaymentFragment"
-        android:label="PaymentFragment"
+        android:label="payment_fragment"
         tools:layout="@layout/fragment_payment" />
     <dialog
         android:id="@+id/profileDetailBottomFragment"
         android:name="kind.sun.dev.coffeeworld.view.fragment.more.user.profile.ProfileDetailBottomFragment"
-        android:label="ProfileDetailBottomFragment"
+        android:label="profile_detail_fragment"
         tools:layout="@layout/fragment_profile_detail" />
     <fragment
         android:id="@+id/registerFragment"
         android:name="kind.sun.dev.coffeeworld.view.fragment.auth.RegisterFragment"
-        android:label="RegisterFragment"
+        android:label="register_fragment"
         tools:layout="@layout/fragment_register" />
     <fragment
         android:id="@+id/forgotPasswordFragment"
         android:name="kind.sun.dev.coffeeworld.view.fragment.auth.ForgotPasswordFragment"
-        android:label="ForgotPasswordFragment"
+        android:label="forgot_password_fragment"
         tools:layout="@layout/fragment_forgot_password" />
 </navigation>

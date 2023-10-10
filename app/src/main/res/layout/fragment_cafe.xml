@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="fragment"
             type="kind.sun.dev.coffeeworld.view.fragment.cafe.CafeFragment" />
@@ -12,7 +14,7 @@
             type="kind.sun.dev.coffeeworld.viewmodel.CafeViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray_background"
@@ -20,12 +22,16 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/ll_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
-            android:paddingTop="8dp">
+            android:paddingTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -135,49 +141,26 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/light_gray" />
-
-        <TextView
-            android:id="@+id/tv_coffee_shop_near"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="8dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/coffee_shop_near_you"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:visibility="invisible"
-            tools:visibility="visible" />
-
-        <include
-            android:id="@+id/layout_coffee_shop_near"
-            layout="@layout/item_cafe"
-            android:visibility="invisible"
-            tools:visibility="visible" />
-
-        <TextView
-            android:id="@+id/tv_other_coffee"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/other_coffee_shops"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:visibility="invisible"
-            tools:visibility="visible" />
+            android:background="@color/light_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_top" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_cafe"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:paddingBottom="55dp"
-            android:visibility="invisible"
-            tools:visibility="visible" />
+            android:layout_height="0dp"
+            android:paddingTop="8dp"
+            android:paddingHorizontal="16dp"
+            android:clipToPadding="false"
+            android:paddingBottom="80dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view2" />
 
         <ImageView
             android:id="@+id/img_offline"
@@ -186,7 +169,12 @@
             android:layout_gravity="center"
             android:contentDescription="@string/offline"
             android:src="@drawable/img_offline"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_top" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

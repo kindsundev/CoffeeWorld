@@ -11,13 +11,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel
-import kind.sun.dev.coffeeworld.databinding.FragmentCafeDetailBinding
+import kind.sun.dev.coffeeworld.databinding.FragmentCafeShopDetailBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
-import kind.sun.dev.coffeeworld.utils.helper.view.getSerializableSafe
+import kind.sun.dev.coffeeworld.utils.helper.view.getParcelableSafe
 
 @AndroidEntryPoint
-class CafeDetailBottomFragment : BottomSheetDialogFragment() {
-    private var _binding : FragmentCafeDetailBinding? = null
+class CafeShopDetailFragment : BottomSheetDialogFragment() {
+    private var _binding : FragmentCafeShopDetailBinding? = null
     private val binding get() = _binding!!
     private var cafeModel: CafeModel? = null
 
@@ -49,13 +49,13 @@ class CafeDetailBottomFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCafeDetailBinding.inflate(layoutInflater)
+        _binding = FragmentCafeShopDetailBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        cafeModel = arguments?.getSerializableSafe(Constants.CAFE_KEY)
+        cafeModel = arguments?.getParcelableSafe(Constants.CAFE_KEY)
         initDataBinding()
         initCafeInfo()
     }
@@ -64,7 +64,7 @@ class CafeDetailBottomFragment : BottomSheetDialogFragment() {
         cafeModel?.let {
             binding.apply {
                 cafeModel = it
-                fragment = this@CafeDetailBottomFragment
+                fragment = this@CafeShopDetailFragment
             }
         }
     }

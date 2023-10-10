@@ -21,9 +21,8 @@ class MoreAdapter : RecyclerView.Adapter<MoreViewHolder>() {
 
     var items = listOf<MoreViewItem>()
         set(value) {
-            val diffResult = DiffUtil.calculateDiff(BaseDiffUtil(field, value))
+            DiffUtil.calculateDiff(BaseDiffUtil(field, value)).dispatchUpdatesTo(this)
             field = value
-            diffResult.dispatchUpdatesTo(this)
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoreViewHolder {

@@ -96,5 +96,7 @@
     <string name="favorite">Favorite</string>
     <string name="swap">Swap</string>
     <string name="drop_down">Drop down</string>
-    <string name="dropdown">Dropdown</string>
+    <string name="dropdown_mode">Dropdown</string>
+    <string name="nearby_coffee_shop">Nearby Coffee Shop</string>
+    <string name="other_coffee_shop">Other Coffee Shop</string>
 </resources>
