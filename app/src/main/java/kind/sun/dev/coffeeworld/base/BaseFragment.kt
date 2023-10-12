@@ -11,6 +11,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
@@ -72,7 +73,7 @@ abstract class BaseFragment<VDB : ViewDataBinding, VM: ViewModel>(
 
     abstract fun observeViewModel()
 
-    protected fun <T> handleNetworkResult(
+    protected fun <T> observeNetworkResult(
         liveData: LiveData<NetworkResult<T>>,
         onSuccess: (T) -> Unit,
         onError: (String) -> Unit
@@ -94,7 +95,11 @@ abstract class BaseFragment<VDB : ViewDataBinding, VM: ViewModel>(
         }
     }
 
-    protected fun navigateFragment(resId: Int, bundle: Bundle? = null) {
+    protected fun observeValidatorError(
+        liveData: MutableLiveData<String>, onMessage: (String) -> Unit
+    ): Unit = liveData.observe(viewLifecycleOwner) { onMessage.invoke(it) }
+
+    protected fun navigateToFragment(resId: Int, bundle: Bundle? = null) {
         findNavController().apply {
             bundle?.let { navigate(resId, it) } ?: navigate(resId)
         }
