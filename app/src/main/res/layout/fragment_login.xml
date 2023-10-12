@@ -8,7 +8,7 @@
             type="kind.sun.dev.coffeeworld.view.fragment.auth.LoginFragment" />
 
         <variable
-            name="viewModel"
+            name="authViewModel"
             type="kind.sun.dev.coffeeworld.viewmodel.AuthViewModel" />
     </data>
 
@@ -31,6 +31,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_margin="16dp"
+                android:contentDescription="@string/logo"
                 android:src="@drawable/img_logo_cafe"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    app:textValue="@={viewModel.usernameLogin}"
+                    app:textValue="@={authViewModel.usernameLogin}"
                     app:etv_icon_custom_src="@drawable/ic_baseline_person_selector"
                     app:etv_input_type="name"
                     app:etv_text_hint="Username" />
@@ -94,7 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="24dp"
-                    app:textValue="@={viewModel.passwordLogin}"
+                    app:textValue="@={authViewModel.passwordLogin}"
                     app:etv_icon_custom_src="@drawable/ic_baseline_lock_selector"
                     app:etv_input_type="password"
                     app:etv_text_hint="Password" />

@@ -8,7 +8,7 @@
             type="kind.sun.dev.coffeeworld.view.fragment.auth.RegisterFragment" />
 
         <variable
-            name="viewModel"
+            name="authViewModel"
             type="kind.sun.dev.coffeeworld.viewmodel.AuthViewModel" />
     </data>
 
@@ -71,7 +71,7 @@
                     app:etv_icon_custom_src="@drawable/ic_baseline_person_selector"
                     app:etv_input_type="name"
                     app:etv_text_hint="Name"
-                    app:textValue="@={viewModel.nameRegister}" />
+                    app:textValue="@={authViewModel.nameRegister}" />
 
                 <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
                     android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                     app:etv_icon_custom_src="@drawable/ic_baseline_email_selector"
                     app:etv_input_type="email"
                     app:etv_text_hint="Email"
-                    app:textValue="@={viewModel.emailRegister}" />
+                    app:textValue="@={authViewModel.emailRegister}" />
 
                 <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
                     android:layout_width="match_parent"
@@ -91,7 +91,7 @@
                     app:etv_icon_custom_src="@drawable/ic_baseline_person_selector"
                     app:etv_input_type="name"
                     app:etv_text_hint="Username"
-                    app:textValue="@={viewModel.usernameRegister}" />
+                    app:textValue="@={authViewModel.usernameRegister}" />
 
                 <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
                     android:layout_width="match_parent"
@@ -101,7 +101,7 @@
                     app:etv_icon_custom_src="@drawable/ic_baseline_lock_selector"
                     app:etv_input_type="password"
                     app:etv_text_hint="Password"
-                    app:textValue="@={viewModel.passwordRegister}" />
+                    app:textValue="@={authViewModel.passwordRegister}" />
 
                 <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
                     android:layout_width="match_parent"
@@ -111,7 +111,7 @@
                     app:etv_icon_custom_src="@drawable/ic_baseline_lock_selector"
                     app:etv_input_type="password"
                     app:etv_text_hint="Confirm Password"
-                    app:textValue="@={viewModel.confirmPasswordRegister}" />
+                    app:textValue="@={authViewModel.confirmPasswordRegister}" />
 
                 <TextView
                     android:id="@+id/tv_response"
