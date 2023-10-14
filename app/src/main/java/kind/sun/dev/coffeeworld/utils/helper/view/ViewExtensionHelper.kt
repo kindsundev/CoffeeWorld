@@ -8,9 +8,14 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.text.Editable
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import kind.sun.dev.coffeeworld.R
 import java.io.Serializable
 
@@ -80,4 +85,28 @@ fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(t
 fun Int.dpToPx(context: Context): Int {
     val density = context.resources.displayMetrics.density
     return (this * density + 0.5f).toInt()
+}
+
+fun showSnackbarMessage(
+    context: Context,
+    root: CoordinatorLayout,
+    resMessageId: Int,
+    gravity: Int = Gravity.TOP or Gravity.CENTER_HORIZONTAL,
+    duration: Int = Snackbar.LENGTH_SHORT,
+    animMode: Int = BaseTransientBottomBar.ANIMATION_MODE_FADE,
+    margin: Int = 16
+) {
+    Snackbar.make(root, context.getString(resMessageId), duration).apply {
+        view.apply {
+            findViewById<TextView>(com.google.android.material.R.id.snackbar_text)?.let {
+                it.textAlignment = View.TEXT_ALIGNMENT_CENTER
+            }
+            layoutParams = (view.layoutParams as CoordinatorLayout.LayoutParams).apply {
+                this.gravity = gravity
+                val marginPx = margin.dpToPx(context)
+                setMargins(marginPx, marginPx, marginPx, marginPx)
+            }
+            animationMode = animMode
+        }
+    }.show()
 }

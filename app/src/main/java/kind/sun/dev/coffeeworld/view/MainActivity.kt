@@ -1,22 +1,20 @@
 package kind.sun.dev.coffeeworld.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.databinding.ActivityMainBinding
 import kind.sun.dev.coffeeworld.utils.helper.network.NetworkReceiverHelper
+import kind.sun.dev.coffeeworld.utils.helper.view.showSnackbarMessage
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -65,25 +63,16 @@ class MainActivity : AppCompatActivity() {
         networkStateManager.registerNetworkReceiver()
         networkStateManager.isConnectedLiveData.observe(this) { isConnected ->
             if (isConnected) {
-                if (!wasConnectedToInternet) { showNetworkState("Connected to the Internet") }
+                if (!wasConnectedToInternet) showNetworkState(R.string.connected_internet)
             } else {
-                showNetworkState("No Internet Connection")
+                showNetworkState(R.string.no_internet_connected)
             }
             wasConnectedToInternet = isConnected
         }
     }
 
-    private fun showNetworkState(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).apply {
-            view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)?.let {
-                it.textAlignment = View.TEXT_ALIGNMENT_CENTER
-            }
-            view.layoutParams = (view.layoutParams as CoordinatorLayout.LayoutParams).apply {
-                gravity = Gravity.TOP and Gravity.CENTER_HORIZONTAL
-                val marginPx : Int = (16 * resources.displayMetrics.density).toInt()
-                setMargins(marginPx, marginPx, marginPx, marginPx)
-            }
-        }.show()
+    private fun showNetworkState(resMessageId: Int) {
+        showSnackbarMessage(this, binding.root as CoordinatorLayout, resMessageId)
     }
 
 }

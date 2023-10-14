@@ -1,14 +1,17 @@
 package kind.sun.dev.coffeeworld.view.fragment.home
 
-import android.os.Handler
-import android.os.Looper
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.databinding.FragmentHomeBinding
+import kind.sun.dev.coffeeworld.utils.helper.view.showSnackbarMessage
 import kind.sun.dev.coffeeworld.viewmodel.CafeViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding, CafeViewModel>(
@@ -31,17 +34,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, CafeViewModel>(
         requireActivity().onBackPressedDispatcher.addCallback(
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (doubleBackPressed) {
-                        requireActivity().finish()
-                    } else {
-                        doubleBackPressed = true
-                        Toast.makeText(context, "Press back again to exit", Toast.LENGTH_SHORT).show()
-                        Handler(Looper.getMainLooper()).postDelayed({ doubleBackPressed = false }, 2000)
-                    }
+                    checkDoubleBackPressed()
                 }
             }
         )
     }
+
+    private fun checkDoubleBackPressed() {
+        if (doubleBackPressed) requireActivity().finish()
+
+        showSnackbarMessage(
+            context = requireContext(),
+            root = binding.root as CoordinatorLayout,
+            resMessageId = R.string.press_back_again
+        ).also {
+            lifecycleScope.launch {
+                doubleBackPressed = true
+                delay(2000)
+                doubleBackPressed = false
+            }
+        }
+    }
+
 
     override fun initViews() {
 
