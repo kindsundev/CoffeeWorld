@@ -60,7 +60,7 @@ class PhoneDialogFragment(
     }
 
     private fun setupErrorValidationObserver() {
-        profileViewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
+        profileViewModel.validator.observe(viewLifecycleOwner) {
             binding.tvError.apply {
                 visibility = View.VISIBLE
                 text = it
@@ -69,7 +69,7 @@ class PhoneDialogFragment(
     }
 
     private fun setupUserUpdateObserver() {
-        profileViewModel.userUpdate.observe(viewLifecycleOwner) {
+        profileViewModel.messageResponse.observe(viewLifecycleOwner) {
             when(it) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {

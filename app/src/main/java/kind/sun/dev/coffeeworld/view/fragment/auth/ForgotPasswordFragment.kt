@@ -27,14 +27,14 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding, AuthV
     override fun initViews() {}
 
     override fun observeViewModel() {
-        observeValidatorError(viewModel.errorMessage) {
+        observeValidatorError(viewModel.validator) {
             binding.tvResponse.apply {
                 visibility = View.VISIBLE
                 text = it
             }
         }
 
-        observeNetworkResult(viewModel.registerResponse,
+        observeNetworkResult(viewModel.messageResponse,
             onSuccess = {
                 Toast.makeText(activity, it.data, Toast.LENGTH_LONG).show()
                 popFragment()

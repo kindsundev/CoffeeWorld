@@ -9,10 +9,10 @@ class ProfileValidator @Inject constructor() : ProfileContract.Validator {
 
     override fun validateUpdateName(name: String): Pair<Boolean, String> {
         return when {
-            TextUtils.isEmpty(name) -> {
+            TextUtils.isEmpty(name) || name == "null"-> {
                 Pair(false, "Please provide your name")
             }
-            name.length > 100 -> {
+            name.length < 2 || name.length > 100  -> {
                 Pair(false, "Invalid name because it is too long")
             }
             else -> Pair(true, "")
@@ -21,7 +21,7 @@ class ProfileValidator @Inject constructor() : ProfileContract.Validator {
 
     override fun validateUpdateAddress(address: String): Pair<Boolean, String> {
         return when {
-            TextUtils.isEmpty(address) -> {
+            TextUtils.isEmpty(address) || address.isBlank() -> {
                 Pair(false, "Please provide your address")
             }
             address.length < 5 -> {

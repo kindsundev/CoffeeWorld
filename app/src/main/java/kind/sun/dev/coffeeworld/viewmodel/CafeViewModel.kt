@@ -1,7 +1,6 @@
 package kind.sun.dev.coffeeworld.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.contract.CafeContract
@@ -10,16 +9,15 @@ import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel
 import kind.sun.dev.coffeeworld.data.repository.CafeRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.dataset.CafeShopDataSet
-import kind.sun.dev.coffeeworld.utils.helper.network.NetworkHelper
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
+import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CafeViewModel @Inject constructor(
-    private val cafeRepository: CafeRepository,
-    private val networkHelper: NetworkHelper
-): ViewModel(), CafeContract.ViewModel {
+    private val cafeRepository: CafeRepository
+): BaseViewModel(), CafeContract.ViewModel {
     val cafe: LiveData<NetworkResult<CafeListResponse>>
         get() = cafeRepository.cafe
 

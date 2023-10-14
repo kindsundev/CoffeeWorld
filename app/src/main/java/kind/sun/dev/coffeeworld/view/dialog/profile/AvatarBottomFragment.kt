@@ -199,7 +199,7 @@ class AvatarBottomFragment(
     }
 
     private fun setupUserUpdateLiveData() {
-        profileViewModel.userUpdate.observe(viewLifecycleOwner) { result ->
+        profileViewModel.messageResponse.observe(viewLifecycleOwner) { result ->
             when(result) {
                 is NetworkResult.Success -> {
                     if (loadingDialog.isAdded) {

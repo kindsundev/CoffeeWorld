@@ -36,7 +36,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
     override fun initViews() {}
 
     override fun observeViewModel() {
-        observeValidatorError(viewModel.errorMessage) {
+        observeValidatorError(viewModel.validator) {
             binding.tvError.apply {
                 visibility = View.VISIBLE
                 text = it

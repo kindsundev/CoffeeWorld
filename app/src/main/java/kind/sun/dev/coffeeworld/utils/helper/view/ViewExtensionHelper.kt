@@ -58,26 +58,24 @@ inline fun checkPermission (
 }
 
 fun showAlertDialog(
-    context: Context, title: String, message: String,
+    context: Context, resTitleId: Int, resMessageId: Int,
     onConfirmListener: () -> Unit
 ) {
-    val dialog = MaterialAlertDialogBuilder(context, R.style.confirm_alert_dialog).apply {
-        setTitle(title)
-        setMessage(message)
+    MaterialAlertDialogBuilder(context, R.style.confirm_alert_dialog).apply {
+        setTitle(context.getString(resTitleId))
+        setMessage(context.getString(resMessageId))
         setCancelable(false)
-        setNegativeButton(R.string.cancel) { dialog, _ ->
-            dialog.dismiss()
-        }
+        setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
         setPositiveButton(R.string.ok) { dialog, _ ->
             onConfirmListener.invoke()
             dialog.dismiss()
         }
-    }.create()
-    dialog.window?.apply {
-        setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        setGravity(Gravity.CENTER)
-    }
-    dialog.show()
+    }.create().also {
+        it.window?.apply {
+            setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            setGravity(Gravity.CENTER)
+        }
+    }.show()
 }
 
 fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)

@@ -1,6 +1,7 @@
 package kind.sun.dev.coffeeworld.base
 
 import androidx.lifecycle.MutableLiveData
+import kind.sun.dev.coffeeworld.data.model.response.common.MessageResponse
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.Logger
@@ -15,9 +16,10 @@ import okhttp3.ResponseBody
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Response
-import kotlin.coroutines.cancellation.CancellationException
 
 open class BaseRepository {
+
+    protected val statusMessage by lazy { MutableLiveData<NetworkResult<MessageResponse>>() }
 
     private val baseExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Logger.error("BaseExceptionHandler: ${throwable.message}")

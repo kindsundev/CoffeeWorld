@@ -2,10 +2,10 @@ package kind.sun.dev.coffeeworld.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kind.sun.dev.coffeeworld.base.BaseRepository
 import kind.sun.dev.coffeeworld.api.CafeService
 import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeCategoriesResponse
 import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeListResponse
+import kind.sun.dev.coffeeworld.base.BaseRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import javax.inject.Inject
 

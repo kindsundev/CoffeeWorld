@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kind.sun.dev.coffeeworld.R
-import kind.sun.dev.coffeeworld.base.BaseDiffUtil
+import kind.sun.dev.coffeeworld.view.adapter.BaseDiffUtil
 import kind.sun.dev.coffeeworld.databinding.ItemMoreBoxDoubleBinding
 import kind.sun.dev.coffeeworld.databinding.ItemMoreBoxOnlyBinding
 import kind.sun.dev.coffeeworld.databinding.ItemMoreRowBinding

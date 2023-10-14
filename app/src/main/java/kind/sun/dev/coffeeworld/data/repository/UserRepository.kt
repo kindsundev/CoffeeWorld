@@ -7,12 +7,12 @@ import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.SignatureException
 import kind.sun.dev.coffeeworld.BuildConfig
-import kind.sun.dev.coffeeworld.base.BaseRepository
 import kind.sun.dev.coffeeworld.api.UserService
 import kind.sun.dev.coffeeworld.data.model.request.user.UserEmailRequest
 import kind.sun.dev.coffeeworld.data.model.request.user.UserPasswordRequest
 import kind.sun.dev.coffeeworld.data.model.response.common.MessageResponse
 import kind.sun.dev.coffeeworld.data.model.response.user.UserResponse
+import kind.sun.dev.coffeeworld.base.BaseRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.helper.storage.TokenPreferencesHelper
 import kind.sun.dev.coffeeworld.utils.common.Logger
@@ -34,10 +34,8 @@ class UserRepository @Inject constructor(
     val user: LiveData<NetworkResult<UserResponse>>
         get() = _user
 
-    private val _userUpdate = MutableLiveData<NetworkResult<MessageResponse>>()
     val userUpdate: LiveData<NetworkResult<MessageResponse>>
-        get() = _userUpdate
-
+        get() = statusMessage
 
     private fun getUserNameFromJWTToken(): String? {
         val token = tokenManager.getToken()
@@ -70,7 +68,7 @@ class UserRepository @Inject constructor(
 
     suspend fun updateAvatar(avatar: File) {
         username?.let {
-            performNetworkOperation(_userUpdate) {
+            performNetworkOperation(statusMessage) {
                 val usernameRequestBody = convertToTextRequestBody(it)
                 val avatarRequestBody = avatar.asRequestBody("image/*".toMediaTypeOrNull())
                 val avatarPart =
@@ -82,7 +80,7 @@ class UserRepository @Inject constructor(
 
     suspend fun updateEmail(email: String, password: String) {
         username?.let {
-            performNetworkOperation(_userUpdate) {
+            performNetworkOperation(statusMessage) {
                 userService.updateEmail(UserEmailRequest(it, email, password))
             }
         }
@@ -90,7 +88,7 @@ class UserRepository @Inject constructor(
 
     suspend fun updatePassword(currentPassword: String, newPassword: String) {
         username?.let {
-            performNetworkOperation(_userUpdate) {
+            performNetworkOperation(statusMessage) {
                 userService.updatePassword(UserPasswordRequest(it, currentPassword, newPassword))
             }
         }
@@ -98,7 +96,7 @@ class UserRepository @Inject constructor(
 
     suspend fun updateName(name: String) {
         username?.let {
-            performNetworkOperation(_userUpdate) {
+            performNetworkOperation(statusMessage) {
                 userService.updateName(it, convertToTextRequestBody(name))
             }
         }
@@ -106,7 +104,7 @@ class UserRepository @Inject constructor(
 
     suspend fun updateAddress(address: String) {
         username?.let {
-            performNetworkOperation(_userUpdate) {
+            performNetworkOperation(statusMessage) {
                 userService.updateAddress(it, convertToTextRequestBody(address))
             }
         }
@@ -114,7 +112,7 @@ class UserRepository @Inject constructor(
 
     suspend fun updatePhone(phone: String) {
         username?.let {
-            performNetworkOperation(_userUpdate) {
+            performNetworkOperation(statusMessage) {
                 userService.updatePhone(it, convertToTextRequestBody(phone))
             }
         }

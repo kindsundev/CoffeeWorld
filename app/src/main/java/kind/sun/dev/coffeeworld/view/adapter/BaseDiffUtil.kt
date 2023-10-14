@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.base
+package kind.sun.dev.coffeeworld.view.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 

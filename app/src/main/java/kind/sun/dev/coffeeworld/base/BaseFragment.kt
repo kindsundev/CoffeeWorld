@@ -8,19 +8,18 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.custom.CustomLoadingDialog
 import javax.inject.Inject
 
-abstract class BaseFragment<VDB : ViewDataBinding, VM: ViewModel>(
-    private val bindingInflater: (inflater: LayoutInflater) -> VDB
+abstract class BaseFragment<V : ViewDataBinding, VM: BaseViewModel>(
+    private val bindingInflater: (inflater: LayoutInflater) -> V
 ) : Fragment() {
 
-    private var _binding: VDB? = null
-    protected val binding: VDB get() = _binding as VDB
+    private var _binding: V? = null
+    protected val binding: V get() = _binding as V
     protected abstract val viewModel: VM
 
     private val navController by lazy { findNavController() }
