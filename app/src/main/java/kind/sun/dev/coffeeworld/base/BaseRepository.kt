@@ -6,13 +6,16 @@ import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.ResponseBody
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Response
+import kotlin.coroutines.cancellation.CancellationException
 
 open class BaseRepository {
 
@@ -28,16 +31,13 @@ open class BaseRepository {
         liveData: MutableLiveData<NetworkResult<T>>,
         operation: suspend () -> Response<T>
     ) {
-        try {
-            liveData.postValue(NetworkResult.Loading())
-            withContext(Dispatchers.IO + baseExceptionHandler) {
-                val response = operation()
+        liveData.postValue(NetworkResult.Loading())
+        withContext(Dispatchers.IO + baseExceptionHandler) {
+            supervisorScope {
                 withContext(Dispatchers.Main) {
-                    handleNetworkResponse(response, liveData)
+                    handleNetworkResponse(operation(), liveData)
                 }
             }
-        } catch (throwable: Throwable) {
-            throw throwable
         }
     }
 
@@ -45,25 +45,24 @@ open class BaseRepository {
         response: Response<T>?,
         liveData: MutableLiveData<NetworkResult<T>>
     ) {
-        when {
-            response == null -> {
-                liveData.postValue(NetworkResult.Error(Constants.REQUEST_LOGIN))
-            }
-            response.isSuccessful && response.body() != null -> {
-                liveData.postValue(NetworkResult.Success(response.body()!!))
-            }
-            response.errorBody() != null -> {
-                try {
-                    val errorJSON = JSONObject(response.errorBody()!!.string())
-                    val errorMessage = errorJSON.getString("message")
-                    liveData.postValue(NetworkResult.Error(errorMessage))
-                } catch (e: JSONException) {
-                    Logger.error("JSONException: ${e.message.toString()}")
-                }
-            }
-            else -> {
-                liveData.postValue(NetworkResult.Error("Something went wrong"))
-            }
+        if (response == null) {
+            liveData.postValue(NetworkResult.Error(Constants.REQUEST_LOGIN))
+            return
+        }
+        if (response.isSuccessful && response.body() != null) {
+            liveData.postValue(NetworkResult.Success(response.body()!!))
+            return
+        }
+        val errorMessage = response.errorBody()?.parseErrorMessage() ?: "Something went wrong"
+        liveData.postValue(NetworkResult.Error(errorMessage))
+    }
+
+    private fun ResponseBody.parseErrorMessage(): String {
+        return try {
+            JSONObject(string()).getString("message")
+        } catch (e: JSONException) {
+            Logger.error("JSONException: ${e.message.toString()}")
+            "Something went wrong"
         }
     }
 }
