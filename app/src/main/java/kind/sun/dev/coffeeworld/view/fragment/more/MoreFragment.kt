@@ -1,5 +1,6 @@
 package kind.sun.dev.coffeeworld.view.fragment.more
 
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,10 +15,19 @@ import kind.sun.dev.coffeeworld.view.adapter.more.MoreAdapter
 class MoreFragment : BaseFragment<FragmentMoreBinding, BaseViewModel>(
     FragmentMoreBinding::inflate
 ){
-
     override val viewModel: BaseViewModel by viewModels()
 
     override fun setupDataBinding() {}
+
+    override fun initAnything() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    popToHomeFragment()
+                }
+            }
+        )
+    }
 
     override fun initViews() {
         binding.rvMoreOptions.apply {
