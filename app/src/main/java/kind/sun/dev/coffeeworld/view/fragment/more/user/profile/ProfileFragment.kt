@@ -74,7 +74,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>(
             MoreDataSet.Id.LOG_OUT -> onClickLogout()
             MoreDataSet.Id.PROFILE -> {
                 navigateToFragment(
-                    R.id.action_profileFragment_to_profileDetailBottomFragment,
+                    R.id.action_profileFragment_to_profileDetailFragment,
                     Bundle().apply { putParcelable(Constants.USER_KEY, userModel) }
                 )
             }
@@ -90,7 +90,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>(
         }
     }
 
-    fun onBackToMoreFragment() { popFragment() }
+    fun onBackToMoreFragment() : Unit = popFragment()
 
     private fun onUpdateSuccess() : Unit = viewModel.getUser()
 

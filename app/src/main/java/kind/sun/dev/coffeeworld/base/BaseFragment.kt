@@ -10,13 +10,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import kind.sun.dev.coffeeworld.R
+import kind.sun.dev.coffeeworld.contract.FragmentContract
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.custom.CustomLoadingDialog
 import javax.inject.Inject
 
 abstract class BaseFragment<V : ViewDataBinding, VM: BaseViewModel>(
     private val bindingInflater: (inflater: LayoutInflater) -> V
-) : Fragment() {
+) : Fragment(), FragmentContract {
 
     private var _binding: V? = null
     protected val binding: V get() = _binding as V
@@ -32,8 +33,6 @@ abstract class BaseFragment<V : ViewDataBinding, VM: BaseViewModel>(
         return binding.root
     }
 
-    abstract fun setupDataBinding()
-
     open fun prepareData() {}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,10 +43,6 @@ abstract class BaseFragment<V : ViewDataBinding, VM: BaseViewModel>(
     }
 
     open fun initAnything() {}
-
-    abstract fun initViews()
-
-    abstract fun observeViewModel()
 
     override fun onDestroyView() {
         super.onDestroyView()

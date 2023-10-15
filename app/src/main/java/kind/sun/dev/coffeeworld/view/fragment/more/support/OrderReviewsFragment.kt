@@ -1,31 +1,26 @@
 package kind.sun.dev.coffeeworld.view.fragment.more.support
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import kind.sun.dev.coffeeworld.base.BaseFragment
+import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.databinding.FragmentOrderReviewsBinding
 
 @AndroidEntryPoint
-class OrderReviewsFragment : Fragment() {
-    private var _binding: FragmentOrderReviewsBinding? = null
-    private val binding get() = _binding!!
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentOrderReviewsBinding.inflate(layoutInflater)
-        return binding.root
+class OrderReviewsFragment : BaseFragment<FragmentOrderReviewsBinding, BaseViewModel>(
+    FragmentOrderReviewsBinding::inflate
+) {
+    override val viewModel: BaseViewModel by viewModels()
+
+    override fun setupDataBinding() {
+
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initViews() {
+
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun observeViewModel() {
+
     }
 }

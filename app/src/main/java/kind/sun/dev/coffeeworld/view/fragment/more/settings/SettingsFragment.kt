@@ -1,32 +1,27 @@
 package kind.sun.dev.coffeeworld.view.fragment.more.settings
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import kind.sun.dev.coffeeworld.base.BaseFragment
+import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.databinding.FragmentSettingsBinding
 
 @AndroidEntryPoint
-class SettingsFragment : Fragment() {
-    private var _binding: FragmentSettingsBinding? = null
-    private val binding get() = _binding!!
+class SettingsFragment : BaseFragment<FragmentSettingsBinding, BaseViewModel>(
+    FragmentSettingsBinding::inflate
+) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSettingsBinding.inflate(layoutInflater)
-        return binding.root
+    override val viewModel: BaseViewModel by viewModels()
+
+    override fun setupDataBinding() {
+
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initViews() {
+
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun observeViewModel() {
+
     }
 }

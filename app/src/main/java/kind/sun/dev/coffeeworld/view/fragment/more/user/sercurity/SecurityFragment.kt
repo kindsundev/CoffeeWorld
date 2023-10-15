@@ -1,32 +1,26 @@
 package kind.sun.dev.coffeeworld.view.fragment.more.user.sercurity
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import kind.sun.dev.coffeeworld.base.BaseFragment
+import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.databinding.FragmentSecurityBinding
 
 @AndroidEntryPoint
-class SecurityFragment : Fragment() {
-    private var _binding: FragmentSecurityBinding? = null
-    private val binding get() = _binding!!
+class SecurityFragment : BaseFragment<FragmentSecurityBinding, BaseViewModel>(
+    FragmentSecurityBinding::inflate
+) {
+    override val viewModel: BaseViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSecurityBinding.inflate(layoutInflater)
-        return binding.root
+    override fun setupDataBinding() {
+
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initViews() {
+
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun observeViewModel() {
+
     }
 }

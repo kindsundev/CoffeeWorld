@@ -144,8 +144,8 @@
         android:label="profile_fragment"
         tools:layout="@layout/fragment_profile">
         <action
-            android:id="@+id/action_profileFragment_to_profileDetailBottomFragment"
-            app:destination="@id/profileDetailBottomFragment" />
+            android:id="@+id/action_profileFragment_to_profileDetailFragment"
+            app:destination="@id/profileDetailFragment" />
         <action
             android:id="@+id/action_profileFragment_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -193,8 +193,8 @@
         android:label="payment_fragment"
         tools:layout="@layout/fragment_payment" />
     <dialog
-        android:id="@+id/profileDetailBottomFragment"
-        android:name="kind.sun.dev.coffeeworld.view.fragment.more.user.profile.ProfileDetailBottomFragment"
+        android:id="@+id/profileDetailFragment"
+        android:name="kind.sun.dev.coffeeworld.view.fragment.more.user.profile.ProfileDetailFragment"
         android:label="profile_detail_fragment"
         tools:layout="@layout/fragment_profile_detail" />
     <fragment

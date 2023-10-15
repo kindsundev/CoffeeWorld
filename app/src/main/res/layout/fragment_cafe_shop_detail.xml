@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="24dp"
-                    android:onClick="@{() -> fragment.exitBottomSheet()}"
+                    android:onClick="@{() -> fragment.onExit()}"
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/close"
                     app:layout_constraintEnd_toEndOf="parent"

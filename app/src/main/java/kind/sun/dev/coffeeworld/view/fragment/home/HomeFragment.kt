@@ -7,18 +7,18 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseFragment
+import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.databinding.FragmentHomeBinding
 import kind.sun.dev.coffeeworld.utils.helper.view.showSnackbarMessage
-import kind.sun.dev.coffeeworld.viewmodel.CafeViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding, CafeViewModel>(
+class HomeFragment : BaseFragment<FragmentHomeBinding, BaseViewModel>(
     FragmentHomeBinding::inflate
 ) {
 
-    override val viewModel: CafeViewModel by viewModels()
+    override val viewModel: BaseViewModel by viewModels()
 
     private var doubleBackPressed = false
 
