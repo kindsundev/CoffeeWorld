@@ -8,16 +8,13 @@ import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.databinding.FragmentLoginBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
-import kind.sun.dev.coffeeworld.utils.helper.storage.TokenPreferencesHelper
 import kind.sun.dev.coffeeworld.viewmodel.AuthViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
     FragmentLoginBinding::inflate
 ) {
     override val viewModel: AuthViewModel by viewModels()
-    @Inject lateinit var tokenManager: TokenPreferencesHelper
 
     override fun setupDataBinding() {
         binding.apply {
@@ -28,7 +25,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
     }
 
     override fun prepareData() {
-        if(tokenManager.getToken() != null) {
+        preferences.userToken?.let {
             navigateToFragment(R.id.action_loginFragment_to_homeFragment)
         }
     }
@@ -45,7 +42,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
 
         observeNetworkResult(viewModel.loginResponse,
             onSuccess = {
-                tokenManager.saveToken(it.data.token)
+                preferences.userToken = it.data.token
                 navigateToFragment(R.id.action_loginFragment_to_homeFragment)
             },
             onError = {

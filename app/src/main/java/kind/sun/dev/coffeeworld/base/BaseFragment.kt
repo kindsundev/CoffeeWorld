@@ -13,6 +13,7 @@ import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.contract.FragmentContract
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.custom.CustomLoadingDialog
+import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
 import javax.inject.Inject
 
 abstract class BaseFragment<V : ViewDataBinding, VM: BaseViewModel>(
@@ -24,6 +25,8 @@ abstract class BaseFragment<V : ViewDataBinding, VM: BaseViewModel>(
     protected abstract val viewModel: VM
 
     private val navController by lazy { findNavController() }
+
+    @Inject lateinit var preferences: PreferencesHelper
     @Inject lateinit var loadingDialog: CustomLoadingDialog
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

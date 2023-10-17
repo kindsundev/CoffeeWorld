@@ -1,6 +1,6 @@
 package kind.sun.dev.coffeeworld.utils.api
 
-import kind.sun.dev.coffeeworld.utils.helper.storage.TokenPreferencesHelper
+import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Protocol
@@ -13,11 +13,11 @@ import javax.inject.Inject
 class AuthInterceptor @Inject constructor() : Interceptor {
 
     @Inject
-    lateinit var tokenManager: TokenPreferencesHelper
+    lateinit var preferences: PreferencesHelper
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request().newBuilder()
-        val token = tokenManager.getToken()
+        val token = preferences.userToken
         request.addHeader("Authorization", "Bearer $token")
         val originalRequest = request.build()
 

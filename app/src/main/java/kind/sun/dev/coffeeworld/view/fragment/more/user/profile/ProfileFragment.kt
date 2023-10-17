@@ -11,7 +11,6 @@ import kind.sun.dev.coffeeworld.databinding.FragmentProfileBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.dataset.MoreDataSet
-import kind.sun.dev.coffeeworld.utils.helper.storage.TokenPreferencesHelper
 import kind.sun.dev.coffeeworld.utils.helper.view.showAlertDialog
 import kind.sun.dev.coffeeworld.view.adapter.profile.ProfileAdapter
 import kind.sun.dev.coffeeworld.view.dialog.profile.AddressDialogFragment
@@ -21,14 +20,12 @@ import kind.sun.dev.coffeeworld.view.dialog.profile.NameDialogFragment
 import kind.sun.dev.coffeeworld.view.dialog.profile.PasswordDialogFragment
 import kind.sun.dev.coffeeworld.view.dialog.profile.PhoneDialogFragment
 import kind.sun.dev.coffeeworld.viewmodel.ProfileViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>(
     FragmentProfileBinding::inflate
 ) {
     private lateinit var userModel: UserModel
-    @Inject lateinit var tokenManager: TokenPreferencesHelper
     private lateinit var profileAdapter : ProfileAdapter
 
     override val viewModel: ProfileViewModel by viewModels()
@@ -84,9 +81,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>(
 
     private fun onClickLogout() {
         showAlertDialog(requireContext(), R.string.logout, R.string.confirm_logout) {
-            tokenManager.removeToken().also {
-                navigateToFragment(R.id.action_profileFragment_to_loginFragment)
-            }
+            preferences.userToken = null
+            navigateToFragment(R.id.action_profileFragment_to_loginFragment)
         }
     }
 

@@ -14,7 +14,7 @@ import kind.sun.dev.coffeeworld.data.model.response.common.MessageResponse
 import kind.sun.dev.coffeeworld.data.model.response.user.UserResponse
 import kind.sun.dev.coffeeworld.base.BaseRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
-import kind.sun.dev.coffeeworld.utils.helper.storage.TokenPreferencesHelper
+import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -24,22 +24,18 @@ import javax.inject.Inject
 
 class UserRepository @Inject constructor(
     private val userService: UserService,
-    private val tokenManager: TokenPreferencesHelper
+    private val preferences: PreferencesHelper
 ): BaseRepository() {
     private val username: String?
 
     init { username = getUserNameFromJWTToken() }
 
     private val _user = MutableLiveData<NetworkResult<UserResponse>>()
-    val user: LiveData<NetworkResult<UserResponse>>
-        get() = _user
-
-    val userUpdate: LiveData<NetworkResult<MessageResponse>>
-        get() = statusMessage
+    val user: LiveData<NetworkResult<UserResponse>> get() = _user
+    val userUpdate: LiveData<NetworkResult<MessageResponse>> get() = statusMessage
 
     private fun getUserNameFromJWTToken(): String? {
-        val token = tokenManager.getToken()
-        return token?.let { jwtToken ->
+        return preferences.userToken?.let { jwtToken ->
             try {
                 val claims: Claims = Jwts.parserBuilder()
                     .setSigningKey(BuildConfig.TOKEN_SECRET.toByteArray())
