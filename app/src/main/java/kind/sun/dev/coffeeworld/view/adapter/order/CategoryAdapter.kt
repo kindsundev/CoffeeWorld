@@ -3,7 +3,7 @@ package kind.sun.dev.coffeeworld.view.adapter.order
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kind.sun.dev.coffeeworld.data.model.response.cafe.CategoryModel
+import kind.sun.dev.coffeeworld.data.local.model.CategoryModel
 import kind.sun.dev.coffeeworld.databinding.ItemCategoryCircleBinding
 import kind.sun.dev.coffeeworld.databinding.ItemCategoryMoreBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants

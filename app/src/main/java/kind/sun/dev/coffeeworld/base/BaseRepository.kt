@@ -1,7 +1,7 @@
 package kind.sun.dev.coffeeworld.base
 
 import androidx.lifecycle.MutableLiveData
-import kind.sun.dev.coffeeworld.data.model.response.common.MessageResponse
+import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.Logger

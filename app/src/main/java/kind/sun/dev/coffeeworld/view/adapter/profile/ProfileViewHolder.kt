@@ -8,7 +8,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import kind.sun.dev.coffeeworld.R
-import kind.sun.dev.coffeeworld.data.model.response.auth.UserModel
+import kind.sun.dev.coffeeworld.data.local.model.UserModel
 import kind.sun.dev.coffeeworld.databinding.ItemMoreRowBinding
 import kind.sun.dev.coffeeworld.databinding.ItemMoreTitleBinding
 import kind.sun.dev.coffeeworld.databinding.ItemUserInfoBinding

@@ -1,9 +1,9 @@
 package kind.sun.dev.coffeeworld.api
 
-import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeCategoriesResponse
-import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeDrinksResponse
-import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeListResponse
-import kind.sun.dev.coffeeworld.data.model.response.common.MessageResponse
+import kind.sun.dev.coffeeworld.data.remote.response.CafeCategoryResponse
+import kind.sun.dev.coffeeworld.data.remote.response.CafeDrinksResponse
+import kind.sun.dev.coffeeworld.data.remote.response.CafeResponse
+import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -14,10 +14,10 @@ import retrofit2.http.Path
 interface CafeService {
 
     @GET("/cafes")
-    suspend fun getCafeList(): Response<CafeListResponse>
+    suspend fun getCafeList(): Response<CafeResponse>
 
     @GET("/cafes/{cafe_id}/categories")
-    suspend fun getCategoryList(@Path("cafe_id") cafeId: Int): Response<CafeCategoriesResponse>
+    suspend fun getCategoryList(@Path("cafe_id") cafeId: Int): Response<CafeCategoryResponse>
 
     @GET("/cafes/{cafe_id}/category/{category_id}/drinks")
     suspend fun getDrinksListInCategory(

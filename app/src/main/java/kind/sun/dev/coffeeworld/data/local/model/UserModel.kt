@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.data.model.response.auth
+package kind.sun.dev.coffeeworld.data.local.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

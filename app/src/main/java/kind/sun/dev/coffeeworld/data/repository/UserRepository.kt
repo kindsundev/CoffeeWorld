@@ -8,14 +8,14 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.SignatureException
 import kind.sun.dev.coffeeworld.BuildConfig
 import kind.sun.dev.coffeeworld.api.UserService
-import kind.sun.dev.coffeeworld.data.model.request.user.UserEmailRequest
-import kind.sun.dev.coffeeworld.data.model.request.user.UserPasswordRequest
-import kind.sun.dev.coffeeworld.data.model.response.common.MessageResponse
-import kind.sun.dev.coffeeworld.data.model.response.user.UserResponse
 import kind.sun.dev.coffeeworld.base.BaseRepository
+import kind.sun.dev.coffeeworld.data.remote.request.UserEmailRequest
+import kind.sun.dev.coffeeworld.data.remote.request.UserPasswordRequest
+import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
+import kind.sun.dev.coffeeworld.data.remote.response.UserResponse
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
-import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
 import kind.sun.dev.coffeeworld.utils.common.Logger
+import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -26,16 +26,12 @@ class UserRepository @Inject constructor(
     private val userService: UserService,
     private val preferences: PreferencesHelper
 ): BaseRepository() {
-    private val username: String?
-
-    init { username = getUserNameFromJWTToken() }
-
     private val _user = MutableLiveData<NetworkResult<UserResponse>>()
     val user: LiveData<NetworkResult<UserResponse>> get() = _user
     val userUpdate: LiveData<NetworkResult<MessageResponse>> get() = statusMessage
 
-    private fun getUserNameFromJWTToken(): String? {
-        return preferences.userToken?.let { jwtToken ->
+    private val username: String? by lazy {
+        preferences.userToken?.let { jwtToken ->
             try {
                 val claims: Claims = Jwts.parserBuilder()
                     .setSigningKey(BuildConfig.TOKEN_SECRET.toByteArray())

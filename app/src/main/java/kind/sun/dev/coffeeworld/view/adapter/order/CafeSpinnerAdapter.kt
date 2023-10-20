@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import kind.sun.dev.coffeeworld.R
-import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel
+import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.databinding.ItemCategorySpinnerBinding
 import kind.sun.dev.coffeeworld.databinding.ItemSeletedSpinnerBinding
 

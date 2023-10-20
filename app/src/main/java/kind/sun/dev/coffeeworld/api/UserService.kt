@@ -1,9 +1,10 @@
 package kind.sun.dev.coffeeworld.api
 
-import kind.sun.dev.coffeeworld.data.model.request.user.UserEmailRequest
-import kind.sun.dev.coffeeworld.data.model.request.user.UserPasswordRequest
-import kind.sun.dev.coffeeworld.data.model.response.common.MessageResponse
-import kind.sun.dev.coffeeworld.data.model.response.user.UserResponse
+
+import kind.sun.dev.coffeeworld.data.remote.request.UserEmailRequest
+import kind.sun.dev.coffeeworld.data.remote.request.UserPasswordRequest
+import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
+import kind.sun.dev.coffeeworld.data.remote.response.UserResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response

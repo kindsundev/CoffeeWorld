@@ -1,6 +1,6 @@
 package kind.sun.dev.coffeeworld.view.adapter.cafe
 
-import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel
+import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.utils.dataset.CafeShopDataSet
 
 sealed class CafeShopViewItem {

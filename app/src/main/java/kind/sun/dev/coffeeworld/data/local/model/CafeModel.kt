@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.data.model.response.cafe
+package kind.sun.dev.coffeeworld.data.local.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

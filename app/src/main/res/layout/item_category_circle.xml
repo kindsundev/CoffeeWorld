@@ -7,7 +7,7 @@
 
         <variable
             name="category"
-            type="kind.sun.dev.coffeeworld.data.model.response.cafe.CategoryModel" />
+            type="kind.sun.dev.coffeeworld.data.local.model.CategoryModel" />
     </data>
 
     <LinearLayout

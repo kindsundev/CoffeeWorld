@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.view.adapter.BaseDiffUtil
-import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel
+import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.databinding.ItemCafeShopBinding
 import kind.sun.dev.coffeeworld.databinding.ItemCafeShopTitleBinding
 import java.lang.IllegalArgumentException

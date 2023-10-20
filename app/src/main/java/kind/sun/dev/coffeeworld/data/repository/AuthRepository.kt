@@ -3,11 +3,11 @@ package kind.sun.dev.coffeeworld.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kind.sun.dev.coffeeworld.api.AuthService
-import kind.sun.dev.coffeeworld.data.model.request.auth.AuthRequest
-import kind.sun.dev.coffeeworld.data.model.request.auth.LoginRequest
-import kind.sun.dev.coffeeworld.data.model.request.auth.RegisterRequest
-import kind.sun.dev.coffeeworld.data.model.response.auth.LoginResponse
-import kind.sun.dev.coffeeworld.data.model.response.common.MessageResponse
+import kind.sun.dev.coffeeworld.data.remote.request.AuthRequest
+import kind.sun.dev.coffeeworld.data.remote.request.LoginRequest
+import kind.sun.dev.coffeeworld.data.remote.request.RegisterRequest
+import kind.sun.dev.coffeeworld.data.remote.response.LoginResponse
+import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
 import kind.sun.dev.coffeeworld.base.BaseRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import javax.inject.Inject

@@ -9,7 +9,7 @@
             type="kind.sun.dev.coffeeworld.view.fragment.cafe.CafeShopDetailFragment" />
         <variable
             name="cafeModel"
-            type="kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel" />
+            type="kind.sun.dev.coffeeworld.data.local.model.CafeModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

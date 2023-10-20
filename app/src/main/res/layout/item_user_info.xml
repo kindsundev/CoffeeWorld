@@ -6,7 +6,7 @@
     <data>
         <variable
             name="userModel"
-            type="kind.sun.dev.coffeeworld.data.model.response.auth.UserModel" />
+            type="kind.sun.dev.coffeeworld.data.local.model.UserModel" />
     </data>
 
     <RelativeLayout

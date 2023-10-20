@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.contract.CafeContract
-import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeListResponse
-import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel
+import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.data.repository.CafeRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.dataset.CafeShopDataSet
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
 import kind.sun.dev.coffeeworld.base.BaseViewModel
+import kind.sun.dev.coffeeworld.data.remote.response.CafeResponse
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class CafeViewModel @Inject constructor(
     private val cafeRepository: CafeRepository
 ): BaseViewModel(), CafeContract.ViewModel {
-    val cafe: LiveData<NetworkResult<CafeListResponse>>
+    val cafe: LiveData<NetworkResult<CafeResponse>>
         get() = cafeRepository.cafe
 
     override fun getCafeList() {

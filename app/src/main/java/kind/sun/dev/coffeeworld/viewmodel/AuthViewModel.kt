@@ -3,10 +3,10 @@ package kind.sun.dev.coffeeworld.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kind.sun.dev.coffeeworld.data.model.request.auth.AuthRequest
-import kind.sun.dev.coffeeworld.data.model.request.auth.LoginRequest
-import kind.sun.dev.coffeeworld.data.model.request.auth.RegisterRequest
 import kind.sun.dev.coffeeworld.data.repository.AuthRepository
+import kind.sun.dev.coffeeworld.data.remote.request.AuthRequest
+import kind.sun.dev.coffeeworld.data.remote.request.LoginRequest
+import kind.sun.dev.coffeeworld.data.remote.request.RegisterRequest
 import kind.sun.dev.coffeeworld.contract.AuthContract
 import kind.sun.dev.coffeeworld.utils.validator.AuthValidator
 import kind.sun.dev.coffeeworld.base.BaseViewModel

@@ -3,7 +3,7 @@ package kind.sun.dev.coffeeworld.view.adapter.cafe
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel
+import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.databinding.ItemCafeShopBinding
 import kind.sun.dev.coffeeworld.databinding.ItemCafeShopTitleBinding
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation

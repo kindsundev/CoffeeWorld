@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.data.model.response.cafe
+package kind.sun.dev.coffeeworld.data.local.model
 
 data class BeverageCategoryModel(
     val categoryName: String,

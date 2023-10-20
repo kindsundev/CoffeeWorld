@@ -7,7 +7,7 @@
 
         <variable
             name="cafe"
-            type="kind.sun.dev.coffeeworld.data.model.response.cafe.CafeModel" />
+            type="kind.sun.dev.coffeeworld.data.local.model.CafeModel" />
     </data>
 
     <androidx.cardview.widget.CardView
