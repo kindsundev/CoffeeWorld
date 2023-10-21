@@ -1,63 +1,59 @@
 package kind.sun.dev.coffeeworld.base
 
 import android.app.Dialog
-import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LiveData
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.contract.FragmentContract
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.custom.CustomLoadingDialog
 import javax.inject.Inject
 
-abstract class BaseBottomSheet<V: ViewDataBinding, VM: BaseViewModel>(
-    private val isFullScreen: Boolean,
+abstract class BaseDialog<V: ViewDataBinding, VM: BaseViewModel>(
     private val bindingInflater: (inflater: LayoutInflater) -> V
-) : BottomSheetDialogFragment(), FragmentContract {
+) : DialogFragment(), FragmentContract {
+
     private var _binding: V? = null
     protected val binding: V get() = _binding as V
 
+    protected abstract val viewModel: VM
     @Inject lateinit var loadingDialog: CustomLoadingDialog
-    abstract val viewModel: VM
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        if (isFullScreen) {
-            return (super.onCreateDialog(savedInstanceState) as BottomSheetDialog).apply {
-                setOnShowListener {listener ->
-                    (listener as BottomSheetDialog).findViewById<View>(
-                        com.google.android.material.R.id.design_bottom_sheet
-                    )?.let { view ->
-                        view.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels
-                        BottomSheetBehavior.from(view).state = BottomSheetBehavior.STATE_EXPANDED
-                    }
-                }
+        _binding = bindingInflater.invoke(layoutInflater)
+        return MaterialAlertDialogBuilder(
+            requireContext(), R.style.dialog_material
+        ).apply {
+            setCancelable(false)
+            setView(binding.root)
+        }.create().also { dialog ->
+            dialog.window?.apply {
+                setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                setGravity(Gravity.CENTER)
+                setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             }
         }
-        return super.onCreateDialog(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = bindingInflater.invoke(inflater)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         setupDataBinding()
-        prepareData()
         return binding.root
     }
-
-    open fun prepareData() {}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         observeViewModel()
     }
-
-    protected fun exit() : Unit = this.dismiss()
 
     protected fun <T> observeNetworkResult(
         liveData: LiveData<NetworkResult<T>>,

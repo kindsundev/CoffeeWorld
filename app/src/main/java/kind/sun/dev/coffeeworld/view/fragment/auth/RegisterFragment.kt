@@ -9,6 +9,7 @@ import kind.sun.dev.coffeeworld.databinding.FragmentRegisterBinding
 import kind.sun.dev.coffeeworld.viewmodel.AuthViewModel
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.common.Constants
+import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
 
 @AndroidEntryPoint
 class RegisterFragment: BaseFragment<FragmentRegisterBinding, AuthViewModel>(
@@ -26,30 +27,22 @@ class RegisterFragment: BaseFragment<FragmentRegisterBinding, AuthViewModel>(
     override fun initViews() {}
 
     override fun observeViewModel() {
-        observeValidatorError(viewModel.validator) {
-            binding.tvResponse.apply {
-                visibility = View.VISIBLE
-                text = it
-            }
-        }
-
         observeNetworkResult(viewModel.messageResponse,
             onSuccess = {
                 Toast.makeText(activity, it.data, Toast.LENGTH_LONG).show()
                 popFragment()
             },
             onError = {
-                binding.tvResponse.apply {
-                    visibility = View.VISIBLE
-                    text = it
-                }
+                binding.tvResponse.showErrorMessage(it)
             }
         )
     }
 
     fun onCLickRegister(view: View) {
         view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
-            viewModel.onRegister()
+            viewModel.onRegister {
+                binding.tvResponse.showErrorMessage(it)
+            }
         }
     }
 

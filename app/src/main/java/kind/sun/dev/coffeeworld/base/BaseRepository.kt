@@ -3,7 +3,6 @@ package kind.sun.dev.coffeeworld.base
 import androidx.lifecycle.MutableLiveData
 import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
-import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +47,7 @@ open class BaseRepository {
         liveData: MutableLiveData<NetworkResult<T>>
     ) {
         if (response == null) {
-            liveData.postValue(NetworkResult.Error(Constants.REQUEST_LOGIN))
+            liveData.postValue(NetworkResult.Error("Please login again to continue using this feature"))
             return
         }
         if (response.isSuccessful && response.body() != null) {

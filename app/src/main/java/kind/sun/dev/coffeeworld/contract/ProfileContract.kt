@@ -1,23 +1,24 @@
 package kind.sun.dev.coffeeworld.contract
 
+import kind.sun.dev.coffeeworld.data.local.model.UserModel
 import java.io.File
 
 interface ProfileContract {
 
     interface ViewModel {
-        fun getUser()
+        fun onFetchUser(onDataFromLocal: (UserModel?) -> Unit)
 
-        fun onUpdateAvatar(avatar: File)
+        fun onUpdateAvatar(avatar: File, message: (String) -> Unit)
 
-        fun onUpdateName()
+        fun onUpdateName(message: (String) -> Unit)
 
-        fun onUpdateEmail()
+        fun onUpdateEmail(message: (String) -> Unit)
 
-        fun onUpdatePassword()
+        fun onUpdatePassword(message: (String) -> Unit)
 
-        fun onUpdateAddress()
+        fun onUpdateAddress(message: (String) -> Unit)
 
-        fun onUpdatePhone()
+        fun onUpdatePhone(message: (String) -> Unit)
     }
 
     interface Validator {

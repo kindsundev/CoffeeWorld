@@ -3,11 +3,11 @@ package kind.sun.dev.coffeeworld.contract
 interface AuthContract {
 
     interface ViewModel {
-        fun onLogin()
+        fun onLogin(message: (String) -> Unit)
 
-        fun onRegister()
+        fun onRegister(message: (String) -> Unit)
 
-        fun onPasswordReset()
+        fun onPasswordReset(message: (String) -> Unit)
     }
 
     interface Validator {

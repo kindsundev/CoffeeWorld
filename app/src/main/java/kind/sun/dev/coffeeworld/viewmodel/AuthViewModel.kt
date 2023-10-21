@@ -31,46 +31,53 @@ class AuthViewModel @Inject constructor(
 
     val loginResponse get() = authRepository.authLogin
     val messageResponse get() = authRepository.messageResponse
-    val validator get() = error
 
-    override fun onLogin() {
+    override fun onLogin(message: (String) -> Unit) {
         val username = usernameLogin.value.toString().trim()
         val password = passwordLogin.value.toString().trim()
-
-        checkThenExecute(
-            validator = { authValidator.validateLoginInput(username, password) }
-        ) {
-            viewModelScope.launch {
-                authRepository.login(LoginRequest(username, password))
-            }
-        }
+        handleCheckAndRoute(
+            conditionChecker = {
+                authValidator.validateLoginInput(username, password)
+            },
+            onPassedCheck = {
+                viewModelScope.launch { authRepository.login(LoginRequest(username, password)) }
+            },
+            onFailedCheck = { message(it) }
+        )
     }
 
-    override fun onRegister() {
+    override fun onRegister(message: (String) -> Unit) {
         val name = nameRegister.value.toString().trim()
         val email = emailRegister.value.toString().trim()
         val username = usernameRegister.value.toString().trim()
         val password = passwordRegister.value.toString().trim()
         val confirmPassword = confirmPasswordRegister.value.toString().trim()
-
-        checkThenExecute(
-            validator = { authValidator.validateRegisterInput(name, email, username, password, confirmPassword) }
-        ) {
-            viewModelScope.launch {
-                authRepository.register(RegisterRequest(username, password, email, name))
-            }
-        }
+        handleCheckAndRoute(
+            conditionChecker = {
+                authValidator.validateRegisterInput(name, email, username, password, confirmPassword)
+            },
+            onPassedCheck = {
+                viewModelScope.launch {
+                    authRepository.register(RegisterRequest(username, password, email, name))
+                }
+            },
+            onFailedCheck = { message(it) }
+        )
     }
 
-    override fun onPasswordReset() {
+    override fun onPasswordReset(message: (String) -> Unit) {
         val username = usernameForgotPassword.value.toString().trim()
         val email = emailForgotPassword.value.toString().trim()
-        checkThenExecute(
-            validator = { authValidator.validateForgotPasswordInput(username, email) }
-        ) {
-            viewModelScope.launch {
-                authRepository.passwordReset(AuthRequest(username, email))
-            }
-        }
+        handleCheckAndRoute(
+            conditionChecker = {
+                authValidator.validateForgotPasswordInput(username, email)
+            },
+            onPassedCheck = {
+                viewModelScope.launch {
+                    authRepository.passwordReset(AuthRequest(username, email))
+                }
+            },
+            onFailedCheck = { message(it) }
+        )
     }
 }

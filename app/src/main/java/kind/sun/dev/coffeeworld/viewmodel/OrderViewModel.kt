@@ -23,14 +23,24 @@ class OrderViewModel @Inject constructor(
         get() = cafeRepository.categories
 
     fun getCafeList() {
-        checkThenExecute(null) {
-            viewModelScope.launch { cafeRepository.getCafeList() }
+        handleCheckAndRoute(
+            null,
+            {
+                viewModelScope.launch { cafeRepository.getCafeList() }
+            },
+        ) {
+
         }
     }
 
     fun getCategoryList(cafeId: Int) {
-        checkThenExecute(null) {
-            viewModelScope.launch { cafeRepository.getCategoryList(cafeId) }
+        handleCheckAndRoute(
+            null,
+            {
+                viewModelScope.launch { cafeRepository.getCategoryList(cafeId) }
+            }
+        ) {
+
         }
     }
 }

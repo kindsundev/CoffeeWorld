@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.data.repository.UserRepository
 import kind.sun.dev.coffeeworld.contract.ProfileContract
+import kind.sun.dev.coffeeworld.data.local.model.UserModel
 import kind.sun.dev.coffeeworld.utils.validator.ProfileValidator
 import kotlinx.coroutines.launch
 import java.io.File
@@ -26,83 +27,77 @@ class ProfileViewModel @Inject constructor(
     val newPasswordLiveData by lazy { MutableLiveData<String>() }
     val retypeNewPasswordLiveData by lazy { MutableLiveData<String>() }
 
-    val userResponseLiveData get() = userRepository.user
+    val userResponse get() = userRepository.user
     val messageResponse get() = userRepository.userUpdate
-    val validator get() = error
 
-    override fun getUser() {
-        checkThenExecute(null) {
-            viewModelScope.launch {
-                userRepository.getUser()
+    override fun onFetchUser(onDataFromLocal: (UserModel?) -> Unit) {
+        handleCheckAndRoute(
+            conditionChecker = null,
+            onPassedCheck = { viewModelScope.launch { userRepository.getUser() } },
+            onFailedCheck = {
+
             }
-        }
+        )
     }
 
-    override fun onUpdateAvatar(avatar: File) {
-        checkThenExecute(null) {
-            viewModelScope.launch {
-                userRepository.updateAvatar(avatar)
-            }
-        }
+    override fun onUpdateAvatar(avatar: File, message: (String) -> Unit) {
+        handleCheckAndRoute(
+            conditionChecker = null,
+            onPassedCheck = { viewModelScope.launch { userRepository.updateAvatar(avatar) } },
+            onFailedCheck = { message(it) }
+        )
     }
 
-    override fun onUpdateName() {
+    override fun onUpdateName(message: (String) -> Unit) {
         val name = nameLiveData.value.toString().trim()
-        checkThenExecute(
-            validator = { profileValidator.validateUpdateName(name) }
-        ) {
-            viewModelScope.launch {
-                userRepository.updateName(name)
-            }
-        }
+        handleCheckAndRoute(
+            conditionChecker = { profileValidator.validateUpdateName(name) },
+            onPassedCheck = { viewModelScope.launch { userRepository.updateName(name) } },
+            onFailedCheck = { message(it) }
+        )
     }
 
-    override fun onUpdateEmail() {
+    override fun onUpdateEmail(message: (String) -> Unit) {
         val email = emailLiveData.value.toString().trim()
         val password = emailPasswordLiveData.value.toString().trim()
-
-        checkThenExecute(
-            validator = { profileValidator.validatorUpdateEmail(email, password) }
-        ) {
-            viewModelScope.launch {
-                userRepository.updateEmail(email, password)
-            }
-        }
+        handleCheckAndRoute(
+            conditionChecker = { profileValidator.validatorUpdateEmail(email, password) },
+            onPassedCheck = { viewModelScope.launch { userRepository.updateEmail(email, password) } },
+            onFailedCheck = { message(it) }
+        )
     }
 
-    override fun onUpdatePassword() {
+    override fun onUpdatePassword(message: (String) -> Unit) {
         val currentPassword = currentPasswordLiveData.value.toString().trim()
         val newPassword = newPasswordLiveData.value.toString().trim()
         val reNewPassword = retypeNewPasswordLiveData.value.toString().trim()
-
-        checkThenExecute(
-            validator = {  profileValidator.validateUpdatePassword(currentPassword, newPassword, reNewPassword) }
-        ) {
-            viewModelScope.launch {
-                userRepository.updatePassword(currentPassword, newPassword)
-            }
-        }
+        handleCheckAndRoute(
+            conditionChecker = {
+                profileValidator.validateUpdatePassword(currentPassword, newPassword, reNewPassword)
+            },
+            onPassedCheck = {
+                viewModelScope.launch { userRepository.updatePassword(currentPassword, newPassword) }
+            },
+            onFailedCheck = { message(it) }
+        )
     }
 
-    override fun onUpdateAddress() {
+    override fun onUpdateAddress(message: (String) -> Unit) {
         val address = addressLiveData.value.toString().trim()
-        checkThenExecute(
-            validator = {  profileValidator.validateUpdateAddress(address) }
-        ) {
-            viewModelScope.launch {
-                userRepository.updateAddress(address)
-            }
-        }
+        handleCheckAndRoute(
+            conditionChecker = { profileValidator.validateUpdateAddress(address) },
+            onPassedCheck = { viewModelScope.launch { userRepository.updateAddress(address) } },
+            onFailedCheck = { message(it) }
+        )
     }
 
-    override fun onUpdatePhone() {
+    override fun onUpdatePhone(message: (String) -> Unit) {
         val phoneNumber = phoneLiveData.value.toString().trim()
-        checkThenExecute(
-            validator = {  profileValidator.validateUpdatePhone(phoneNumber) }
-        ) {
-            viewModelScope.launch {
-                userRepository.updatePhone(phoneNumber)
-            }
-        }
+        handleCheckAndRoute(
+            conditionChecker = { profileValidator.validateUpdatePhone(phoneNumber) },
+            onPassedCheck = { viewModelScope.launch { userRepository.updatePhone(phoneNumber) } },
+            onFailedCheck = { message(it) }
+        )
     }
+
 }

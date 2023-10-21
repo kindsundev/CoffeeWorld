@@ -8,6 +8,7 @@ import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.databinding.FragmentLoginBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
+import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
 import kind.sun.dev.coffeeworld.viewmodel.AuthViewModel
 
 @AndroidEntryPoint
@@ -33,21 +34,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
     override fun initViews() {}
 
     override fun observeViewModel() {
-        observeValidatorError(viewModel.validator) {
-            binding.tvError.apply {
-                visibility = View.VISIBLE
-                text = it
-            }
-        }
-
         observeNetworkResult(viewModel.loginResponse,
             onSuccess = {
                 preferences.userToken = it.data.token
                 navigateToFragment(R.id.action_loginFragment_to_homeFragment)
             },
             onError = {
-                binding.tvError.visibility = View.VISIBLE
-                binding.tvError.text = it
+                binding.tvError.showErrorMessage(it)
             }
         )
     }
@@ -66,7 +59,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
 
     fun onCLickLogin(view: View) {
         view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
-            viewModel.onLogin()
+            viewModel.onLogin {
+                binding.tvError.showErrorMessage(it)
+            }
         }
     }
 }

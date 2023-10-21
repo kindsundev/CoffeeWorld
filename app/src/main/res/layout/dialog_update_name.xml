@@ -6,7 +6,7 @@
             name="fragment"
             type="kind.sun.dev.coffeeworld.view.dialog.profile.NameDialogFragment" />
         <variable
-            name="viewModel"
+            name="profileViewModel"
             type="kind.sun.dev.coffeeworld.viewmodel.ProfileViewModel" />
     </data>
 
@@ -57,7 +57,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_name"
                     android:layout_width="match_parent"
-                    android:text="@={viewModel.nameLiveData}"
+                    android:text="@={profileViewModel.nameLiveData}"
                     android:layout_height="wrap_content" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -90,7 +90,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> viewModel.onUpdateName()}"
+                    android:onClick="@{(view)  -> fragment.onClickUpdateName(view)}"
                     android:backgroundTint="@color/purple_dark"
                     android:text="@string/ok" />
             </LinearLayout>

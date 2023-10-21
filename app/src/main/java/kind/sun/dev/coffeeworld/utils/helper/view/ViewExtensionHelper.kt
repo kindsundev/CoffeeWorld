@@ -11,6 +11,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -107,4 +108,15 @@ fun showSnackbarMessage(
             animationMode = animMode
         }
     }.show()
+}
+
+fun TextView.showErrorMessage(message: String) {
+    this.also {
+        visibility = View.VISIBLE
+        text = message
+    }
+}
+
+fun Context.showToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }

@@ -9,9 +9,9 @@ import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
 import kind.sun.dev.coffeeworld.databinding.FragmentProfileBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
-import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.dataset.MoreDataSet
 import kind.sun.dev.coffeeworld.utils.helper.view.showAlertDialog
+import kind.sun.dev.coffeeworld.utils.helper.view.showToast
 import kind.sun.dev.coffeeworld.view.adapter.profile.ProfileAdapter
 import kind.sun.dev.coffeeworld.view.dialog.profile.AddressDialogFragment
 import kind.sun.dev.coffeeworld.view.dialog.profile.AvatarBottomFragment
@@ -37,7 +37,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>(
         }
     }
 
-    override fun prepareData() { viewModel.getUser() }
+    override fun prepareData() {
+        viewModel.onFetchUser { localData  -> localData ?.let { notifyUser(it) } }
+    }
 
     override fun initViews() {
         binding.rvProfileOptions.apply {
@@ -51,12 +53,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>(
     }
 
     override fun observeViewModel() {
-        observeNetworkResult(viewModel.userResponseLiveData,
-            onSuccess = {
-                userModel = it.data
-                profileAdapter.user = userModel
-            },
-            onError = { Logger.error("[ProfileFragment]: Loading profile has failed, $it ") }
+        observeNetworkResult(viewModel.userResponse,
+            onSuccess = { notifyUser(it.data) },
+            onError = { requireContext().showToast(it) }
         )
     }
 
@@ -88,7 +87,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>(
 
     fun onBackToMoreFragment() : Unit = popFragment()
 
-    private fun onUpdateSuccess() : Unit = viewModel.getUser()
+    private fun onUpdateSuccess() {
+        viewModel.onFetchUser { localData  -> localData ?.let { notifyUser(it) } }
+    }
 
-
+    private fun notifyUser(result: UserModel) {
+        userModel = result.also { profileAdapter.user = it }
+    }
 }

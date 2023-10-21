@@ -8,6 +8,7 @@ import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.databinding.FragmentForgotPasswordBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
+import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
 import kind.sun.dev.coffeeworld.viewmodel.AuthViewModel
 
 @AndroidEntryPoint
@@ -27,30 +28,22 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding, AuthV
     override fun initViews() {}
 
     override fun observeViewModel() {
-        observeValidatorError(viewModel.validator) {
-            binding.tvResponse.apply {
-                visibility = View.VISIBLE
-                text = it
-            }
-        }
-
         observeNetworkResult(viewModel.messageResponse,
             onSuccess = {
                 Toast.makeText(activity, it.data, Toast.LENGTH_LONG).show()
                 popFragment()
             },
             onError = {
-                binding.tvResponse.apply {
-                    visibility = View.VISIBLE
-                    text = it
-                }
+                binding.tvResponse.showErrorMessage(it)
             }
         )
     }
 
     fun onCLickForgotPassword(view: View) {
         view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
-            viewModel.onPasswordReset()
+            viewModel.onPasswordReset {
+                binding.tvResponse.showErrorMessage(it)
+            }
         }
     }
 

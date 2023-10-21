@@ -6,7 +6,7 @@
             name="fragment"
             type="kind.sun.dev.coffeeworld.view.dialog.profile.EmailDialogFragment" />
         <variable
-            name="viewModel"
+            name="profileViewModel"
             type="kind.sun.dev.coffeeworld.viewmodel.ProfileViewModel" />
     </data>
 
@@ -58,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:text="@={viewModel.emailLiveData}" />
+                    android:text="@={profileViewModel.emailLiveData}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,7 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:text="@={viewModel.emailPasswordLiveData}" />
+                    android:text="@={profileViewModel.emailPasswordLiveData}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/orange_dark"
-                    android:onClick="@{() -> viewModel.onUpdateEmail()}"
+                    android:onClick="@{(view) -> fragment.onClickUpdateEmail(view)}"
                     android:text="@string/ok" />
             </LinearLayout>
 
