@@ -52,7 +52,7 @@ class UserRepository @Inject constructor(
         }
     }
 
-    suspend fun getUser() {
+    suspend fun fetchUser() {
         username?.let {
             performNetworkOperation(_user) { userService.getUser(it) }
         }

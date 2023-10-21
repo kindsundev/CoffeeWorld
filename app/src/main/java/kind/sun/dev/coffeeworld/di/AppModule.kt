@@ -6,6 +6,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kind.sun.dev.coffeeworld.data.local.dao.UserDao
+import kind.sun.dev.coffeeworld.data.local.db.AppDatabase
 import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
 import javax.inject.Singleton
 
@@ -19,5 +21,11 @@ object AppModule {
         return PreferencesHelper(context)
     }
 
+    @Provides
+    @Singleton
+    fun provideAppDatabase(@ApplicationContext context: Context) = AppDatabase(context)
 
+    @Provides
+    @Singleton
+    fun provideUserDao(database: AppDatabase): UserDao = database.userDao()
 }

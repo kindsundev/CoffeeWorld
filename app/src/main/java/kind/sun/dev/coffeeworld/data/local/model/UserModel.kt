@@ -1,10 +1,14 @@
 package kind.sun.dev.coffeeworld.data.local.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
+@Entity(tableName = "user_table")
 data class UserModel(
+    @PrimaryKey(autoGenerate = false)
     val id: Int,
     val username: String,
     val name: String,

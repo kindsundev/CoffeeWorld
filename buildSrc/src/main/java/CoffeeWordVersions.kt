@@ -23,7 +23,7 @@ object CoffeeWordVersions {
     val coroutines = "1.7.3"
     val navigation = "2.7.4"
     val glide = "4.15.1"
-    val room = "2.5.2"
+    val room = "2.6.0-rc01"
     val gson = "2.10.1"
     val splashScreen = "1.1.0-alpha02"
 }

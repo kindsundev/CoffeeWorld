@@ -6,16 +6,20 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.data.repository.UserRepository
 import kind.sun.dev.coffeeworld.contract.ProfileContract
+import kind.sun.dev.coffeeworld.data.local.dao.UserDao
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
 import kind.sun.dev.coffeeworld.utils.validator.ProfileValidator
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val profileValidator: ProfileValidator
+    private val profileValidator: ProfileValidator,
+    private val userDao: UserDao
 ) : BaseViewModel(), ProfileContract.ViewModel {
 
     val nameLiveData by lazy { MutableLiveData<String>() }
@@ -33,12 +37,18 @@ class ProfileViewModel @Inject constructor(
     override fun onFetchUser(onDataFromLocal: (UserModel?) -> Unit) {
         handleCheckAndRoute(
             conditionChecker = null,
-            onPassedCheck = { viewModelScope.launch { userRepository.getUser() } },
+            onPassedCheck = { viewModelScope.launch { userRepository.fetchUser() } },
             onFailedCheck = {
-
+                viewModelScope.launch {
+                    onDataFromLocal(
+                        withContext(Dispatchers.IO) { userDao.getUser() }
+                    )
+                }
             }
         )
     }
+
+    override suspend fun onSyncUser(userModel: UserModel) = userDao.upsertUser(userModel)
 
     override fun onUpdateAvatar(avatar: File, message: (String) -> Unit) {
         handleCheckAndRoute(

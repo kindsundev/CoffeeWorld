@@ -8,6 +8,8 @@ interface ProfileContract {
     interface ViewModel {
         fun onFetchUser(onDataFromLocal: (UserModel?) -> Unit)
 
+        suspend fun onSyncUser(userModel: UserModel): Long
+
         fun onUpdateAvatar(avatar: File, message: (String) -> Unit)
 
         fun onUpdateName(message: (String) -> Unit)
