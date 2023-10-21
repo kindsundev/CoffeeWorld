@@ -10,22 +10,40 @@ import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.dataset.CafeShopDataSet
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
 import kind.sun.dev.coffeeworld.base.BaseViewModel
+import kind.sun.dev.coffeeworld.data.local.dao.CafeDAO
 import kind.sun.dev.coffeeworld.data.remote.response.CafeResponse
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class CafeViewModel @Inject constructor(
-    private val cafeRepository: CafeRepository
+    private val cafeRepository: CafeRepository,
+    private val cafeDao: CafeDAO
 ): BaseViewModel(), CafeContract.ViewModel {
     val cafe: LiveData<NetworkResult<CafeResponse>>
         get() = cafeRepository.cafe
 
-    override fun getCafeList() {
-        viewModelScope.launch {
-            if (networkHelper.isConnected) {
-                cafeRepository.getCafeList()
+    override fun onFetchAllCafes(onDataFromLocal: (List<CafeModel>) -> Unit) {
+        handleCheckAndRoute(
+            conditionChecker = null,
+            onPassedCheck = {
+                viewModelScope.launch { cafeRepository.fetchAllCafes() }
+            },
+            onFailedCheck = {
+                viewModelScope.launch {
+                    onDataFromLocal(
+                        withContext(Dispatchers.IO){ cafeDao.getAllCafes() }
+                    )
+                }
             }
+        )
+    }
+
+    override suspend fun onSyncAllCafes(cafes: List<CafeModel>){
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) { cafeDao.upsertAllCafes(cafes) }
         }
     }
 

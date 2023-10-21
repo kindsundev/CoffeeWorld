@@ -3,6 +3,7 @@ package kind.sun.dev.coffeeworld.view.fragment.cafe
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
@@ -10,10 +11,11 @@ import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.databinding.FragmentCafeBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
-import kind.sun.dev.coffeeworld.utils.common.Logger
+import kind.sun.dev.coffeeworld.utils.helper.view.showToast
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopAdapter
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
 import kind.sun.dev.coffeeworld.viewmodel.CafeViewModel
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
@@ -39,7 +41,9 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
             })
     }
 
-    override fun prepareData(): Unit = viewModel.getCafeList()
+    override fun prepareData(): Unit = viewModel.onFetchAllCafes {
+        bindDataToCafeAdapter(it)
+    }
 
     override fun initViews() {
         binding.rvCafe.apply {
@@ -57,20 +61,23 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
 
     override fun observeViewModel() {
         observeNetworkResult(viewModel.cafe,
-            onSuccess = { initDataToCafeAdapter(it.data) },
-            onError = { Logger.error("[CafeFragment]: $it") }
+            onSuccess = { result ->
+                bindDataToCafeAdapter(result.data).also {
+                    lifecycleScope.launch { viewModel.onSyncAllCafes(result.data) }
+                }
+            },
+            onError = { requireContext().showToast(it) }
         )
     }
 
-    private fun initDataToCafeAdapter(result: List<CafeModel>) {
+    private fun bindDataToCafeAdapter(result: List<CafeModel>) {
         arrayOf<String>(
             requireContext().getString(R.string.nearby_coffee_shop),
             requireContext().getString(R.string.other_coffee_shop)
         ).also { tittles ->
-            cafeShopAdapter.items = viewModel.mapCafeModelToCafeViewItem(tittles, result)
-                .also {
-                    transformedData = it
-                }
+            cafeShopAdapter.items = viewModel.mapCafeModelToCafeViewItem(tittles, result).also {
+                transformedData = it
+            }
         }
     }
 

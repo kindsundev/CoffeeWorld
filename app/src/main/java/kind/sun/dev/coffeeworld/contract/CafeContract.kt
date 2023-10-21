@@ -6,7 +6,9 @@ import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
 interface CafeContract {
 
     interface ViewModel {
-        fun getCafeList()
+        fun onFetchAllCafes(onDataFromLocal: (List<CafeModel>) -> Unit)
+
+        suspend fun onSyncAllCafes(cafes: List<CafeModel>)
 
         fun mapCafeModelToCafeViewItem(
             title: Array<String>,

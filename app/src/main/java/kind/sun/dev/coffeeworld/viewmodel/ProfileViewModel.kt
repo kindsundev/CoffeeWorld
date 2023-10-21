@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.data.repository.UserRepository
 import kind.sun.dev.coffeeworld.contract.ProfileContract
-import kind.sun.dev.coffeeworld.data.local.dao.UserDao
+import kind.sun.dev.coffeeworld.data.local.dao.UserDAO
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
 import kind.sun.dev.coffeeworld.utils.validator.ProfileValidator
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val profileValidator: ProfileValidator,
-    private val userDao: UserDao
+    private val userDao: UserDAO
 ) : BaseViewModel(), ProfileContract.ViewModel {
 
     val nameLiveData by lazy { MutableLiveData<String>() }

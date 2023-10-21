@@ -26,7 +26,7 @@ class OrderViewModel @Inject constructor(
         handleCheckAndRoute(
             null,
             {
-                viewModelScope.launch { cafeRepository.getCafeList() }
+                viewModelScope.launch { cafeRepository.fetchAllCafes() }
             },
         ) {
 

@@ -20,7 +20,7 @@ class CafeRepository @Inject constructor(
     val categories: LiveData<NetworkResult<CafeCategoryResponse>>
         get() = _categories
 
-    suspend fun getCafeList() {
+    suspend fun fetchAllCafes() {
         performNetworkOperation(_cafe) {
             cafeService.getCafeList()
         }
