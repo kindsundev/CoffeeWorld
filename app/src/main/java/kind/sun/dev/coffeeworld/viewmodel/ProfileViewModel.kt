@@ -34,15 +34,22 @@ class ProfileViewModel @Inject constructor(
     val userResponse get() = userRepository.user
     val messageResponse get() = userRepository.userUpdate
 
-    override fun onFetchUser(onDataFromLocal: (UserModel?) -> Unit) {
+    override fun onFetchUser(
+        onDataFromLocal: (UserModel?) -> Unit,
+        onFailedMessage: (String) -> Unit
+    ) {
         handleCheckAndRoute(
             conditionChecker = null,
             onPassedCheck = { viewModelScope.launch { userRepository.fetchUser() } },
-            onFailedCheck = {
-                viewModelScope.launch {
-                    onDataFromLocal(
-                        withContext(Dispatchers.IO) { userDao.getUser() }
-                    )
+            onFailedCheck = { reason, localDataRequired ->
+                if (localDataRequired) {
+                    viewModelScope.launch {
+                        onDataFromLocal(withContext(Dispatchers.IO) {
+                            userDao.getUser()
+                        })
+                    }
+                } else {
+                    onFailedMessage(reason)
                 }
             }
         )
@@ -50,34 +57,34 @@ class ProfileViewModel @Inject constructor(
 
     override suspend fun onSyncUser(userModel: UserModel) = userDao.upsertUser(userModel)
 
-    override fun onUpdateAvatar(avatar: File, message: (String) -> Unit) {
+    override fun onUpdateAvatar(avatar: File, onFailedMessage: (String) -> Unit) {
         handleCheckAndRoute(
             conditionChecker = null,
             onPassedCheck = { viewModelScope.launch { userRepository.updateAvatar(avatar) } },
-            onFailedCheck = { message(it) }
+            onFailedCheck = { reason, _ -> onFailedMessage(reason) }
         )
     }
 
-    override fun onUpdateName(message: (String) -> Unit) {
+    override fun onUpdateName(onFailedMessage: (String) -> Unit) {
         val name = nameLiveData.value.toString().trim()
         handleCheckAndRoute(
             conditionChecker = { profileValidator.validateUpdateName(name) },
             onPassedCheck = { viewModelScope.launch { userRepository.updateName(name) } },
-            onFailedCheck = { message(it) }
+            onFailedCheck = { reason, _ -> onFailedMessage(reason) }
         )
     }
 
-    override fun onUpdateEmail(message: (String) -> Unit) {
+    override fun onUpdateEmail(onFailedMessage: (String) -> Unit) {
         val email = emailLiveData.value.toString().trim()
         val password = emailPasswordLiveData.value.toString().trim()
         handleCheckAndRoute(
             conditionChecker = { profileValidator.validatorUpdateEmail(email, password) },
             onPassedCheck = { viewModelScope.launch { userRepository.updateEmail(email, password) } },
-            onFailedCheck = { message(it) }
+            onFailedCheck = { reason, _ -> onFailedMessage(reason) }
         )
     }
 
-    override fun onUpdatePassword(message: (String) -> Unit) {
+    override fun onUpdatePassword(onFailedMessage: (String) -> Unit) {
         val currentPassword = currentPasswordLiveData.value.toString().trim()
         val newPassword = newPasswordLiveData.value.toString().trim()
         val reNewPassword = retypeNewPasswordLiveData.value.toString().trim()
@@ -88,25 +95,25 @@ class ProfileViewModel @Inject constructor(
             onPassedCheck = {
                 viewModelScope.launch { userRepository.updatePassword(currentPassword, newPassword) }
             },
-            onFailedCheck = { message(it) }
+            onFailedCheck = { reason, _ -> onFailedMessage(reason)}
         )
     }
 
-    override fun onUpdateAddress(message: (String) -> Unit) {
+    override fun onUpdateAddress(onFailedMessage: (String) -> Unit) {
         val address = addressLiveData.value.toString().trim()
         handleCheckAndRoute(
             conditionChecker = { profileValidator.validateUpdateAddress(address) },
             onPassedCheck = { viewModelScope.launch { userRepository.updateAddress(address) } },
-            onFailedCheck = { message(it) }
+            onFailedCheck = { reason, _ -> onFailedMessage(reason) }
         )
     }
 
-    override fun onUpdatePhone(message: (String) -> Unit) {
+    override fun onUpdatePhone(onFailedMessage: (String) -> Unit) {
         val phoneNumber = phoneLiveData.value.toString().trim()
         handleCheckAndRoute(
             conditionChecker = { profileValidator.validateUpdatePhone(phoneNumber) },
             onPassedCheck = { viewModelScope.launch { userRepository.updatePhone(phoneNumber) } },
-            onFailedCheck = { message(it) }
+            onFailedCheck = { reason, _ -> onFailedMessage(reason) }
         )
     }
 

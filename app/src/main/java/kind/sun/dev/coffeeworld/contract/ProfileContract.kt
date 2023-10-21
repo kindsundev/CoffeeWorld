@@ -6,21 +6,24 @@ import java.io.File
 interface ProfileContract {
 
     interface ViewModel {
-        fun onFetchUser(onDataFromLocal: (UserModel?) -> Unit)
+        fun onFetchUser(
+            onDataFromLocal: (UserModel?) -> Unit,
+            onFailedMessage: (String) -> Unit
+        )
 
         suspend fun onSyncUser(userModel: UserModel): Long
 
-        fun onUpdateAvatar(avatar: File, message: (String) -> Unit)
+        fun onUpdateAvatar(avatar: File, onFailedMessage: (String) -> Unit)
 
-        fun onUpdateName(message: (String) -> Unit)
+        fun onUpdateName(onFailedMessage: (String) -> Unit)
 
-        fun onUpdateEmail(message: (String) -> Unit)
+        fun onUpdateEmail(onFailedMessage: (String) -> Unit)
 
-        fun onUpdatePassword(message: (String) -> Unit)
+        fun onUpdatePassword(onFailedMessage: (String) -> Unit)
 
-        fun onUpdateAddress(message: (String) -> Unit)
+        fun onUpdateAddress(onFailedMessage: (String) -> Unit)
 
-        fun onUpdatePhone(message: (String) -> Unit)
+        fun onUpdatePhone(onFailedMessage: (String) -> Unit)
     }
 
     interface Validator {

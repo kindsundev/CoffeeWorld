@@ -25,17 +25,26 @@ class CafeViewModel @Inject constructor(
     val cafe: LiveData<NetworkResult<CafeResponse>>
         get() = cafeRepository.cafe
 
-    override fun onFetchAllCafes(onDataFromLocal: (List<CafeModel>) -> Unit) {
+    override fun onFetchAllCafes(
+        onDataFromLocal: (List<CafeModel>?) -> Unit,
+        onFailedMessage: (String) -> Unit
+    ) {
         handleCheckAndRoute(
             conditionChecker = null,
             onPassedCheck = {
                 viewModelScope.launch { cafeRepository.fetchAllCafes() }
             },
-            onFailedCheck = {
-                viewModelScope.launch {
-                    onDataFromLocal(
-                        withContext(Dispatchers.IO){ cafeDao.getAllCafes() }
-                    )
+            onFailedCheck = { reason, localDataRequired ->
+                if (localDataRequired) {
+                    viewModelScope.launch {
+                        onFailedMessage(reason).also {
+                            onDataFromLocal(withContext(Dispatchers.IO) {
+                                cafeDao.getAllCafes()
+                            })
+                        }
+                    }
+                } else {
+                    onFailedMessage(reason)
                 }
             }
         )

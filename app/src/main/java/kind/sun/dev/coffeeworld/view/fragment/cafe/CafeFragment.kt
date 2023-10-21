@@ -22,7 +22,16 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
     FragmentCafeBinding::inflate
 ){
     override val viewModel: CafeViewModel by viewModels()
-    private lateinit var cafeShopAdapter: CafeShopAdapter
+
+    private val cafeShopAdapter: CafeShopAdapter by lazy {
+        CafeShopAdapter {
+            navigateToFragment(
+                R.id.action_cafeFragment_to_cafeDetailFragment,
+                Bundle().apply { putParcelable(Constants.CAFE_KEY, it) }
+            )
+        }
+    }
+
     private lateinit var transformedData: List<CafeShopViewItem>
 
     override fun setupDataBinding() {
@@ -41,22 +50,26 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
             })
     }
 
-    override fun prepareData(): Unit = viewModel.onFetchAllCafes {
-        bindDataToCafeAdapter(it)
+    override fun prepareData() {
+        // todo: switch layout offline and pull-to-refresh
+        var hasLocalData = false
+        viewModel.onFetchAllCafes(
+            onDataFromLocal = {
+                it?.let {
+                    bindDataToCafeAdapter(it).also { hasLocalData = true }
+                } ?: requireContext().showToast(getString(R.string.you_are_offline))
+            }
+        ) { reason ->
+            if (!hasLocalData) requireContext().showToast(reason)
+        }
     }
 
     override fun initViews() {
         binding.rvCafe.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = CafeShopAdapter(::onCafeClicked).also { cafeShopAdapter = it }
+            adapter = cafeShopAdapter
         }
-    }
-
-    private fun onCafeClicked(cafe: CafeModel) {
-        navigateToFragment(R.id.action_cafeFragment_to_cafeDetailFragment, Bundle().apply {
-            putParcelable(Constants.CAFE_KEY, cafe)
-        })
     }
 
     override fun observeViewModel() {

@@ -12,18 +12,18 @@ open class BaseViewModel : ViewModel() {
      protected fun handleCheckAndRoute(
           conditionChecker: (() -> Pair<Boolean, String>)?,
           onPassedCheck: () -> Unit,
-          onFailedCheck: (String) -> Unit
+          onFailedCheck: (reason: String, localDataRequired: Boolean) -> Unit
      ) {
           if (networkHelper.isConnected) {
                conditionChecker?.let {
                     if (it().first) {
                          onPassedCheck()
                     } else {
-                         onFailedCheck(it().second)
+                         onFailedCheck(it().second, false)
                     }
                } ?: onPassedCheck()
           } else {
-               onFailedCheck("You need internet to make this request")
+               onFailedCheck("Please check your internet", true)
           }
      }
 

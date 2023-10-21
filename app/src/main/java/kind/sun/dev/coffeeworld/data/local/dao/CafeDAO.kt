@@ -11,7 +11,7 @@ import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 interface CafeDAO {
 
     @Query("SELECT * FROM cafe_table")
-    fun getAllCafes(): List<CafeModel>
+    fun getAllCafes(): List<CafeModel>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertCafe(cafe: CafeModel)

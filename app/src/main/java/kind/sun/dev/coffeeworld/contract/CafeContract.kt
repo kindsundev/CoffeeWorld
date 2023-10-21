@@ -6,7 +6,10 @@ import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
 interface CafeContract {
 
     interface ViewModel {
-        fun onFetchAllCafes(onDataFromLocal: (List<CafeModel>) -> Unit)
+        fun onFetchAllCafes(
+            onDataFromLocal: (List<CafeModel>?) -> Unit,
+            onFailedMessage: (String) -> Unit
+        )
 
         suspend fun onSyncAllCafes(cafes: List<CafeModel>)
 

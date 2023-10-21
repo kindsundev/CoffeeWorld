@@ -45,7 +45,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>(
     }
 
     override fun prepareData() {
-        viewModel.onFetchUser { localData  -> localData ?.let { notifyUser(it) } }
+        var hasLocalData = false
+        viewModel.onFetchUser(
+            onDataFromLocal = {
+                it?.let {
+                    notifyUser(it).also { hasLocalData = true }
+                } ?: requireContext().showToast(getString(R.string.you_are_offline))
+            }
+        ) { reason ->
+            if (!hasLocalData) requireContext().showToast(reason)
+        }
     }
 
     override fun initViews() {
@@ -95,7 +104,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>(
     fun onBackToMoreFragment() : Unit = popFragment()
 
     private fun onUpdateSuccess() {
-        viewModel.onFetchUser { localData  -> localData ?.let { notifyUser(it) } }
+        viewModel.onFetchUser(
+            onDataFromLocal = {
+                it?.let { notifyUser(it) }
+            }
+        ) { reason ->
+            requireContext().showToast(reason)
+        }
     }
 
     private fun notifyUser(result: UserModel) {

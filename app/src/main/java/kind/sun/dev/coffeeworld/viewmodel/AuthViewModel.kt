@@ -32,7 +32,7 @@ class AuthViewModel @Inject constructor(
     val loginResponse get() = authRepository.authLogin
     val messageResponse get() = authRepository.messageResponse
 
-    override fun onLogin(message: (String) -> Unit) {
+    override fun onLogin(onFailedMessage: (String) -> Unit) {
         val username = usernameLogin.value.toString().trim()
         val password = passwordLogin.value.toString().trim()
         handleCheckAndRoute(
@@ -42,11 +42,11 @@ class AuthViewModel @Inject constructor(
             onPassedCheck = {
                 viewModelScope.launch { authRepository.login(LoginRequest(username, password)) }
             },
-            onFailedCheck = { message(it) }
+            onFailedCheck = { reason, _ -> onFailedMessage(reason) }
         )
     }
 
-    override fun onRegister(message: (String) -> Unit) {
+    override fun onRegister(onFailedMessage: (String) -> Unit) {
         val name = nameRegister.value.toString().trim()
         val email = emailRegister.value.toString().trim()
         val username = usernameRegister.value.toString().trim()
@@ -61,11 +61,11 @@ class AuthViewModel @Inject constructor(
                     authRepository.register(RegisterRequest(username, password, email, name))
                 }
             },
-            onFailedCheck = { message(it) }
+            onFailedCheck = { reason, _ -> onFailedMessage(reason) }
         )
     }
 
-    override fun onPasswordReset(message: (String) -> Unit) {
+    override fun onPasswordReset(onFailedMessage: (String) -> Unit) {
         val username = usernameForgotPassword.value.toString().trim()
         val email = emailForgotPassword.value.toString().trim()
         handleCheckAndRoute(
@@ -77,7 +77,7 @@ class AuthViewModel @Inject constructor(
                     authRepository.passwordReset(AuthRequest(username, email))
                 }
             },
-            onFailedCheck = { message(it) }
+            onFailedCheck = { reason, _ -> onFailedMessage(reason) }
         )
     }
 }
