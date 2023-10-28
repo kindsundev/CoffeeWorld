@@ -4,8 +4,8 @@ import javax.inject.Qualifier
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
-annotation class WithAuthQualifier
+annotation class WithAuth
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
-annotation class WithoutAuthQualifier
+annotation class WithoutAuth

@@ -11,8 +11,9 @@ import kind.sun.dev.coffeeworld.api.AuthService
 import kind.sun.dev.coffeeworld.api.CafeService
 import kind.sun.dev.coffeeworld.api.UserService
 import kind.sun.dev.coffeeworld.utils.api.AuthInterceptor
-import kind.sun.dev.coffeeworld.utils.custom.WithAuthQualifier
-import kind.sun.dev.coffeeworld.utils.custom.WithoutAuthQualifier
+import kind.sun.dev.coffeeworld.utils.api.ErrorInterceptor
+import kind.sun.dev.coffeeworld.utils.custom.WithAuth
+import kind.sun.dev.coffeeworld.utils.custom.WithoutAuth
 import kind.sun.dev.coffeeworld.utils.helper.network.NetworkReceiverHelper
 import kind.sun.dev.coffeeworld.utils.helper.network.NetworkHelper
 import okhttp3.OkHttpClient
@@ -52,33 +53,43 @@ object NetworkModule {
         return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
     }
 
+    @Provides
+    @Singleton
+    fun provideErrorInterceptor(@ApplicationContext context: Context): ErrorInterceptor {
+        return ErrorInterceptor(context)
+    }
+
     @Singleton
     @Provides
-    @WithAuthQualifier
+    @WithAuth
     fun provideOkHttpClientWithAuth(
         authInterceptor: AuthInterceptor,
-        loggingInterceptor: HttpLoggingInterceptor
+        loggingInterceptor: HttpLoggingInterceptor,
+        errorInterceptor: ErrorInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(authInterceptor)
             .addInterceptor(loggingInterceptor)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .connectTimeout(10, TimeUnit.SECONDS)
+            .addInterceptor(authInterceptor)
+            .addInterceptor(errorInterceptor)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
             .build()
     }
 
     @Singleton
     @Provides
-    @WithoutAuthQualifier
+    @WithoutAuth
     fun provideOkHttpClientWithoutAuth(
-        loggingInterceptor: HttpLoggingInterceptor
+        loggingInterceptor: HttpLoggingInterceptor,
+        errorInterceptor: ErrorInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .connectTimeout(10, TimeUnit.SECONDS)
+            .addInterceptor(errorInterceptor)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
             .build()
     }
 
@@ -86,7 +97,7 @@ object NetworkModule {
     @Provides
     fun provideAuthService(
         retrofitBuilder: Retrofit.Builder,
-        @WithAuthQualifier okHttpClient: OkHttpClient
+        @WithAuth okHttpClient: OkHttpClient
     ): AuthService {
         return retrofitBuilder.client(okHttpClient).build().create(AuthService::class.java)
     }
@@ -95,7 +106,7 @@ object NetworkModule {
     @Provides
     fun provideCafeService(
         retrofitBuilder: Retrofit.Builder,
-        @WithoutAuthQualifier okHttpClient: OkHttpClient
+        @WithoutAuth okHttpClient: OkHttpClient
     ): CafeService {
         return retrofitBuilder.client(okHttpClient).build().create(CafeService::class.java)
     }
@@ -104,7 +115,7 @@ object NetworkModule {
     @Provides
     fun provideUserService(
         retrofitBuilder: Retrofit.Builder,
-        @WithAuthQualifier okHttpClient: OkHttpClient
+        @WithAuth okHttpClient: OkHttpClient
     ): UserService {
         return retrofitBuilder.client(okHttpClient).build().create(UserService::class.java)
     }
