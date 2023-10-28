@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.base.BaseDialog
 import kind.sun.dev.coffeeworld.databinding.DialogUpdateEmailBinding
-import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
 import kind.sun.dev.coffeeworld.utils.helper.view.showToast
@@ -55,7 +54,7 @@ class EmailDialogFragment(
     }
 
     fun onClickUpdateEmail(view: View) {
-        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
+        view.setScaleAnimation {
             viewModel.onUpdateEmail {
                 binding.tvError.showErrorMessage(it)
             }

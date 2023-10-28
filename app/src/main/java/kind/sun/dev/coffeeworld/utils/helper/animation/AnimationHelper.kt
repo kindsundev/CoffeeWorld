@@ -6,6 +6,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.view.View
 import android.view.animation.Interpolator
+import kind.sun.dev.coffeeworld.utils.common.Constants
 import kotlin.math.sin
 
 private val cycleInterpolator = object : Interpolator {
@@ -21,8 +22,8 @@ private val cycleInterpolator = object : Interpolator {
 * It will zoom in and out like the feeling of clicking on an object.
 * */
 fun View.setScaleAnimation(
-    animDuration: Long,
-    animScale: Float,
+    animDuration: Long = Constants.DURATION_SHORT,
+    animScale: Float =  Constants.SCALE_LOW,
     onAnimationDone: () -> Unit
 ) {
     val scaleXAnimator = ObjectAnimator.ofFloat(this, View.SCALE_X, animScale).apply {

@@ -14,7 +14,6 @@ import kind.sun.dev.coffeeworld.databinding.ItemMoreTitleBinding
 import kind.sun.dev.coffeeworld.databinding.ItemUserInfoBinding
 import kind.sun.dev.coffeeworld.view.adapter.more.MoreViewItem
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
-import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.dataset.MoreDataSet
 
 sealed class ProfileViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -22,7 +21,7 @@ sealed class ProfileViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(b
     var onItemClickListener : ((itemId: (MoreDataSet.Id)) -> Unit)? = null
 
     protected fun onClickMoreItem(view: View, optionId: MoreDataSet.Id) {
-        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
+        view.setScaleAnimation {
             onItemClickListener?.invoke(optionId)
         }
     }

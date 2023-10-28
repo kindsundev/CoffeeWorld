@@ -57,11 +57,15 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
             onDataFromLocal = {
                 it?.let {
                     bindDataToCafeAdapter(it).also { hasLocalData = true }
-                } ?: requireContext().showToast(getString(R.string.you_are_offline))
+                } ?: showNoNetworkConnection()
             }
         ) { reason ->
             if (!hasLocalData) requireContext().showToast(reason)
         }
+    }
+
+    private fun showNoNetworkConnection() {
+
     }
 
     override fun initViews() {

@@ -6,7 +6,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.databinding.FragmentLoginBinding
-import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
 import kind.sun.dev.coffeeworld.viewmodel.AuthViewModel
@@ -46,19 +45,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
     }
 
     fun onClickRegister(view: View) {
-        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
-            navigateToFragment(R.id.action_loginFragment_to_registerFragment)
-        }
+        view.setScaleAnimation { navigateToFragment(R.id.action_loginFragment_to_registerFragment) }
     }
 
     fun onClickForgotPassword(view: View) {
-        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
-            navigateToFragment(R.id.action_loginFragment_to_forgotPasswordFragment)
-        }
+        view.setScaleAnimation { navigateToFragment(R.id.action_loginFragment_to_forgotPasswordFragment) }
     }
 
     fun onCLickLogin(view: View) {
-        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
+        view.setScaleAnimation {
             viewModel.onLogin {
                 binding.tvError.showErrorMessage(it)
             }

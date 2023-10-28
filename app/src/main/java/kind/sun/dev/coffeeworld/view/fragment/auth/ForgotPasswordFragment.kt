@@ -6,7 +6,6 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.databinding.FragmentForgotPasswordBinding
-import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
 import kind.sun.dev.coffeeworld.viewmodel.AuthViewModel
@@ -40,7 +39,7 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding, AuthV
     }
 
     fun onCLickForgotPassword(view: View) {
-        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
+        view.setScaleAnimation {
             viewModel.onPasswordReset {
                 binding.tvResponse.showErrorMessage(it)
             }
@@ -48,8 +47,6 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding, AuthV
     }
 
     fun backToLoginFragment(view: View) {
-        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
-            popFragment()
-        }
+        view.setScaleAnimation { popFragment() }
     }
 }

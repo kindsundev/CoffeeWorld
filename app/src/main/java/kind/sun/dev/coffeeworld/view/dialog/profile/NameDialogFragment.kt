@@ -5,7 +5,6 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.base.BaseDialog
 import kind.sun.dev.coffeeworld.databinding.DialogUpdateNameBinding
-import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
 import kind.sun.dev.coffeeworld.utils.helper.view.showToast
@@ -41,7 +40,7 @@ class NameDialogFragment(
     fun onCancel() : Unit = this.dismiss()
 
     fun onClickUpdateName(view: View) {
-        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
+        view.setScaleAnimation {
             viewModel.onUpdateName {
                 binding.tvError.showErrorMessage(it)
             }

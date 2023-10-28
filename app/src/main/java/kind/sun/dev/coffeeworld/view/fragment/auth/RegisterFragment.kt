@@ -8,7 +8,6 @@ import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.databinding.FragmentRegisterBinding
 import kind.sun.dev.coffeeworld.viewmodel.AuthViewModel
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
-import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
 
 @AndroidEntryPoint
@@ -39,7 +38,7 @@ class RegisterFragment: BaseFragment<FragmentRegisterBinding, AuthViewModel>(
     }
 
     fun onCLickRegister(view: View) {
-        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
+        view.setScaleAnimation {
             viewModel.onRegister {
                 binding.tvResponse.showErrorMessage(it)
             }
@@ -47,8 +46,6 @@ class RegisterFragment: BaseFragment<FragmentRegisterBinding, AuthViewModel>(
     }
 
     fun backToLoginFragment(view: View) {
-        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
-            popFragment()
-        }
+        view.setScaleAnimation { popFragment() }
     }
 }

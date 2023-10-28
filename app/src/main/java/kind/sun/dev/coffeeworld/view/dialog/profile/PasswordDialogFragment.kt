@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.base.BaseDialog
 import kind.sun.dev.coffeeworld.databinding.DialogUpdatePasswordBinding
-import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
 import kind.sun.dev.coffeeworld.utils.helper.view.showToast
@@ -60,7 +59,7 @@ class PasswordDialogFragment : BaseDialog<DialogUpdatePasswordBinding, ProfileVi
     }
 
     fun onClickUpdatePassword(view: View) {
-        view.setScaleAnimation(Constants.DURATION_SHORT, Constants.SCALE_LOW) {
+        view.setScaleAnimation {
             viewModel.onUpdatePassword {
                 binding.tvError.showErrorMessage(it)
             }
