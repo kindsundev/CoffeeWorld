@@ -104,4 +104,7 @@
     <string name="no_internet_connected">No Internet Connection</string>
     <string name="press_back_again">Press back again to exit!</string>
     <string name="you_are_offline">You are offline!</string>
+    <string name="notification_no_internet">No internet connection found. \nCheck your network.</string>
+    <string name="oops">Oops!</string>
+    <string name="try_again">Try Again</string>
 </resources>

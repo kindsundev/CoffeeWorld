@@ -13,6 +13,7 @@ import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.data.local.dao.CafeDAO
 import kind.sun.dev.coffeeworld.data.remote.response.CafeResponse
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -37,11 +38,10 @@ class CafeViewModel @Inject constructor(
             onFailedCheck = { reason, localDataRequired ->
                 if (localDataRequired) {
                     viewModelScope.launch {
-                        onFailedMessage(reason).also {
-                            onDataFromLocal(withContext(Dispatchers.IO) {
-                                cafeDao.getAllCafes()
-                            })
-                        }
+                        onDataFromLocal(withContext(Dispatchers.IO) {
+                            cafeDao.getAllCafes()
+                        }).also { delay(300) }
+                        onFailedMessage(reason)
                     }
                 } else {
                     onFailedMessage(reason)

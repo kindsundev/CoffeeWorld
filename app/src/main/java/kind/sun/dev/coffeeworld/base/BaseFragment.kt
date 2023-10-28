@@ -1,5 +1,6 @@
 package kind.sun.dev.coffeeworld.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import kind.sun.dev.coffeeworld.contract.FragmentContract
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.custom.CustomLoadingDialog
 import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
+import kind.sun.dev.coffeeworld.view.MainActivity
 import javax.inject.Inject
 
 abstract class BaseFragment<V : ViewDataBinding, VM: BaseViewModel>(
@@ -24,10 +26,20 @@ abstract class BaseFragment<V : ViewDataBinding, VM: BaseViewModel>(
     protected val binding: V get() = _binding as V
     protected abstract val viewModel: VM
 
+    private lateinit var mainActivity: MainActivity
     private val navController by lazy { findNavController() }
 
     @Inject lateinit var preferences: PreferencesHelper
     @Inject lateinit var loadingDialog: CustomLoadingDialog
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is MainActivity) {
+            mainActivity = context
+        } else {
+            throw IllegalStateException("Context mus be an instance of ${MainActivity::class.simpleName}")
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = bindingInflater.invoke(inflater)
@@ -90,5 +102,7 @@ abstract class BaseFragment<V : ViewDataBinding, VM: BaseViewModel>(
     protected fun popToHomeFragment() { navController.popBackStack(R.id.homeFragment, false) }
 
     protected fun popFragment() { navController.popBackStack() }
+
+    protected fun getBottomNavigationHeight() = mainActivity.getBottomNavigationHeight()
 
 }

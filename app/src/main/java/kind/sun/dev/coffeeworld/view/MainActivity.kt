@@ -75,4 +75,5 @@ class MainActivity : AppCompatActivity() {
         showSnackbarMessage(this, binding.root as CoordinatorLayout, resMessageId)
     }
 
+    fun getBottomNavigationHeight() = binding.bottomNavView.height
 }

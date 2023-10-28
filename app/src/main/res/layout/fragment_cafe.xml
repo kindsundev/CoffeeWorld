@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="fragment"
             type="kind.sun.dev.coffeeworld.view.fragment.cafe.CafeFragment" />
@@ -148,22 +150,21 @@
             android:id="@+id/rv_cafe"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingTop="8dp"
-            android:paddingHorizontal="16dp"
             android:clipToPadding="false"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="8dp"
             android:paddingBottom="80dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view2" />
 
-        <ImageView
-            android:id="@+id/img_offline"
-            android:layout_width="250dp"
+        <include
+            android:id="@+id/layout_network_error"
+            layout="@layout/layout_network_error"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:contentDescription="@string/offline"
-            android:src="@drawable/img_offline"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

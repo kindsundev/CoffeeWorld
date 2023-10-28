@@ -1,6 +1,8 @@
 package kind.sun.dev.coffeeworld.view.fragment.cafe
 
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -11,6 +13,7 @@ import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.databinding.FragmentCafeBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
+import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.showToast
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopAdapter
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
@@ -47,25 +50,35 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
                 override fun handleOnBackPressed() {
                     popToHomeFragment()
                 }
-            })
+            }
+        )
     }
 
     override fun prepareData() {
-        // todo: switch layout offline and pull-to-refresh
+        requestGetData()
+    }
+
+    private fun requestGetData() {
         var hasLocalData = false
         viewModel.onFetchAllCafes(
             onDataFromLocal = {
-                it?.let {
-                    bindDataToCafeAdapter(it).also { hasLocalData = true }
-                } ?: showNoNetworkConnection()
-            }
-        ) { reason ->
-            if (!hasLocalData) requireContext().showToast(reason)
-        }
+                if (!it.isNullOrEmpty()) {
+                    hasLocalData = true
+                    bindDataToCafeAdapter(it)
+                } else {
+                    showNetworkErrorLayout()
+                }
+            },
+            onFailedMessage = { if (!hasLocalData) requireContext().showToast(it) }
+        )
     }
 
-    private fun showNoNetworkConnection() {
-
+    private fun showNetworkErrorLayout() = binding.apply {
+        toggleNetworkErrorLayout(true).also {
+            layoutNetworkError.btnTryAgain.setOnClickListener {
+                it.setScaleAnimation { requestGetData() }
+            }
+        }
     }
 
     override fun initViews() {
@@ -79,6 +92,7 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
     override fun observeViewModel() {
         observeNetworkResult(viewModel.cafe,
             onSuccess = { result ->
+                toggleNetworkErrorLayout(false)
                 bindDataToCafeAdapter(result.data).also {
                     lifecycleScope.launch { viewModel.onSyncAllCafes(result.data) }
                 }
@@ -100,5 +114,17 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
 
     fun onSearchChanged(name: String) {
         cafeShopAdapter.items = viewModel.filterListByName(name, transformedData)
+    }
+
+    private fun toggleNetworkErrorLayout(enable: Boolean) = binding.layoutNetworkError.root.apply {
+        if (enable) {
+            layoutParams = (layoutParams as ViewGroup.MarginLayoutParams).apply {
+                setMargins(0, 0, 0, getBottomNavigationHeight())
+            }.also {
+                visibility = View.VISIBLE
+            }
+        } else {
+            visibility = View.GONE
+        }
     }
 }
