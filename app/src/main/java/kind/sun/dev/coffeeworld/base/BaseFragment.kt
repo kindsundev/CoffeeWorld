@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.contract.FragmentContract
@@ -88,10 +87,6 @@ abstract class BaseFragment<V : ViewDataBinding, VM: BaseViewModel>(
             }
         }
     }
-
-    protected fun observeValidatorError(
-        liveData: MutableLiveData<String>, onMessage: (String) -> Unit
-    ): Unit = liveData.observe(viewLifecycleOwner) { onMessage.invoke(it) }
 
     protected fun navigateToFragment(resId: Int, bundle: Bundle? = null) {
         navController.apply {

@@ -1,6 +1,7 @@
 package kind.sun.dev.coffeeworld.view.fragment.more.user.profile
 
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import kind.sun.dev.coffeeworld.data.local.model.UserModel
 import kind.sun.dev.coffeeworld.databinding.FragmentProfileBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.dataset.MoreDataSet
+import kind.sun.dev.coffeeworld.utils.helper.view.checkThenHide
 import kind.sun.dev.coffeeworld.utils.helper.view.showAlertDialog
 import kind.sun.dev.coffeeworld.utils.helper.view.showToast
 import kind.sun.dev.coffeeworld.view.adapter.profile.ProfileAdapter
@@ -44,13 +46,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>(
         }
     }
 
-    override fun prepareData() {
+    override fun prepareData() { requestGetData() }
+
+    private fun requestGetData() {
         var hasLocalData = false
         viewModel.onFetchUser(
             onDataFromLocal = {
                 it?.let {
                     notifyUser(it).also { hasLocalData = true }
                 } ?: requireContext().showToast(getString(R.string.you_are_offline))
+                binding.swipeRefreshLayout.checkThenHide()
             }
         ) { reason ->
             if (!hasLocalData) requireContext().showToast(reason)
@@ -58,6 +63,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>(
     }
 
     override fun initViews() {
+        binding.apply {
+            swipeRefreshLayout.apply {
+                setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.gold))
+                setOnRefreshListener { requestGetData() }
+            }
+        }
         binding.rvProfileOptions.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = profileAdapter
@@ -67,6 +78,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>(
     override fun observeViewModel() {
         observeNetworkResult(viewModel.userResponse,
             onSuccess = { result ->
+                binding.swipeRefreshLayout.checkThenHide()
                 notifyUser(result.data).also {
                     lifecycleScope.launch { viewModel.onSyncUser(result.data) }
                 }

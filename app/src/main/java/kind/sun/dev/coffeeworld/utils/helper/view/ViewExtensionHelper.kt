@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -119,4 +120,23 @@ fun TextView.showErrorMessage(message: String) {
 
 fun Context.showToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun SwipeRefreshLayout.checkThenHide() {
+    if (isRefreshing) isRefreshing = false
+}
+
+fun View.toggleNetworkErrorLayout(
+    enableToggle: Boolean, enableMargin: Boolean = false, marginPx: Int = 0
+) {
+    if (enableToggle) {
+        if (enableMargin) {
+            layoutParams = (layoutParams as ViewGroup.MarginLayoutParams).apply {
+                setMargins(0, 0, 0, marginPx)
+            }
+        }
+        visibility = View.VISIBLE
+    } else {
+        visibility = View.GONE
+    }
 }

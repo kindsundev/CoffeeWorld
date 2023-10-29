@@ -40,7 +40,9 @@ class CafeViewModel @Inject constructor(
                     viewModelScope.launch {
                         onDataFromLocal(withContext(Dispatchers.IO) {
                             cafeDao.getAllCafes()
-                        }).also { delay(300) }
+                        }).also {
+                            delay(300)
+                        }
                         onFailedMessage(reason)
                     }
                 } else {

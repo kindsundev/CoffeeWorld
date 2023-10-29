@@ -1,9 +1,8 @@
 package kind.sun.dev.coffeeworld.view.fragment.cafe
 
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +13,9 @@ import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.databinding.FragmentCafeBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
+import kind.sun.dev.coffeeworld.utils.helper.view.checkThenHide
 import kind.sun.dev.coffeeworld.utils.helper.view.showToast
+import kind.sun.dev.coffeeworld.utils.helper.view.toggleNetworkErrorLayout
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopAdapter
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
 import kind.sun.dev.coffeeworld.viewmodel.CafeViewModel
@@ -25,6 +26,7 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
     FragmentCafeBinding::inflate
 ){
     override val viewModel: CafeViewModel by viewModels()
+    private lateinit var transformedData: List<CafeShopViewItem>
 
     private val cafeShopAdapter: CafeShopAdapter by lazy {
         CafeShopAdapter {
@@ -35,13 +37,9 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
         }
     }
 
-    private lateinit var transformedData: List<CafeShopViewItem>
-
     override fun setupDataBinding() {
-        binding.apply {
-            fragment = this@CafeFragment
-            lifecycleOwner = this@CafeFragment
-        }
+        binding.fragment = this
+        binding.lifecycleOwner = this
     }
 
     override fun initAnything() {
@@ -54,9 +52,7 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
         )
     }
 
-    override fun prepareData() {
-        requestGetData()
-    }
+    override fun prepareData() { requestGetData() }
 
     private fun requestGetData() {
         var hasLocalData = false
@@ -68,31 +64,43 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
                 } else {
                     showNetworkErrorLayout()
                 }
+                binding.swipeRefreshLayout.checkThenHide()
             },
-            onFailedMessage = { if (!hasLocalData) requireContext().showToast(it) }
+            onFailedMessage = {
+                if (!hasLocalData) requireContext().showToast(it)
+            }
         )
     }
 
-    private fun showNetworkErrorLayout() = binding.apply {
-        toggleNetworkErrorLayout(true).also {
-            layoutNetworkError.btnTryAgain.setOnClickListener {
+    private fun showNetworkErrorLayout() = binding.layoutNetworkError.apply {
+        root.toggleNetworkErrorLayout(
+            enableToggle = true, enableMargin = true, marginPx = getBottomNavigationHeight()
+        ).also {
+            btnTryAgain.setOnClickListener {
                 it.setScaleAnimation { requestGetData() }
             }
         }
     }
 
     override fun initViews() {
-        binding.rvCafe.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = cafeShopAdapter
+        binding.apply {
+            swipeRefreshLayout.apply {
+                setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.gold))
+                setOnRefreshListener { requestGetData() }
+            }
+            rvCafe.apply {
+                setHasFixedSize(true)
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = cafeShopAdapter
+            }
         }
     }
 
     override fun observeViewModel() {
         observeNetworkResult(viewModel.cafe,
             onSuccess = { result ->
-                toggleNetworkErrorLayout(false)
+                binding.swipeRefreshLayout.checkThenHide()
+                binding.layoutNetworkError.root.toggleNetworkErrorLayout(false)
                 bindDataToCafeAdapter(result.data).also {
                     lifecycleScope.launch { viewModel.onSyncAllCafes(result.data) }
                 }
@@ -100,6 +108,7 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
             onError = { requireContext().showToast(it) }
         )
     }
+
 
     private fun bindDataToCafeAdapter(result: List<CafeModel>) {
         arrayOf<String>(
@@ -114,17 +123,5 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
 
     fun onSearchChanged(name: String) {
         cafeShopAdapter.items = viewModel.filterListByName(name, transformedData)
-    }
-
-    private fun toggleNetworkErrorLayout(enable: Boolean) = binding.layoutNetworkError.root.apply {
-        if (enable) {
-            layoutParams = (layoutParams as ViewGroup.MarginLayoutParams).apply {
-                setMargins(0, 0, 0, getBottomNavigationHeight())
-            }.also {
-                visibility = View.VISIBLE
-            }
-        } else {
-            visibility = View.GONE
-        }
     }
 }

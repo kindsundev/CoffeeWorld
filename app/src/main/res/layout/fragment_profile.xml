@@ -47,10 +47,17 @@
                 app:srcCompat="@drawable/ic_baseline_diamond_28" />
         </Toolbar>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_profile_options"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_profile_options"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 
