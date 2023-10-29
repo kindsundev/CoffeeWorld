@@ -41,4 +41,6 @@ object CoffeeWordDepencencies {
     val splashScreen by lazy { "androidx.core:core-splashscreen:${CoffeeWordVersions.splashScreen}" }
 
     val swipeRefreshLayout by lazy { "androidx.swiperefreshlayout:swiperefreshlayout:${CoffeeWordVersions.swipeRefreshLayout}" }
+
+    val styleableToast by lazy {"io.github.muddz:styleabletoast:${CoffeeWordVersions.styleableToast}"}
 }

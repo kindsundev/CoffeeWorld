@@ -27,4 +27,5 @@ object CoffeeWordVersions {
     val gson = "2.10.1"
     val splashScreen = "1.1.0-alpha02"
     val swipeRefreshLayout = "1.2.0-alpha01"
+    val styleableToast = "2.4.0"
 }

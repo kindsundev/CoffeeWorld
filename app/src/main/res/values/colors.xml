@@ -37,5 +37,9 @@
     <color name="tea_dark">#116A7B</color>
     <color name="blue_medium">#4F709C</color>
 
+    <color name="status_success">#4a934a</color>
+    <color name="status_error">#B00020</color>
+    <color name="status_warning">#FBC02D</color>
+    <color name="status_thanks">#0277BD</color>
 
 </resources>

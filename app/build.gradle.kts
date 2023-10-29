@@ -65,6 +65,7 @@ dependencies {
     kapt(CoffeeWordDepencencies.kaptHilt)
 
     implementation(CoffeeWordDepencencies.viewModelKtx)
+
     implementation(CoffeeWordDepencencies.liveDataKtx)
 
     implementation(CoffeeWordDepencencies.retrofit)
@@ -92,5 +93,8 @@ dependencies {
     implementation(CoffeeWordDepencencies.gson)
 
     implementation(CoffeeWordDepencencies.splashScreen)
+
     implementation(CoffeeWordDepencencies.swipeRefreshLayout)
+
+    implementation(CoffeeWordDepencencies.styleableToast)
 }

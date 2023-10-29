@@ -63,4 +63,70 @@
         <item name="android:layout_marginEnd">30dp</item>
     </style>
 
+    <style name="toast_network">
+        <item name="stTextColor">@color/white</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">@color/status_warning</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stIconStart">@drawable/ic_baseline_network_error</item>
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">top</item>
+        <item name="stRadius">5dp</item>
+    </style>
+
+    <style name="toast_error">
+        <item name="stTextColor">@color/white</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">@color/status_error</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stIconStart">@drawable/ic_baseline_warning</item>
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">top</item>
+        <item name="stRadius">5dp</item>
+    </style>
+
+    <style name="toast_success">
+        <item name="stTextColor">@color/white</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">@color/status_success</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stIconStart">@drawable/ic_baseline_done_24</item>
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">top</item>
+        <item name="stRadius">5dp</item>
+    </style>
+
+    <style name="toast_warning">
+        <item name="stTextColor">@color/white</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">@color/status_warning</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stIconStart">@drawable/ic_baseline_warning</item>
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">top</item>
+        <item name="stRadius">5dp</item>
+    </style>
+
+    <style name="toast_thanks">
+        <item name="stTextColor">@color/white</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">@color/status_thanks</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stIconStart">@drawable/ic_baseline_thanks</item>
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">top</item>
+        <item name="stRadius">5dp</item>
+    </style>
+
+    <style name="toast_permission">
+        <item name="stTextColor">@color/white</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">@color/status_thanks</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stIconStart">@drawable/ic_baseline_lock_open_24</item>
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">top</item>
+        <item name="stRadius">5dp</item>
+    </style>
+
 </resources>
