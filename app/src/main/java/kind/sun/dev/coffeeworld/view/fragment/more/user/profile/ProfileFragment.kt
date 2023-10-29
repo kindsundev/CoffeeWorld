@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.muddz.styleabletoast.StyleableToast
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
@@ -14,7 +15,6 @@ import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.dataset.MoreDataSet
 import kind.sun.dev.coffeeworld.utils.helper.view.checkThenHide
 import kind.sun.dev.coffeeworld.utils.helper.view.showAlertDialog
-import kind.sun.dev.coffeeworld.utils.helper.view.showToast
 import kind.sun.dev.coffeeworld.view.adapter.profile.ProfileAdapter
 import kind.sun.dev.coffeeworld.view.dialog.profile.AddressDialogFragment
 import kind.sun.dev.coffeeworld.view.dialog.profile.AvatarBottomFragment
@@ -54,12 +54,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>(
             onDataFromLocal = {
                 it?.let {
                     notifyUser(it).also { hasLocalData = true }
-                } ?: requireContext().showToast(getString(R.string.you_are_offline))
+                } ?: StyleableToast.makeText(
+                    requireContext(), getString(R.string.you_are_offline), R.style.toast_network
+                ).show()
                 binding.swipeRefreshLayout.checkThenHide()
+            },
+            onFailedMessage = {
+                if (!hasLocalData)
+                    StyleableToast.makeText(requireContext(), it, R.style.toast_network).show()
             }
-        ) { reason ->
-            if (!hasLocalData) requireContext().showToast(reason)
-        }
+        )
     }
 
     override fun initViews() {
@@ -83,7 +87,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>(
                     lifecycleScope.launch { viewModel.onSyncUser(result.data) }
                 }
             },
-            onError = { requireContext().showToast(it) }
+            onError = {
+                StyleableToast.makeText(requireContext(), it, R.style.toast_error).show()
+            }
         )
     }
 
@@ -119,10 +125,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>(
         viewModel.onFetchUser(
             onDataFromLocal = {
                 it?.let { notifyUser(it) }
+            },
+            onFailedMessage = {
+                StyleableToast.makeText(requireContext(), it, R.style.toast_error).show()
             }
-        ) { reason ->
-            requireContext().showToast(reason)
-        }
+        )
     }
 
     private fun notifyUser(result: UserModel) {

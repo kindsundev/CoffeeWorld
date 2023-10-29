@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.muddz.styleabletoast.StyleableToast
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
@@ -14,7 +15,6 @@ import kind.sun.dev.coffeeworld.databinding.FragmentCafeBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.checkThenHide
-import kind.sun.dev.coffeeworld.utils.helper.view.showToast
 import kind.sun.dev.coffeeworld.utils.helper.view.toggleNetworkErrorLayout
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopAdapter
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
@@ -67,7 +67,9 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
                 binding.swipeRefreshLayout.checkThenHide()
             },
             onFailedMessage = {
-                if (!hasLocalData) requireContext().showToast(it)
+                if (!hasLocalData) {
+                    StyleableToast.makeText(requireContext(), it, R.style.toast_network).show()
+                }
             }
         )
     }
@@ -105,7 +107,9 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
                     lifecycleScope.launch { viewModel.onSyncAllCafes(result.data) }
                 }
             },
-            onError = { requireContext().showToast(it) }
+            onError = {
+                StyleableToast.makeText(requireContext(), it, R.style.toast_error).show()
+            }
         )
     }
 

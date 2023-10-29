@@ -10,13 +10,14 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.muddz.styleabletoast.StyleableToast
+import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseBottomSheet
 import kind.sun.dev.coffeeworld.databinding.FragmentAvatarBinding
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.helper.storage.FileInternalHelper
 import kind.sun.dev.coffeeworld.utils.helper.view.checkPermission
 import kind.sun.dev.coffeeworld.utils.helper.view.checkSDKTiramisu
-import kind.sun.dev.coffeeworld.utils.helper.view.showToast
 import kind.sun.dev.coffeeworld.viewmodel.ProfileViewModel
 import kotlinx.coroutines.launch
 
@@ -42,8 +43,10 @@ class AvatarBottomFragment(
         } else {
             val galleryMessage = "App needs photo and video permission for gallery access"
             val cameraMessage = "App needs camera permission for take photo"
-            if (actionListener == openGallery) requireContext().showToast(galleryMessage)
-            if (actionListener == openCamera) requireContext().showToast(cameraMessage)
+            if (actionListener == openGallery)
+                StyleableToast.makeText(requireContext(), galleryMessage, R.style.toast_permission).show()
+            if (actionListener == openCamera)
+                StyleableToast.makeText(requireContext(), cameraMessage, R.style.toast_permission).show()
         }
     }
 
@@ -84,7 +87,9 @@ class AvatarBottomFragment(
             }
             if (avatarFile?.exists() == true) {
                 currentFileName = avatarFile.name
-                viewModel.onUpdateAvatar(avatarFile) { requireContext().showToast(it) }
+                viewModel.onUpdateAvatar(avatarFile) {
+                    StyleableToast.makeText(requireContext(), it, R.style.toast_success).show()
+                }
             }
         }
     }
@@ -99,14 +104,14 @@ class AvatarBottomFragment(
         observeNetworkResult(
             liveData = viewModel.messageResponse,
             onSuccess = { requireDeleteFile(it.data) },
-            onError = { requireContext().showToast(it) }
+            onError = { StyleableToast.makeText(requireContext(), it, R.style.toast_error).show() }
         )
     }
 
     private fun requireDeleteFile(message: String) = lifecycleScope.launch {
         fileInternalHelper.deletePhoto(currentFileName).also { deleted ->
             if (deleted) {
-                requireContext().showToast(message)
+                StyleableToast.makeText(requireContext(), message, R.style.toast_permission).show()
                 onUpdateSuccess.invoke().also { this@AvatarBottomFragment.dismiss() }
             }
         }
