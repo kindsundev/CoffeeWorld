@@ -26,4 +26,5 @@ object CoffeeWordVersions {
     val room = "2.6.0-rc01"
     val gson = "2.10.1"
     val splashScreen = "1.1.0-alpha02"
+    val swipeRefreshLayout = "1.2.0-alpha01"
 }

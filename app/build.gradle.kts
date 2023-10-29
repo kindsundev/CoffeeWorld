@@ -92,4 +92,5 @@ dependencies {
     implementation(CoffeeWordDepencencies.gson)
 
     implementation(CoffeeWordDepencencies.splashScreen)
+    implementation(CoffeeWordDepencencies.swipeRefreshLayout)
 }

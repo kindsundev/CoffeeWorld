@@ -39,4 +39,6 @@ object CoffeeWordDepencencies {
     val gson by lazy { "com.google.code.gson:gson:${CoffeeWordVersions.gson}" }
 
     val splashScreen by lazy { "androidx.core:core-splashscreen:${CoffeeWordVersions.splashScreen}" }
+
+    val swipeRefreshLayout by lazy { "androidx.swiperefreshlayout:swiperefreshlayout:${CoffeeWordVersions.swipeRefreshLayout}" }
 }
