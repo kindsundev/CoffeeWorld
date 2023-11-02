@@ -2,6 +2,7 @@ package kind.sun.dev.coffeeworld.api
 
 import kind.sun.dev.coffeeworld.data.remote.response.CafeCategoryResponse
 import kind.sun.dev.coffeeworld.data.remote.response.CafeDrinksResponse
+import kind.sun.dev.coffeeworld.data.remote.response.CafeMenuResponse
 import kind.sun.dev.coffeeworld.data.remote.response.CafeResponse
 import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
 import okhttp3.RequestBody
@@ -14,19 +15,27 @@ import retrofit2.http.Path
 interface CafeService {
 
     @GET("/cafes")
-    suspend fun getCafeList(): Response<CafeResponse>
+    suspend fun fetchCafes(): Response<CafeResponse>
 
     @GET("/cafes/{cafe_id}/categories")
-    suspend fun getCategoryList(@Path("cafe_id") cafeId: Int): Response<CafeCategoryResponse>
+    suspend fun fetchCategories(@Path("cafe_id") cafeId: Int): Response<CafeCategoryResponse>
+
+    @GET("/cafes/{cafe_id}/drinks")
+    suspend fun fetchDrinks(@Path("cafe_id") cafeId: Int): Response<CafeDrinksResponse>
 
     @GET("/cafes/{cafe_id}/category/{category_id}/drinks")
-    suspend fun getDrinksListInCategory(
-        @Path("cafe_id") cafeId: Int, @Path("category_id") categoryId: Int
+    suspend fun fetchDrinksByCategory(
+        @Path("cafe_id") cafeId: Int,
+        @Path("category_id") categoryId: Int
     ): Response<CafeDrinksResponse>
+
+    @GET("/cafes/{cafe_id}/menu")
+    suspend fun fetchMenus(@Path("cafe_id") cafeId: Int): Response<CafeMenuResponse>
 
     @PUT("/drinks/{id}/quantity")
     suspend fun updateQuantityDrinks(
-        @Path("id") id: Int, @Body quantity: RequestBody
+        @Path("id") id: Int,
+        @Body quantity: RequestBody
     ): Response<MessageResponse>
 
 }

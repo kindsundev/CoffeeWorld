@@ -22,13 +22,13 @@ class CafeRepository @Inject constructor(
 
     suspend fun fetchAllCafes() {
         performNetworkOperation(_cafe) {
-            cafeService.getCafeList()
+            cafeService.fetchCafes()
         }
     }
 
     suspend fun getCategoryList(cafeId: Int) {
         performNetworkOperation(_categories) {
-            cafeService.getCategoryList(cafeId)
+            cafeService.fetchCategories(cafeId)
         }
     }
 
