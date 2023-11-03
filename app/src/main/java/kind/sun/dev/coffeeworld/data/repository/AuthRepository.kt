@@ -1,42 +1,39 @@
 package kind.sun.dev.coffeeworld.data.repository
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kind.sun.dev.coffeeworld.api.AuthService
+import kind.sun.dev.coffeeworld.api.AuthAPI
+import kind.sun.dev.coffeeworld.base.BaseRepository
+import kind.sun.dev.coffeeworld.contract.AuthContract
 import kind.sun.dev.coffeeworld.data.remote.request.AuthRequest
 import kind.sun.dev.coffeeworld.data.remote.request.LoginRequest
 import kind.sun.dev.coffeeworld.data.remote.request.RegisterRequest
 import kind.sun.dev.coffeeworld.data.remote.response.LoginResponse
-import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
-import kind.sun.dev.coffeeworld.base.BaseRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
-    private val authService: AuthService
-): BaseRepository() {
+    private val authAPI: AuthAPI
+): BaseRepository(), AuthContract.Service {
+
     private val _authLogin = MutableLiveData<NetworkResult<LoginResponse>>()
-    val authLogin: LiveData<NetworkResult<LoginResponse>>
-        get() = _authLogin
+    override val loginResponse get() = _authLogin
+    override val messageResponse get() = statusMessage
 
-    val messageResponse: LiveData<NetworkResult<MessageResponse>>
-        get() = statusMessage
-
-    suspend fun login(loginRequest: LoginRequest) {
+    override suspend fun handleLogin(loginRequest: LoginRequest) {
         performNetworkOperation(_authLogin) {
-            authService.login(loginRequest)
+            authAPI.login(loginRequest)
         }
     }
 
-    suspend fun register(registerRequest: RegisterRequest) {
+    override suspend fun handleRegistration(registerRequest: RegisterRequest) {
         performNetworkOperation(statusMessage) {
-            authService.register(registerRequest)
+            authAPI.register(registerRequest)
         }
     }
 
-    suspend fun passwordReset(authRequest: AuthRequest) {
+    override suspend fun handlePasswordReset(authRequest: AuthRequest) {
         performNetworkOperation(statusMessage) {
-            authService.passwordReset(authRequest)
+            authAPI.passwordReset(authRequest)
         }
     }
 

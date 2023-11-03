@@ -12,7 +12,7 @@ import retrofit2.http.GET
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
-interface CafeService {
+interface CafeAPI {
 
     @GET("/cafes")
     suspend fun fetchCafes(): Response<CafeResponse>

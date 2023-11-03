@@ -11,13 +11,13 @@ import kind.sun.dev.coffeeworld.base.BaseDialog
 import kind.sun.dev.coffeeworld.databinding.DialogUpdatePasswordBinding
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
-import kind.sun.dev.coffeeworld.viewmodel.ProfileViewModel
+import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 
 @AndroidEntryPoint
-class PasswordDialogFragment : BaseDialog<DialogUpdatePasswordBinding, ProfileViewModel>(
+class PasswordDialogFragment : BaseDialog<DialogUpdatePasswordBinding, UserViewModel>(
     DialogUpdatePasswordBinding::inflate
 ){
-    override val viewModel by viewModels<ProfileViewModel>()
+    override val viewModel by viewModels<UserViewModel>()
     val isPasswordVisible = MutableLiveData<Boolean>(false)
 
     override fun setupDataBinding() {

@@ -11,14 +11,14 @@ import kind.sun.dev.coffeeworld.base.BaseDialog
 import kind.sun.dev.coffeeworld.databinding.DialogUpdateEmailBinding
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
-import kind.sun.dev.coffeeworld.viewmodel.ProfileViewModel
+import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 
 @AndroidEntryPoint
 class EmailDialogFragment(
     private val onUpdateSuccess: () -> Unit
-) : BaseDialog<DialogUpdateEmailBinding, ProfileViewModel>(DialogUpdateEmailBinding::inflate) {
+) : BaseDialog<DialogUpdateEmailBinding, UserViewModel>(DialogUpdateEmailBinding::inflate) {
 
-    override val viewModel by viewModels<ProfileViewModel>()
+    override val viewModel by viewModels<UserViewModel>()
     val isPasswordVisible = MutableLiveData<Boolean>(false)
 
     override fun setupDataBinding() {

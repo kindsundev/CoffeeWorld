@@ -3,7 +3,6 @@ package kind.sun.dev.coffeeworld.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kind.sun.dev.coffeeworld.data.repository.AuthRepository
 import kind.sun.dev.coffeeworld.data.remote.request.AuthRequest
 import kind.sun.dev.coffeeworld.data.remote.request.LoginRequest
 import kind.sun.dev.coffeeworld.data.remote.request.RegisterRequest
@@ -15,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
+    private val authService: AuthContract.Service,
     private val authValidator: AuthValidator
 ): BaseViewModel(), AuthContract.ViewModel {
 
@@ -29,8 +28,8 @@ class AuthViewModel @Inject constructor(
     val usernameForgotPassword by lazy { MutableLiveData<String>() }
     val emailForgotPassword by lazy { MutableLiveData<String>() }
 
-    val loginResponse get() = authRepository.authLogin
-    val messageResponse get() = authRepository.messageResponse
+    val loginResponse get() = authService.loginResponse
+    val messageResponse get() = authService.messageResponse
 
     override fun onLogin(onFailedMessage: (String) -> Unit) {
         val username = usernameLogin.value.toString().trim()
@@ -40,7 +39,7 @@ class AuthViewModel @Inject constructor(
                 authValidator.validateLoginInput(username, password)
             },
             onPassedCheck = {
-                viewModelScope.launch { authRepository.login(LoginRequest(username, password)) }
+                viewModelScope.launch { authService.handleLogin(LoginRequest(username, password)) }
             },
             onFailedCheck = { reason, _ -> onFailedMessage(reason) }
         )
@@ -58,7 +57,7 @@ class AuthViewModel @Inject constructor(
             },
             onPassedCheck = {
                 viewModelScope.launch {
-                    authRepository.register(RegisterRequest(username, password, email, name))
+                    authService.handleRegistration(RegisterRequest(username, password, email, name))
                 }
             },
             onFailedCheck = { reason, _ -> onFailedMessage(reason) }
@@ -74,7 +73,7 @@ class AuthViewModel @Inject constructor(
             },
             onPassedCheck = {
                 viewModelScope.launch {
-                    authRepository.passwordReset(AuthRequest(username, email))
+                    authService.handlePasswordReset(AuthRequest(username, email))
                 }
             },
             onFailedCheck = { reason, _ -> onFailedMessage(reason) }

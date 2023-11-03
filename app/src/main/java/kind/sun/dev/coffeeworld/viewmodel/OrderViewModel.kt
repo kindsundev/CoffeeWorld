@@ -1,30 +1,14 @@
 package kind.sun.dev.coffeeworld.viewmodel
 
-import androidx.lifecycle.LiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kind.sun.dev.coffeeworld.data.repository.CafeRepository
-import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.base.BaseViewModel
-import kind.sun.dev.coffeeworld.data.remote.response.CafeCategoryResponse
-import kind.sun.dev.coffeeworld.data.remote.response.CafeResponse
+import kind.sun.dev.coffeeworld.contract.CafeContract
 import javax.inject.Inject
 
 @HiltViewModel
 class OrderViewModel @Inject constructor(
-    private val cafeRepository: CafeRepository
+    private val cafeService: CafeContract.Service
 ): BaseViewModel(){
 
-    val cafe: LiveData<NetworkResult<CafeResponse>>
-        get() = cafeRepository.cafe
 
-    val categories: LiveData<NetworkResult<CafeCategoryResponse>>
-        get() = cafeRepository.categories
-
-    fun getCafeList() {
-
-    }
-
-    fun getCategoryList(cafeId: Int) {
-
-    }
 }

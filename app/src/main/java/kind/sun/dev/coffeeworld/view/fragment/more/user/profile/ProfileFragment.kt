@@ -22,16 +22,16 @@ import kind.sun.dev.coffeeworld.view.dialog.profile.EmailDialogFragment
 import kind.sun.dev.coffeeworld.view.dialog.profile.NameDialogFragment
 import kind.sun.dev.coffeeworld.view.dialog.profile.PasswordDialogFragment
 import kind.sun.dev.coffeeworld.view.dialog.profile.PhoneDialogFragment
-import kind.sun.dev.coffeeworld.viewmodel.ProfileViewModel
+import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>(
+class ProfileFragment : BaseFragment<FragmentProfileBinding, UserViewModel>(
     FragmentProfileBinding::inflate
 ) {
     private lateinit var userModel: UserModel
 
-    override val viewModel: ProfileViewModel by viewModels()
+    override val viewModel: UserViewModel by viewModels()
 
     private val profileAdapter : ProfileAdapter by lazy {
         ProfileAdapter(MoreDataSet.getProfileFragmentOptions()) {

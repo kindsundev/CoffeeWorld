@@ -9,14 +9,14 @@ import kind.sun.dev.coffeeworld.base.BaseDialog
 import kind.sun.dev.coffeeworld.databinding.DialogUpdateAddressBinding
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
-import kind.sun.dev.coffeeworld.viewmodel.ProfileViewModel
+import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 
 @AndroidEntryPoint
 class AddressDialogFragment(
     private val onUpdateSuccess: () -> Unit
-) : BaseDialog<DialogUpdateAddressBinding, ProfileViewModel>(DialogUpdateAddressBinding::inflate) {
+) : BaseDialog<DialogUpdateAddressBinding, UserViewModel>(DialogUpdateAddressBinding::inflate) {
 
-    override val viewModel: ProfileViewModel by viewModels()
+    override val viewModel: UserViewModel by viewModels()
 
     override fun setupDataBinding() {
         binding.apply {

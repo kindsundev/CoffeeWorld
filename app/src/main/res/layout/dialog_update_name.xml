@@ -7,7 +7,7 @@
             type="kind.sun.dev.coffeeworld.view.dialog.profile.NameDialogFragment" />
         <variable
             name="profileViewModel"
-            type="kind.sun.dev.coffeeworld.viewmodel.ProfileViewModel" />
+            type="kind.sun.dev.coffeeworld.viewmodel.UserViewModel" />
     </data>
 
     <LinearLayout

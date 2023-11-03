@@ -7,8 +7,9 @@ import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.SignatureException
 import kind.sun.dev.coffeeworld.BuildConfig
-import kind.sun.dev.coffeeworld.api.UserService
+import kind.sun.dev.coffeeworld.api.UserAPI
 import kind.sun.dev.coffeeworld.base.BaseRepository
+import kind.sun.dev.coffeeworld.contract.UserContract
 import kind.sun.dev.coffeeworld.data.remote.request.UserEmailRequest
 import kind.sun.dev.coffeeworld.data.remote.request.UserPasswordRequest
 import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
@@ -23,14 +24,15 @@ import java.io.File
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
-    private val userService: UserService,
+    private val userAPI: UserAPI,
     private val preferences: PreferencesHelper
-): BaseRepository() {
-    private val _user = MutableLiveData<NetworkResult<UserResponse>>()
-    val user: LiveData<NetworkResult<UserResponse>> get() = _user
-    val userUpdate: LiveData<NetworkResult<MessageResponse>> get() = statusMessage
+): BaseRepository(), UserContract.Service {
 
-    private val username: String? by lazy {
+    private val _user = MutableLiveData<NetworkResult<UserResponse>>()
+    override val userResponse: LiveData<NetworkResult<UserResponse>> get() = _user
+    override val messageResponse: LiveData<NetworkResult<MessageResponse>> get() = statusMessage
+
+    override val username: String? by lazy {
         preferences.userToken?.let { jwtToken ->
             try {
                 val claims: Claims = Jwts.parserBuilder()
@@ -52,62 +54,64 @@ class UserRepository @Inject constructor(
         }
     }
 
-    suspend fun fetchUser() {
+    override suspend fun handleFetchUser() {
         username?.let {
-            performNetworkOperation(_user) { userService.getUser(it) }
+            performNetworkOperation(_user) { userAPI.getUser(it) }
         }
     }
 
-    suspend fun updateAvatar(avatar: File) {
+    override suspend fun handleUpdateAvatar(avatar: File) {
         username?.let {
             performNetworkOperation(statusMessage) {
                 val usernameRequestBody = convertToTextRequestBody(it)
                 val avatarRequestBody = avatar.asRequestBody("image/*".toMediaTypeOrNull())
                 val avatarPart =
                     MultipartBody.Part.createFormData("image", avatar.name, avatarRequestBody)
-                userService.updateAvatar(usernameRequestBody, avatarPart)
+                userAPI.updateAvatar(usernameRequestBody, avatarPart)
             }
         }
     }
 
-    suspend fun updateEmail(email: String, password: String) {
+    override suspend fun handleUpdateEmail(email: String, password: String) {
         username?.let {
             performNetworkOperation(statusMessage) {
-                userService.updateEmail(UserEmailRequest(it, email, password))
+                userAPI.updateEmail(UserEmailRequest(it, email, password))
             }
         }
     }
 
-    suspend fun updatePassword(currentPassword: String, newPassword: String) {
+    override suspend fun handleUpdateName(name: String) {
         username?.let {
             performNetworkOperation(statusMessage) {
-                userService.updatePassword(UserPasswordRequest(it, currentPassword, newPassword))
+                userAPI.updateName(it, convertToTextRequestBody(name))
             }
         }
     }
 
-    suspend fun updateName(name: String) {
+    override suspend fun handleUpdateAddress(address: String) {
         username?.let {
             performNetworkOperation(statusMessage) {
-                userService.updateName(it, convertToTextRequestBody(name))
+                userAPI.updateAddress(it, convertToTextRequestBody(address))
             }
         }
     }
 
-    suspend fun updateAddress(address: String) {
+    override suspend fun handleUpdatePhone(phone: String) {
         username?.let {
             performNetworkOperation(statusMessage) {
-                userService.updateAddress(it, convertToTextRequestBody(address))
+                userAPI.updatePhone(it, convertToTextRequestBody(phone))
             }
         }
     }
 
-    suspend fun updatePhone(phone: String) {
+
+    override suspend fun handleUpdatePassword(currentPassword: String, newPassword: String) {
         username?.let {
             performNetworkOperation(statusMessage) {
-                userService.updatePhone(it, convertToTextRequestBody(phone))
+                userAPI.updatePassword(UserPasswordRequest(it, currentPassword, newPassword))
             }
         }
     }
+
 
 }

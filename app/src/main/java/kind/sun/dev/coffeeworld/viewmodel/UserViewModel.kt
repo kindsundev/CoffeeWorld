@@ -4,8 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.base.BaseViewModel
-import kind.sun.dev.coffeeworld.data.repository.UserRepository
-import kind.sun.dev.coffeeworld.contract.ProfileContract
+import kind.sun.dev.coffeeworld.contract.UserContract
 import kind.sun.dev.coffeeworld.data.local.dao.UserDAO
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
 import kind.sun.dev.coffeeworld.utils.validator.ProfileValidator
@@ -16,11 +15,11 @@ import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(
-    private val userRepository: UserRepository,
+class UserViewModel @Inject constructor(
+    private val userService: UserContract.Service,
     private val profileValidator: ProfileValidator,
     private val userDao: UserDAO
-) : BaseViewModel(), ProfileContract.ViewModel {
+) : BaseViewModel(), UserContract.ViewModel {
 
     val nameLiveData by lazy { MutableLiveData<String>() }
     val addressLiveData by lazy { MutableLiveData<String>() }
@@ -31,8 +30,8 @@ class ProfileViewModel @Inject constructor(
     val newPasswordLiveData by lazy { MutableLiveData<String>() }
     val retypeNewPasswordLiveData by lazy { MutableLiveData<String>() }
 
-    val userResponse get() = userRepository.user
-    val messageResponse get() = userRepository.userUpdate
+    val userResponse get() = userService.userResponse
+    val messageResponse get() = userService.messageResponse
 
     override fun onFetchUser(
         onDataFromLocal: (UserModel?) -> Unit,
@@ -40,7 +39,7 @@ class ProfileViewModel @Inject constructor(
     ) {
         handleCheckAndRoute(
             conditionChecker = null,
-            onPassedCheck = { viewModelScope.launch { userRepository.fetchUser() } },
+            onPassedCheck = { viewModelScope.launch { userService.handleFetchUser() } },
             onFailedCheck = { reason, localDataRequired ->
                 if (localDataRequired) {
                     viewModelScope.launch {
@@ -60,7 +59,7 @@ class ProfileViewModel @Inject constructor(
     override fun onUpdateAvatar(avatar: File, onFailedMessage: (String) -> Unit) {
         handleCheckAndRoute(
             conditionChecker = null,
-            onPassedCheck = { viewModelScope.launch { userRepository.updateAvatar(avatar) } },
+            onPassedCheck = { viewModelScope.launch { userService.handleUpdateAvatar(avatar) } },
             onFailedCheck = { reason, _ -> onFailedMessage(reason) }
         )
     }
@@ -69,7 +68,7 @@ class ProfileViewModel @Inject constructor(
         val name = nameLiveData.value.toString().trim()
         handleCheckAndRoute(
             conditionChecker = { profileValidator.validateUpdateName(name) },
-            onPassedCheck = { viewModelScope.launch { userRepository.updateName(name) } },
+            onPassedCheck = { viewModelScope.launch { userService.handleUpdateName(name) } },
             onFailedCheck = { reason, _ -> onFailedMessage(reason) }
         )
     }
@@ -79,7 +78,7 @@ class ProfileViewModel @Inject constructor(
         val password = emailPasswordLiveData.value.toString().trim()
         handleCheckAndRoute(
             conditionChecker = { profileValidator.validatorUpdateEmail(email, password) },
-            onPassedCheck = { viewModelScope.launch { userRepository.updateEmail(email, password) } },
+            onPassedCheck = { viewModelScope.launch { userService.handleUpdateEmail(email, password) } },
             onFailedCheck = { reason, _ -> onFailedMessage(reason) }
         )
     }
@@ -93,7 +92,7 @@ class ProfileViewModel @Inject constructor(
                 profileValidator.validateUpdatePassword(currentPassword, newPassword, reNewPassword)
             },
             onPassedCheck = {
-                viewModelScope.launch { userRepository.updatePassword(currentPassword, newPassword) }
+                viewModelScope.launch { userService.handleUpdatePassword(currentPassword, newPassword) }
             },
             onFailedCheck = { reason, _ -> onFailedMessage(reason)}
         )
@@ -103,7 +102,7 @@ class ProfileViewModel @Inject constructor(
         val address = addressLiveData.value.toString().trim()
         handleCheckAndRoute(
             conditionChecker = { profileValidator.validateUpdateAddress(address) },
-            onPassedCheck = { viewModelScope.launch { userRepository.updateAddress(address) } },
+            onPassedCheck = { viewModelScope.launch { userService.handleUpdateAddress(address) } },
             onFailedCheck = { reason, _ -> onFailedMessage(reason) }
         )
     }
@@ -112,7 +111,7 @@ class ProfileViewModel @Inject constructor(
         val phoneNumber = phoneLiveData.value.toString().trim()
         handleCheckAndRoute(
             conditionChecker = { profileValidator.validateUpdatePhone(phoneNumber) },
-            onPassedCheck = { viewModelScope.launch { userRepository.updatePhone(phoneNumber) } },
+            onPassedCheck = { viewModelScope.launch { userService.handleUpdatePhone(phoneNumber) } },
             onFailedCheck = { reason, _ -> onFailedMessage(reason) }
         )
     }

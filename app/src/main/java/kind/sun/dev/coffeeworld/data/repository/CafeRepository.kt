@@ -2,35 +2,31 @@ package kind.sun.dev.coffeeworld.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kind.sun.dev.coffeeworld.api.CafeService
+import kind.sun.dev.coffeeworld.api.CafeAPI
 import kind.sun.dev.coffeeworld.base.BaseRepository
-import kind.sun.dev.coffeeworld.data.remote.response.CafeCategoryResponse
+import kind.sun.dev.coffeeworld.contract.CafeContract
+import kind.sun.dev.coffeeworld.data.remote.response.CafeMenuResponse
 import kind.sun.dev.coffeeworld.data.remote.response.CafeResponse
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import javax.inject.Inject
 
 class CafeRepository @Inject constructor(
-    private val cafeService: CafeService
-): BaseRepository() {
+    private val cafeAPI: CafeAPI
+): BaseRepository(), CafeContract.Service {
     private val _cafe = MutableLiveData<NetworkResult<CafeResponse>>()
-    val cafe : LiveData<NetworkResult<CafeResponse>>
-        get() = _cafe
+    private val _menu = MutableLiveData<NetworkResult<CafeMenuResponse>>()
+    override val cafeResponse: LiveData<NetworkResult<CafeResponse>> get() = _cafe
+    override val menuResponse: LiveData<NetworkResult<CafeMenuResponse>> get() = _menu
 
-    private val _categories = MutableLiveData<NetworkResult<CafeCategoryResponse>>()
-    val categories: LiveData<NetworkResult<CafeCategoryResponse>>
-        get() = _categories
 
-    suspend fun fetchAllCafes() {
+    override suspend fun handleFetchAllCafes() {
         performNetworkOperation(_cafe) {
-            cafeService.fetchCafes()
+            cafeAPI.fetchCafes()
         }
     }
 
-    suspend fun getCategoryList(cafeId: Int) {
-        performNetworkOperation(_categories) {
-            cafeService.fetchCategories(cafeId)
-        }
-    }
+    override suspend fun handleFetchMenu(cafeId: Int) {
 
+    }
 
 }

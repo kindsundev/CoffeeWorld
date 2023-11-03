@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.contract.CafeContract
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
-import kind.sun.dev.coffeeworld.data.repository.CafeRepository
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.dataset.CafeShopDataSet
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
@@ -20,11 +19,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CafeViewModel @Inject constructor(
-    private val cafeRepository: CafeRepository,
+    private val cafeService: CafeContract.Service,
     private val cafeDao: CafeDAO
 ): BaseViewModel(), CafeContract.ViewModel {
     val cafe: LiveData<NetworkResult<CafeResponse>>
-        get() = cafeRepository.cafe
+        get() = cafeService.cafeResponse
 
     override fun onFetchAllCafes(
         onDataFromLocal: (List<CafeModel>?) -> Unit,
@@ -33,7 +32,7 @@ class CafeViewModel @Inject constructor(
         handleCheckAndRoute(
             conditionChecker = null,
             onPassedCheck = {
-                viewModelScope.launch { cafeRepository.fetchAllCafes() }
+                viewModelScope.launch { cafeService.handleFetchAllCafes() }
             },
             onFailedCheck = { reason, localDataRequired ->
                 if (localDataRequired) {

@@ -18,13 +18,13 @@ import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.helper.storage.FileInternalHelper
 import kind.sun.dev.coffeeworld.utils.helper.view.checkPermission
 import kind.sun.dev.coffeeworld.utils.helper.view.checkSDKTiramisu
-import kind.sun.dev.coffeeworld.viewmodel.ProfileViewModel
+import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AvatarBottomFragment(
     private val onUpdateSuccess: () -> Unit
-) : BaseBottomSheet<FragmentAvatarBinding, ProfileViewModel>(false, FragmentAvatarBinding::inflate) {
+) : BaseBottomSheet<FragmentAvatarBinding, UserViewModel>(false, FragmentAvatarBinding::inflate) {
 
     private val fileInternalHelper by lazy { FileInternalHelper(requireContext()) }
     private lateinit var currentFileName: String
@@ -32,7 +32,7 @@ class AvatarBottomFragment(
     private val openGallery = 1
     private val openCamera = 2
 
-    override val viewModel: ProfileViewModel by viewModels()
+    override val viewModel: UserViewModel by viewModels()
 
     private val requestPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()

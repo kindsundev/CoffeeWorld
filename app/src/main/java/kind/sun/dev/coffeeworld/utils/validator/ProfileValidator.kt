@@ -2,10 +2,10 @@ package kind.sun.dev.coffeeworld.utils.validator
 
 import android.text.TextUtils
 import android.util.Patterns
-import kind.sun.dev.coffeeworld.contract.ProfileContract
+import kind.sun.dev.coffeeworld.contract.UserContract
 import javax.inject.Inject
 
-class ProfileValidator @Inject constructor() : ProfileContract.Validator {
+class ProfileValidator @Inject constructor() : UserContract.Validator {
 
     override fun validateUpdateName(name: String): Pair<Boolean, String> {
         return when {

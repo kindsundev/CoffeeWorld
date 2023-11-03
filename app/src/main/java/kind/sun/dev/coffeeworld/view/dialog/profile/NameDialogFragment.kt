@@ -9,14 +9,14 @@ import kind.sun.dev.coffeeworld.base.BaseDialog
 import kind.sun.dev.coffeeworld.databinding.DialogUpdateNameBinding
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
-import kind.sun.dev.coffeeworld.viewmodel.ProfileViewModel
+import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 
 @AndroidEntryPoint
 class NameDialogFragment(
     private val onUpdateSuccess: () -> Unit
-) : BaseDialog<DialogUpdateNameBinding, ProfileViewModel>(DialogUpdateNameBinding::inflate){
+) : BaseDialog<DialogUpdateNameBinding, UserViewModel>(DialogUpdateNameBinding::inflate){
 
-    override val viewModel by viewModels<ProfileViewModel>()
+    override val viewModel by viewModels<UserViewModel>()
 
     override fun setupDataBinding() {
         binding.fragment = this
