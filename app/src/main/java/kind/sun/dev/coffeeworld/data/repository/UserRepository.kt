@@ -56,62 +56,70 @@ class UserRepository @Inject constructor(
 
     override suspend fun handleFetchUser() {
         username?.let {
-            performNetworkOperation(_user) { userAPI.getUser(it) }
+            performNetworkOperation(
+                networkRequest = { userAPI.getUser(it) },
+                networkResult = _user
+            )
         }
     }
 
     override suspend fun handleUpdateAvatar(avatar: File) {
         username?.let {
-            performNetworkOperation(statusMessage) {
-                val usernameRequestBody = convertToTextRequestBody(it)
-                val avatarRequestBody = avatar.asRequestBody("image/*".toMediaTypeOrNull())
-                val avatarPart =
-                    MultipartBody.Part.createFormData("image", avatar.name, avatarRequestBody)
-                userAPI.updateAvatar(usernameRequestBody, avatarPart)
-            }
+            performNetworkOperation(
+                networkRequest = {
+                    val usernameRequestBody = convertToTextRequestBody(it)
+                    val avatarRequestBody = avatar.asRequestBody("image/*".toMediaTypeOrNull())
+                    val avatarPart =
+                        MultipartBody.Part.createFormData("image", avatar.name, avatarRequestBody)
+                    userAPI.updateAvatar(usernameRequestBody, avatarPart)
+                },
+                networkResult = statusMessage
+            )
         }
     }
 
     override suspend fun handleUpdateEmail(email: String, password: String) {
         username?.let {
-            performNetworkOperation(statusMessage) {
-                userAPI.updateEmail(UserEmailRequest(it, email, password))
-            }
+            performNetworkOperation(
+                networkRequest = { userAPI.updateEmail(UserEmailRequest(it, email, password)) },
+                networkResult = statusMessage
+            )
         }
     }
 
     override suspend fun handleUpdateName(name: String) {
         username?.let {
-            performNetworkOperation(statusMessage) {
-                userAPI.updateName(it, convertToTextRequestBody(name))
-            }
+            performNetworkOperation(
+                networkRequest = { userAPI.updateName(it, convertToTextRequestBody(name)) },
+                networkResult = statusMessage
+            )
         }
     }
 
     override suspend fun handleUpdateAddress(address: String) {
         username?.let {
-            performNetworkOperation(statusMessage) {
-                userAPI.updateAddress(it, convertToTextRequestBody(address))
-            }
+            performNetworkOperation(
+                networkRequest = { userAPI.updateAddress(it, convertToTextRequestBody(address)) },
+                networkResult = statusMessage
+            )
         }
     }
 
     override suspend fun handleUpdatePhone(phone: String) {
         username?.let {
-            performNetworkOperation(statusMessage) {
-                userAPI.updatePhone(it, convertToTextRequestBody(phone))
-            }
+            performNetworkOperation(
+                networkRequest = { userAPI.updatePhone(it, convertToTextRequestBody(phone)) },
+                networkResult = statusMessage
+            )
         }
     }
-
 
     override suspend fun handleUpdatePassword(currentPassword: String, newPassword: String) {
         username?.let {
-            performNetworkOperation(statusMessage) {
-                userAPI.updatePassword(UserPasswordRequest(it, currentPassword, newPassword))
-            }
+            performNetworkOperation(
+                networkRequest = { userAPI.updatePassword(UserPasswordRequest(it, currentPassword, newPassword)) },
+                networkResult = statusMessage
+            )
         }
     }
-
-
 }

@@ -20,9 +20,10 @@ class CafeRepository @Inject constructor(
 
 
     override suspend fun handleFetchAllCafes() {
-        performNetworkOperation(_cafe) {
-            cafeAPI.fetchCafes()
-        }
+        performNetworkOperation(
+            networkRequest = { cafeAPI.fetchCafes() },
+            networkResult = _cafe
+        )
     }
 
     override suspend fun handleFetchMenu(cafeId: Int) {

@@ -29,33 +29,34 @@ open class BaseRepository {
     }
 
     protected suspend fun <T> performNetworkOperation(
-        liveData: MutableLiveData<NetworkResult<T>>,
-        operation: suspend () -> Response<T>
+        isShowProgress: Boolean = true,
+        networkRequest: suspend () -> Response<T>,
+        networkResult: MutableLiveData<NetworkResult<T>>
     ) {
-        liveData.postValue(NetworkResult.Loading())
+        if (isShowProgress) networkResult.postValue(NetworkResult.Loading())
         withContext(Dispatchers.IO + baseExceptionHandler) {
             supervisorScope {
                 withContext(Dispatchers.Main) {
-                    handleNetworkResponse(operation(), liveData)
+                    handleNetworkResponse(networkRequest(), networkResult)
                 }
             }
         }
     }
 
     private fun <T> handleNetworkResponse(
-        response: Response<T>?,
-        liveData: MutableLiveData<NetworkResult<T>>
+        networkResponse: Response<T>?,
+        networkObserver: MutableLiveData<NetworkResult<T>>
     ) {
-        if (response == null) {
-            liveData.postValue(NetworkResult.Error("Please login again to continue using this feature"))
+        if (networkResponse == null) {
+            networkObserver.postValue(NetworkResult.Error("Please login again to continue using this feature"))
             return
         }
-        if (response.isSuccessful && response.body() != null) {
-            liveData.postValue(NetworkResult.Success(response.body()!!))
+        if (networkResponse.isSuccessful && networkResponse.body() != null) {
+            networkObserver.postValue(NetworkResult.Success(networkResponse.body()!!))
             return
         }
-        val errorMessage = response.errorBody()?.parseErrorMessage() ?: "Something went wrong"
-        liveData.postValue(NetworkResult.Error(errorMessage))
+        val errorMessage = networkResponse.errorBody()?.parseErrorMessage() ?: "Something went wrong"
+        networkObserver.postValue(NetworkResult.Error(errorMessage))
     }
 
     private fun ResponseBody.parseErrorMessage(): String {

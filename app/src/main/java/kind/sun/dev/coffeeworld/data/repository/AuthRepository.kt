@@ -20,21 +20,24 @@ class AuthRepository @Inject constructor(
     override val messageResponse get() = statusMessage
 
     override suspend fun handleLogin(loginRequest: LoginRequest) {
-        performNetworkOperation(_authLogin) {
-            authAPI.login(loginRequest)
-        }
+        performNetworkOperation(
+            networkRequest = { authAPI.login(loginRequest) },
+            networkResult = _authLogin
+        )
     }
 
     override suspend fun handleRegistration(registerRequest: RegisterRequest) {
-        performNetworkOperation(statusMessage) {
-            authAPI.register(registerRequest)
-        }
+        performNetworkOperation(
+            networkRequest = { authAPI.register(registerRequest) },
+            networkResult = statusMessage
+        )
     }
 
     override suspend fun handlePasswordReset(authRequest: AuthRequest) {
-        performNetworkOperation(statusMessage) {
-            authAPI.passwordReset(authRequest)
-        }
+        performNetworkOperation(
+            networkRequest = { authAPI.passwordReset(authRequest) },
+            networkResult = statusMessage
+        )
     }
 
 }
