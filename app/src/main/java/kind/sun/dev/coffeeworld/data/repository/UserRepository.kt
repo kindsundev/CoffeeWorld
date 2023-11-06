@@ -7,9 +7,9 @@ import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.SignatureException
 import kind.sun.dev.coffeeworld.BuildConfig
-import kind.sun.dev.coffeeworld.api.UserAPI
 import kind.sun.dev.coffeeworld.base.BaseRepository
 import kind.sun.dev.coffeeworld.contract.UserContract
+import kind.sun.dev.coffeeworld.data.local.model.UserModel
 import kind.sun.dev.coffeeworld.data.remote.request.UserEmailRequest
 import kind.sun.dev.coffeeworld.data.remote.request.UserPasswordRequest
 import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
@@ -17,6 +17,8 @@ import kind.sun.dev.coffeeworld.data.remote.response.UserResponse
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -24,7 +26,8 @@ import java.io.File
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
-    private val userAPI: UserAPI,
+    private val remoteAPI: UserContract.API,
+    private val localDAO: UserContract.DAO,
     private val preferences: PreferencesHelper
 ): BaseRepository(), UserContract.Service {
 
@@ -57,10 +60,18 @@ class UserRepository @Inject constructor(
     override suspend fun handleFetchUser() {
         username?.let {
             performNetworkOperation(
-                networkRequest = { userAPI.getUser(it) },
+                networkRequest = { remoteAPI.getUser(it) },
                 networkResult = _user
             )
         }
+    }
+
+    override suspend fun handleSyncUser(userModel: UserModel) {
+        coroutineScope.launch { localDAO.upsertUser(userModel) }
+    }
+
+    override suspend fun handleGetUser(): UserModel? {
+        return coroutineScope.async { localDAO.getUser() }.await()
     }
 
     override suspend fun handleUpdateAvatar(avatar: File) {
@@ -71,7 +82,7 @@ class UserRepository @Inject constructor(
                     val avatarRequestBody = avatar.asRequestBody("image/*".toMediaTypeOrNull())
                     val avatarPart =
                         MultipartBody.Part.createFormData("image", avatar.name, avatarRequestBody)
-                    userAPI.updateAvatar(usernameRequestBody, avatarPart)
+                    remoteAPI.updateAvatar(usernameRequestBody, avatarPart)
                 },
                 networkResult = statusMessage
             )
@@ -81,7 +92,7 @@ class UserRepository @Inject constructor(
     override suspend fun handleUpdateEmail(email: String, password: String) {
         username?.let {
             performNetworkOperation(
-                networkRequest = { userAPI.updateEmail(UserEmailRequest(it, email, password)) },
+                networkRequest = { remoteAPI.updateEmail(UserEmailRequest(it, email, password)) },
                 networkResult = statusMessage
             )
         }
@@ -90,7 +101,7 @@ class UserRepository @Inject constructor(
     override suspend fun handleUpdateName(name: String) {
         username?.let {
             performNetworkOperation(
-                networkRequest = { userAPI.updateName(it, convertToTextRequestBody(name)) },
+                networkRequest = { remoteAPI.updateName(it, convertToTextRequestBody(name)) },
                 networkResult = statusMessage
             )
         }
@@ -99,7 +110,7 @@ class UserRepository @Inject constructor(
     override suspend fun handleUpdateAddress(address: String) {
         username?.let {
             performNetworkOperation(
-                networkRequest = { userAPI.updateAddress(it, convertToTextRequestBody(address)) },
+                networkRequest = { remoteAPI.updateAddress(it, convertToTextRequestBody(address)) },
                 networkResult = statusMessage
             )
         }
@@ -108,7 +119,7 @@ class UserRepository @Inject constructor(
     override suspend fun handleUpdatePhone(phone: String) {
         username?.let {
             performNetworkOperation(
-                networkRequest = { userAPI.updatePhone(it, convertToTextRequestBody(phone)) },
+                networkRequest = { remoteAPI.updatePhone(it, convertToTextRequestBody(phone)) },
                 networkResult = statusMessage
             )
         }
@@ -117,7 +128,7 @@ class UserRepository @Inject constructor(
     override suspend fun handleUpdatePassword(currentPassword: String, newPassword: String) {
         username?.let {
             performNetworkOperation(
-                networkRequest = { userAPI.updatePassword(UserPasswordRequest(it, currentPassword, newPassword)) },
+                networkRequest = { remoteAPI.updatePassword(UserPasswordRequest(it, currentPassword, newPassword)) },
                 networkResult = statusMessage
             )
         }

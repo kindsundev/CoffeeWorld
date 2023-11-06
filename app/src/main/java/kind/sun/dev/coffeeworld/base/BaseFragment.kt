@@ -82,6 +82,7 @@ abstract class BaseFragment<V : ViewDataBinding, VM: BaseViewModel>(
                     result.message?.let { onError.invoke(it) }
                 }
                 is NetworkResult.Loading -> {
+                    if (loadingDialog.isAdded) loadingDialog.dismiss()
                     loadingDialog.show(childFragmentManager, this.tag)
                 }
             }

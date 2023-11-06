@@ -5,12 +5,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.contract.UserContract
-import kind.sun.dev.coffeeworld.data.local.dao.UserDAO
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
 import kind.sun.dev.coffeeworld.utils.validator.ProfileValidator
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
@@ -18,7 +15,6 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(
     private val userService: UserContract.Service,
     private val profileValidator: ProfileValidator,
-    private val userDao: UserDAO
 ) : BaseViewModel(), UserContract.ViewModel {
 
     val nameLiveData by lazy { MutableLiveData<String>() }
@@ -42,11 +38,7 @@ class UserViewModel @Inject constructor(
             onPassedCheck = { viewModelScope.launch { userService.handleFetchUser() } },
             onFailedCheck = { reason, localDataRequired ->
                 if (localDataRequired) {
-                    viewModelScope.launch {
-                        onDataFromLocal(withContext(Dispatchers.IO) {
-                            userDao.getUser()
-                        })
-                    }
+                    viewModelScope.launch { onDataFromLocal(userService.handleGetUser()) }
                 } else {
                     onFailedMessage(reason)
                 }
@@ -54,7 +46,7 @@ class UserViewModel @Inject constructor(
         )
     }
 
-    override suspend fun onSyncUser(userModel: UserModel) = userDao.upsertUser(userModel)
+    override suspend fun onSyncUser(userModel: UserModel) = userService.handleSyncUser(userModel)
 
     override fun onUpdateAvatar(avatar: File, onFailedMessage: (String) -> Unit) {
         handleCheckAndRoute(

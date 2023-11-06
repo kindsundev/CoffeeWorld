@@ -4,9 +4,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kind.sun.dev.coffeeworld.api.AuthAPI
-import kind.sun.dev.coffeeworld.api.CafeAPI
-import kind.sun.dev.coffeeworld.api.UserAPI
 import kind.sun.dev.coffeeworld.contract.AuthContract
 import kind.sun.dev.coffeeworld.contract.CafeContract
 import kind.sun.dev.coffeeworld.contract.UserContract
@@ -22,15 +19,23 @@ object ServiceModule {
 
     @Provides
     @Singleton
-    fun provideAuthService(authAPI: AuthAPI): AuthContract.Service = AuthRepository(authAPI)
-
-    @Provides
-    @Singleton
-    fun provideUserService(userAPI: UserAPI, preferences: PreferencesHelper): UserContract.Service {
-        return UserRepository(userAPI, preferences)
+    fun provideAuthService(remoteAPI: AuthContract.API): AuthContract.Service {
+        return AuthRepository(remoteAPI)
     }
 
     @Provides
     @Singleton
-    fun provideCafeService(cafeAPI: CafeAPI): CafeContract.Service = CafeRepository(cafeAPI)
+    fun provideUserService(
+        remoteAPI: UserContract.API, localDAO: UserContract.DAO, preferencesHelper: PreferencesHelper
+    ): UserContract.Service {
+        return UserRepository(remoteAPI, localDAO, preferencesHelper)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCafeService(
+        remoteAPI: CafeContract.API, localDAO: CafeContract.DAO
+    ): CafeContract.Service {
+        return CafeRepository(remoteAPI, localDAO)
+    }
 }

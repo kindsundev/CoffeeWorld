@@ -1,7 +1,6 @@
 package kind.sun.dev.coffeeworld.data.repository
 
 import androidx.lifecycle.MutableLiveData
-import kind.sun.dev.coffeeworld.api.AuthAPI
 import kind.sun.dev.coffeeworld.base.BaseRepository
 import kind.sun.dev.coffeeworld.contract.AuthContract
 import kind.sun.dev.coffeeworld.data.remote.request.AuthRequest
@@ -12,7 +11,7 @@ import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
-    private val authAPI: AuthAPI
+    private val remoteAPI: AuthContract.API
 ): BaseRepository(), AuthContract.Service {
 
     private val _authLogin = MutableLiveData<NetworkResult<LoginResponse>>()
@@ -21,21 +20,21 @@ class AuthRepository @Inject constructor(
 
     override suspend fun handleLogin(loginRequest: LoginRequest) {
         performNetworkOperation(
-            networkRequest = { authAPI.login(loginRequest) },
+            networkRequest = { remoteAPI.login(loginRequest) },
             networkResult = _authLogin
         )
     }
 
     override suspend fun handleRegistration(registerRequest: RegisterRequest) {
         performNetworkOperation(
-            networkRequest = { authAPI.register(registerRequest) },
+            networkRequest = { remoteAPI.register(registerRequest) },
             networkResult = statusMessage
         )
     }
 
     override suspend fun handlePasswordReset(authRequest: AuthRequest) {
         performNetworkOperation(
-            networkRequest = { authAPI.passwordReset(authRequest) },
+            networkRequest = { remoteAPI.passwordReset(authRequest) },
             networkResult = statusMessage
         )
     }

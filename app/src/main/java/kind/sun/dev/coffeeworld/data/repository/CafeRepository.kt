@@ -2,16 +2,20 @@ package kind.sun.dev.coffeeworld.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kind.sun.dev.coffeeworld.api.CafeAPI
 import kind.sun.dev.coffeeworld.base.BaseRepository
 import kind.sun.dev.coffeeworld.contract.CafeContract
+import kind.sun.dev.coffeeworld.data.local.model.CafeModel
+import kind.sun.dev.coffeeworld.data.local.model.MenuModel
 import kind.sun.dev.coffeeworld.data.remote.response.CafeMenuResponse
 import kind.sun.dev.coffeeworld.data.remote.response.CafeResponse
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CafeRepository @Inject constructor(
-    private val cafeAPI: CafeAPI
+    private val cafeAPI: CafeContract.API,
+    private val cafeDAO: CafeContract.DAO
 ): BaseRepository(), CafeContract.Service {
     private val _cafe = MutableLiveData<NetworkResult<CafeResponse>>()
     private val _menu = MutableLiveData<NetworkResult<CafeMenuResponse>>()
@@ -26,7 +30,19 @@ class CafeRepository @Inject constructor(
         )
     }
 
+    override suspend fun handleSyncAllCafes(cafes: List<CafeModel>) {
+        coroutineScope.launch { cafeDAO.upsertAllCafes(cafes) }
+    }
+
+    override suspend fun handleGetAllCafes(): List<CafeModel>? {
+        return coroutineScope.async { cafeDAO.getAllCafes() }.await()
+    }
+
     override suspend fun handleFetchMenu(cafeId: Int) {
+
+    }
+
+    override suspend fun handleSyncMenu(menus: List<MenuModel>) {
 
     }
 

@@ -56,22 +56,24 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
 
     private fun requestGetData() {
         var hasLocalData = false
-        viewModel.onFetchAllCafes(
-            onDataFromLocal = {
-                if (!it.isNullOrEmpty()) {
-                    hasLocalData = true
-                    bindDataToCafeAdapter(it)
-                } else {
-                    showNetworkErrorLayout()
+        lifecycleScope.launch {
+            viewModel.onFetchAllCafes(
+                onDataFromLocal = {
+                    if (!it.isNullOrEmpty()) {
+                        hasLocalData = true
+                        bindDataToCafeAdapter(it)
+                    } else {
+                        showNetworkErrorLayout()
+                    }
+                    binding.swipeRefreshLayout.checkThenHide()
+                },
+                onFailedMessage = {
+                    if (!hasLocalData) {
+                        StyleableToast.makeText(requireContext(), it, R.style.toast_network).show()
+                    }
                 }
-                binding.swipeRefreshLayout.checkThenHide()
-            },
-            onFailedMessage = {
-                if (!hasLocalData) {
-                    StyleableToast.makeText(requireContext(), it, R.style.toast_network).show()
-                }
-            }
-        )
+            )
+        }
     }
 
     private fun showNetworkErrorLayout() = binding.layoutNetworkError.apply {
@@ -119,13 +121,13 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
             requireContext().getString(R.string.nearby_coffee_shop),
             requireContext().getString(R.string.other_coffee_shop)
         ).also { tittles ->
-            cafeShopAdapter.items = viewModel.mapCafeModelToCafeViewItem(tittles, result).also {
+            cafeShopAdapter.items = viewModel.convertToCafeViewItem(tittles, result).also {
                 transformedData = it
             }
         }
     }
 
     fun onSearchChanged(name: String) {
-        cafeShopAdapter.items = viewModel.filterListByName(name, transformedData)
+        cafeShopAdapter.items = viewModel.filterCafeList(name, transformedData)
     }
 }

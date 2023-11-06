@@ -5,6 +5,7 @@ import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
@@ -18,11 +19,13 @@ import retrofit2.Response
 
 open class BaseRepository {
 
-    protected val statusMessage by lazy { MutableLiveData<NetworkResult<MessageResponse>>() }
-
     private val baseExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Logger.error("BaseExceptionHandler: ${throwable.message}")
     }
+
+    protected val coroutineScope by lazy { CoroutineScope(Dispatchers.IO) }
+
+    protected val statusMessage by lazy { MutableLiveData<NetworkResult<MessageResponse>>() }
 
     protected fun convertToTextRequestBody(value: String): RequestBody {
         return value.toRequestBody("text/plain".toMediaType())

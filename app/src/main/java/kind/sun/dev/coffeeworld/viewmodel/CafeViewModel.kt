@@ -9,39 +9,30 @@ import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.dataset.CafeShopDataSet
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
 import kind.sun.dev.coffeeworld.base.BaseViewModel
-import kind.sun.dev.coffeeworld.data.local.dao.CafeDAO
+import kind.sun.dev.coffeeworld.data.local.model.MenuModel
 import kind.sun.dev.coffeeworld.data.remote.response.CafeResponse
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class CafeViewModel @Inject constructor(
     private val cafeService: CafeContract.Service,
-    private val cafeDao: CafeDAO
 ): BaseViewModel(), CafeContract.ViewModel {
-    val cafe: LiveData<NetworkResult<CafeResponse>>
-        get() = cafeService.cafeResponse
+    val cafe: LiveData<NetworkResult<CafeResponse>> get() = cafeService.cafeResponse
 
-    override fun onFetchAllCafes(
+    override suspend fun onFetchAllCafes(
         onDataFromLocal: (List<CafeModel>?) -> Unit,
         onFailedMessage: (String) -> Unit
     ) {
         handleCheckAndRoute(
             conditionChecker = null,
-            onPassedCheck = {
-                viewModelScope.launch { cafeService.handleFetchAllCafes() }
-            },
+            onPassedCheck = { viewModelScope.launch { cafeService.handleFetchAllCafes() } },
             onFailedCheck = { reason, localDataRequired ->
                 if (localDataRequired) {
                     viewModelScope.launch {
-                        onDataFromLocal(withContext(Dispatchers.IO) {
-                            cafeDao.getAllCafes()
-                        }).also {
-                            delay(300)
-                        }
+                        onDataFromLocal(cafeService.handleGetAllCafes())
+                        delay(300)
                         onFailedMessage(reason)
                     }
                 } else {
@@ -51,16 +42,19 @@ class CafeViewModel @Inject constructor(
         )
     }
 
-    override suspend fun onSyncAllCafes(cafes: List<CafeModel>){
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) { cafeDao.upsertAllCafes(cafes) }
-        }
+    override suspend fun onSyncAllCafes(cafes: List<CafeModel>) {
+        cafeService.handleSyncAllCafes(cafes)
     }
 
-    override fun mapCafeModelToCafeViewItem(
-        title: Array<String>,
-        data: List<CafeModel>
-    ): MutableList<CafeShopViewItem> {
+    override suspend fun onFetchMenuForCafe(cafeId: Int) {
+
+    }
+
+    override suspend fun onSyncMenuOfCafe(menus: List<MenuModel>) {
+
+    }
+
+    override fun convertToCafeViewItem(title: Array<String>, data: List<CafeModel>): MutableList<CafeShopViewItem> {
         var randomDistance: String
         return mutableListOf<CafeShopViewItem>().apply {
             data.forEachIndexed { index, cafeModel ->
@@ -80,7 +74,7 @@ class CafeViewModel @Inject constructor(
         }
     }
 
-    override fun filterListByName(name: String, list: List<CafeShopViewItem>): List<CafeShopViewItem> {
+    override fun filterCafeList(name: String, list: List<CafeShopViewItem>): List<CafeShopViewItem> {
         val formatName = name.lowercase()
         return mutableListOf<CafeShopViewItem>().apply {
             list.forEach { item ->

@@ -7,9 +7,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kind.sun.dev.coffeeworld.BuildConfig
-import kind.sun.dev.coffeeworld.api.AuthAPI
-import kind.sun.dev.coffeeworld.api.CafeAPI
-import kind.sun.dev.coffeeworld.api.UserAPI
+import kind.sun.dev.coffeeworld.contract.AuthContract
+import kind.sun.dev.coffeeworld.contract.CafeContract
+import kind.sun.dev.coffeeworld.contract.UserContract
 import kind.sun.dev.coffeeworld.utils.api.AuthInterceptor
 import kind.sun.dev.coffeeworld.utils.api.ErrorInterceptor
 import kind.sun.dev.coffeeworld.utils.custom.WithAuth
@@ -98,8 +98,8 @@ object NetworkModule {
     fun provideAuthAPI(
         retrofitBuilder: Retrofit.Builder,
         @WithAuth okHttpClient: OkHttpClient
-    ): AuthAPI {
-        return retrofitBuilder.client(okHttpClient).build().create(AuthAPI::class.java)
+    ): AuthContract.API {
+        return retrofitBuilder.client(okHttpClient).build().create(AuthContract.API::class.java)
     }
 
     @Singleton
@@ -107,8 +107,8 @@ object NetworkModule {
     fun provideCafeAPI(
         retrofitBuilder: Retrofit.Builder,
         @WithoutAuth okHttpClient: OkHttpClient
-    ): CafeAPI {
-        return retrofitBuilder.client(okHttpClient).build().create(CafeAPI::class.java)
+    ): CafeContract.API {
+        return retrofitBuilder.client(okHttpClient).build().create(CafeContract.API::class.java)
     }
 
     @Singleton
@@ -116,7 +116,7 @@ object NetworkModule {
     fun provideUserAPI(
         retrofitBuilder: Retrofit.Builder,
         @WithAuth okHttpClient: OkHttpClient
-    ): UserAPI {
-        return retrofitBuilder.client(okHttpClient).build().create(UserAPI::class.java)
+    ): UserContract.API {
+        return retrofitBuilder.client(okHttpClient).build().create(UserContract.API::class.java)
     }
 }
