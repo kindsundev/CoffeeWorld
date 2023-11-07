@@ -9,7 +9,9 @@ import io.jsonwebtoken.security.SignatureException
 import kind.sun.dev.coffeeworld.BuildConfig
 import kind.sun.dev.coffeeworld.base.BaseRepository
 import kind.sun.dev.coffeeworld.contract.UserContract
+import kind.sun.dev.coffeeworld.data.local.dao.UserDAO
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
+import kind.sun.dev.coffeeworld.data.remote.api.UserAPI
 import kind.sun.dev.coffeeworld.data.remote.request.UserEmailRequest
 import kind.sun.dev.coffeeworld.data.remote.request.UserPasswordRequest
 import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
@@ -26,8 +28,8 @@ import java.io.File
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
-    private val remoteAPI: UserContract.API,
-    private val localDAO: UserContract.DAO,
+    private val remoteAPI: UserAPI,
+    private val localDAO: UserDAO,
     private val preferences: PreferencesHelper
 ): BaseRepository(), UserContract.Service {
 

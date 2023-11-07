@@ -6,8 +6,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kind.sun.dev.coffeeworld.contract.CafeContract
-import kind.sun.dev.coffeeworld.contract.UserContract
+import kind.sun.dev.coffeeworld.data.local.dao.CafeDAO
+import kind.sun.dev.coffeeworld.data.local.dao.UserDAO
 import kind.sun.dev.coffeeworld.data.local.db.AppDatabase
 import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
 import javax.inject.Singleton
@@ -28,9 +28,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideUserDao(database: AppDatabase): UserContract.DAO = database.userDAO()
+    fun provideUserDao(database: AppDatabase): UserDAO = database.userDAO()
 
     @Provides
     @Singleton
-    fun provideCafeDao(database: AppDatabase): CafeContract.DAO = database.cafeDAO()
+    fun provideCafeDao(database: AppDatabase): CafeDAO = database.cafeDAO()
 }

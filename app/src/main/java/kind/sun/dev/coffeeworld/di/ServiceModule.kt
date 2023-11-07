@@ -7,6 +7,11 @@ import dagger.hilt.components.SingletonComponent
 import kind.sun.dev.coffeeworld.contract.AuthContract
 import kind.sun.dev.coffeeworld.contract.CafeContract
 import kind.sun.dev.coffeeworld.contract.UserContract
+import kind.sun.dev.coffeeworld.data.local.dao.CafeDAO
+import kind.sun.dev.coffeeworld.data.local.dao.UserDAO
+import kind.sun.dev.coffeeworld.data.remote.api.AuthAPI
+import kind.sun.dev.coffeeworld.data.remote.api.CafeAPI
+import kind.sun.dev.coffeeworld.data.remote.api.UserAPI
 import kind.sun.dev.coffeeworld.data.repository.AuthRepository
 import kind.sun.dev.coffeeworld.data.repository.CafeRepository
 import kind.sun.dev.coffeeworld.data.repository.UserRepository
@@ -19,23 +24,21 @@ object ServiceModule {
 
     @Provides
     @Singleton
-    fun provideAuthService(remoteAPI: AuthContract.API): AuthContract.Service {
+    fun provideAuthService(remoteAPI: AuthAPI): AuthContract.Service {
         return AuthRepository(remoteAPI)
     }
 
     @Provides
     @Singleton
     fun provideUserService(
-        remoteAPI: UserContract.API, localDAO: UserContract.DAO, preferencesHelper: PreferencesHelper
+        remoteAPI: UserAPI, localDAO: UserDAO, preferencesHelper: PreferencesHelper
     ): UserContract.Service {
         return UserRepository(remoteAPI, localDAO, preferencesHelper)
     }
 
     @Provides
     @Singleton
-    fun provideCafeService(
-        remoteAPI: CafeContract.API, localDAO: CafeContract.DAO
-    ): CafeContract.Service {
+    fun provideCafeService(remoteAPI: CafeAPI, localDAO: CafeDAO): CafeContract.Service {
         return CafeRepository(remoteAPI, localDAO)
     }
 }
