@@ -8,7 +8,7 @@ import androidx.room.Query
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
 
 @Dao
-interface UserDAO {
+interface UserDao {
     @Query("SELECT * FROM user_table LIMIT 1")
     fun getUser(): UserModel?
 

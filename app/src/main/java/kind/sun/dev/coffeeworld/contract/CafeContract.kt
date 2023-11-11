@@ -15,9 +15,12 @@ interface CafeContract {
 
         suspend fun onSyncAllCafes(cafes: List<CafeModel>)
 
-        suspend fun onFetchMenuForCafe(cafeId: Int)
 
-        suspend fun onSyncMenuOfCafe(menus: List<MenuModel>)
+        suspend fun onFetchMenu(
+            cafeId: Int, onDataFromLocal: (MenuModel?) -> Unit, onFailedMessage: (String) -> Unit
+        )
+
+        suspend fun onSyncMenu(menu: MenuModel)
 
         fun convertToCafeViewItem(title: Array<String>, data: List<CafeModel>): MutableList<CafeShopViewItem>
 
@@ -37,7 +40,7 @@ interface CafeContract {
 
         suspend fun handleFetchMenu(cafeId: Int)
 
-        suspend fun handleSyncMenu(menus: List<MenuModel>)
+        suspend fun handleSyncMenu(menu: MenuModel)
     }
 
 }

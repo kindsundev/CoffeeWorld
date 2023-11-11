@@ -2,7 +2,7 @@ package kind.sun.dev.coffeeworld.data.local.model
 
 import com.google.gson.annotations.SerializedName
 
-data class DrinksModel(
+data class DrinkModel(
     val id: Int,
     @SerializedName("cafe_id")
     val cafeId: Int,

@@ -9,9 +9,9 @@ import io.jsonwebtoken.security.SignatureException
 import kind.sun.dev.coffeeworld.BuildConfig
 import kind.sun.dev.coffeeworld.base.BaseRepository
 import kind.sun.dev.coffeeworld.contract.UserContract
-import kind.sun.dev.coffeeworld.data.local.dao.UserDAO
+import kind.sun.dev.coffeeworld.data.local.dao.UserDao
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
-import kind.sun.dev.coffeeworld.data.remote.api.UserAPI
+import kind.sun.dev.coffeeworld.data.remote.api.UserApi
 import kind.sun.dev.coffeeworld.data.remote.request.UserEmailRequest
 import kind.sun.dev.coffeeworld.data.remote.request.UserPasswordRequest
 import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
@@ -28,8 +28,8 @@ import java.io.File
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
-    private val remoteAPI: UserAPI,
-    private val localDAO: UserDAO,
+    private val remoteApi: UserApi,
+    private val localDao: UserDao,
     private val preferences: PreferencesHelper
 ): BaseRepository(), UserContract.Service {
 
@@ -62,18 +62,18 @@ class UserRepository @Inject constructor(
     override suspend fun handleFetchUser() {
         username?.let {
             performNetworkOperation(
-                networkRequest = { remoteAPI.getUser(it) },
+                networkRequest = { remoteApi.getUser(it) },
                 networkResult = _user
             )
         }
     }
 
     override suspend fun handleSyncUser(userModel: UserModel) {
-        coroutineScope.launch { localDAO.upsertUser(userModel) }
+        coroutineScope.launch { localDao.upsertUser(userModel) }
     }
 
     override suspend fun handleGetUser(): UserModel? {
-        return coroutineScope.async { localDAO.getUser() }.await()
+        return coroutineScope.async { localDao.getUser() }.await()
     }
 
     override suspend fun handleUpdateAvatar(avatar: File) {
@@ -84,7 +84,7 @@ class UserRepository @Inject constructor(
                     val avatarRequestBody = avatar.asRequestBody("image/*".toMediaTypeOrNull())
                     val avatarPart =
                         MultipartBody.Part.createFormData("image", avatar.name, avatarRequestBody)
-                    remoteAPI.updateAvatar(usernameRequestBody, avatarPart)
+                    remoteApi.updateAvatar(usernameRequestBody, avatarPart)
                 },
                 networkResult = statusMessage
             )
@@ -94,7 +94,7 @@ class UserRepository @Inject constructor(
     override suspend fun handleUpdateEmail(email: String, password: String) {
         username?.let {
             performNetworkOperation(
-                networkRequest = { remoteAPI.updateEmail(UserEmailRequest(it, email, password)) },
+                networkRequest = { remoteApi.updateEmail(UserEmailRequest(it, email, password)) },
                 networkResult = statusMessage
             )
         }
@@ -103,7 +103,7 @@ class UserRepository @Inject constructor(
     override suspend fun handleUpdateName(name: String) {
         username?.let {
             performNetworkOperation(
-                networkRequest = { remoteAPI.updateName(it, convertToTextRequestBody(name)) },
+                networkRequest = { remoteApi.updateName(it, convertToTextRequestBody(name)) },
                 networkResult = statusMessage
             )
         }
@@ -112,7 +112,7 @@ class UserRepository @Inject constructor(
     override suspend fun handleUpdateAddress(address: String) {
         username?.let {
             performNetworkOperation(
-                networkRequest = { remoteAPI.updateAddress(it, convertToTextRequestBody(address)) },
+                networkRequest = { remoteApi.updateAddress(it, convertToTextRequestBody(address)) },
                 networkResult = statusMessage
             )
         }
@@ -121,7 +121,7 @@ class UserRepository @Inject constructor(
     override suspend fun handleUpdatePhone(phone: String) {
         username?.let {
             performNetworkOperation(
-                networkRequest = { remoteAPI.updatePhone(it, convertToTextRequestBody(phone)) },
+                networkRequest = { remoteApi.updatePhone(it, convertToTextRequestBody(phone)) },
                 networkResult = statusMessage
             )
         }
@@ -130,7 +130,7 @@ class UserRepository @Inject constructor(
     override suspend fun handleUpdatePassword(currentPassword: String, newPassword: String) {
         username?.let {
             performNetworkOperation(
-                networkRequest = { remoteAPI.updatePassword(UserPasswordRequest(it, currentPassword, newPassword)) },
+                networkRequest = { remoteApi.updatePassword(UserPasswordRequest(it, currentPassword, newPassword)) },
                 networkResult = statusMessage
             )
         }

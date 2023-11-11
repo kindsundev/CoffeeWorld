@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import kind.sun.dev.coffeeworld.data.local.dao.CafeDAO
-import kind.sun.dev.coffeeworld.data.local.dao.UserDAO
+import kind.sun.dev.coffeeworld.data.local.dao.CafeDao
+import kind.sun.dev.coffeeworld.data.local.dao.UserDao
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
 
@@ -16,8 +16,8 @@ import kind.sun.dev.coffeeworld.data.local.model.UserModel
 )
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun userDAO(): UserDAO
-    abstract fun cafeDAO(): CafeDAO
+    abstract fun userDao(): UserDao
+    abstract fun cafeDao(): CafeDao
 
     companion object {
         @Volatile

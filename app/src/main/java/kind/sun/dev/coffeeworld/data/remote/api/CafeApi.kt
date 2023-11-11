@@ -12,7 +12,7 @@ import retrofit2.http.GET
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
-interface CafeAPI {
+interface CafeApi {
     @GET("/cafes")
     suspend fun fetchCafes(): Response<CafeResponse>
 
@@ -33,11 +33,11 @@ interface CafeAPI {
     ): Response<CafeDrinksResponse>
 
     @GET("/cafes/{cafe_id}/menu")
-    suspend fun fetchMenus(
+    suspend fun fetchMenu(
         @Path("cafe_id") cafeId: Int
     ): Response<CafeMenuResponse>
 
-    @PUT("/drinks/{id}/quantity")
+    @PUT("/drink/{id}/quantity")
     suspend fun updateQuantityDrinks(
         @Path("id") id: Int,
         @Body quantity: RequestBody

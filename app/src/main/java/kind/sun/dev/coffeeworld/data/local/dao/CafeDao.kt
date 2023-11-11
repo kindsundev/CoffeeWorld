@@ -8,7 +8,7 @@ import androidx.room.Query
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 
 @Dao
-interface CafeDAO {
+interface CafeDao {
     @Query("SELECT * FROM cafe_table")
     suspend fun getAllCafes(): List<CafeModel>?
 
