@@ -33,7 +33,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
     override fun initViews() {}
 
     override fun observeViewModel() {
-        observeNetworkResult(viewModel.loginResponse,
+        viewModel.loginResponse.observeNetworkResult(
             onSuccess = {
                 preferences.userToken = it.data.token
                 navigateToFragment(R.id.action_loginFragment_to_homeFragment)

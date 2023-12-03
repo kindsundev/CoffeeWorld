@@ -1,10 +1,12 @@
 package kind.sun.dev.coffeeworld.base
 
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.utils.helper.network.NetworkHelper
 import javax.inject.Inject
 
-open class BaseViewModel : ViewModel() {
+@HiltViewModel
+open class BaseViewModel @Inject constructor() : ViewModel() {
 
      @Inject
      lateinit var networkHelper: NetworkHelper

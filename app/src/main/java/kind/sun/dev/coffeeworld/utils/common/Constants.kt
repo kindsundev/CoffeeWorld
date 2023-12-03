@@ -9,4 +9,6 @@ object Constants {
     const val MORE = "More"
     const val DURATION_SHORT = 100L
     const val SCALE_LOW = 0.96f
+    const val DB_CAFE_LIST_KEY = "LOCAL_DB_CAFE_LIST"
+    const val DB_USER_KEY = "LOCAL_DB_USER"
 }

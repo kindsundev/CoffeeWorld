@@ -12,8 +12,9 @@ import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
 import kind.sun.dev.coffeeworld.databinding.FragmentProfileBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
+import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.dataset.MoreDataSet
-import kind.sun.dev.coffeeworld.utils.helper.view.checkThenHide
+import kind.sun.dev.coffeeworld.utils.helper.view.checkToHide
 import kind.sun.dev.coffeeworld.utils.helper.view.showAlertDialog
 import kind.sun.dev.coffeeworld.view.adapter.profile.ProfileAdapter
 import kind.sun.dev.coffeeworld.view.dialog.profile.AddressDialogFragment
@@ -48,16 +49,17 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, UserViewModel>(
 
     override fun prepareData() { requestGetData() }
 
-    private fun requestGetData() {
+    private fun requestGetData(isSwipeToRefreshLoading: Boolean = false) {
         var hasLocalData = false
         viewModel.onFetchUser(
+            isLoading = isSwipeToRefreshLoading,
             onDataFromLocal = {
                 it?.let {
                     notifyUser(it).also { hasLocalData = true }
                 } ?: StyleableToast.makeText(
                     requireContext(), getString(R.string.you_are_offline), R.style.toast_network
                 ).show()
-                binding.swipeRefreshLayout.checkThenHide()
+                binding.swipeRefreshLayout.checkToHide()
             },
             onFailedMessage = {
                 if (!hasLocalData)
@@ -70,7 +72,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, UserViewModel>(
         binding.apply {
             swipeRefreshLayout.apply {
                 setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.gold))
-                setOnRefreshListener { requestGetData() }
+                setOnRefreshListener { requestGetData(true) }
             }
         }
         binding.rvProfileOptions.apply {
@@ -80,9 +82,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, UserViewModel>(
     }
 
     override fun observeViewModel() {
-        observeNetworkResult(viewModel.userResponse,
+        viewModel.userResponse.observeNetworkResult(
             onSuccess = { result ->
-                binding.swipeRefreshLayout.checkThenHide()
+                Logger.warning("called")
+                binding.swipeRefreshLayout.checkToHide()
                 notifyUser(result.data).also {
                     lifecycleScope.launch { viewModel.onSyncUser(result.data) }
                 }
@@ -113,7 +116,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, UserViewModel>(
     }
 
     private fun onClickLogout() {
-        showAlertDialog(requireContext(), R.string.logout, R.string.confirm_logout) {
+        requireContext().showAlertDialog(R.string.logout, R.string.confirm_logout) {
             preferences.userToken = null
             navigateToFragment(R.id.action_profileFragment_to_loginFragment)
         }
@@ -121,8 +124,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, UserViewModel>(
 
     fun onBackToMoreFragment() : Unit = popFragment()
 
-    private fun onUpdateSuccess() {
+    private fun onUpdateSuccess(message: String) {
+        StyleableToast.makeText(requireContext(), message, R.style.toast_success).show()
         viewModel.onFetchUser(
+            isLoading = true,
             onDataFromLocal = {
                 it?.let { notifyUser(it) }
             },

@@ -7,13 +7,14 @@ import io.github.muddz.styleabletoast.StyleableToast
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseDialog
 import kind.sun.dev.coffeeworld.databinding.DialogUpdateNameBinding
+import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
 import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 
 @AndroidEntryPoint
 class NameDialogFragment(
-    private val onUpdateSuccess: () -> Unit
+    private val onUpdateSuccess: (message: String) -> Unit
 ) : BaseDialog<DialogUpdateNameBinding, UserViewModel>(DialogUpdateNameBinding::inflate){
 
     override val viewModel by viewModels<UserViewModel>()
@@ -26,11 +27,10 @@ class NameDialogFragment(
     override fun initViews() {}
 
     override fun observeViewModel() {
-        observeNetworkResult(
-            liveData = viewModel.messageResponse,
+        viewModel.messageResponse.observeNetworkResult(
             onSuccess = {
-                StyleableToast.makeText(requireContext(), it.data, R.style.toast_success).show()
-                onUpdateSuccess()
+                Logger.error("called")
+                onUpdateSuccess(it.data)
                 onCancel()
             },
             onError = {
@@ -47,5 +47,10 @@ class NameDialogFragment(
                 binding.tvError.showErrorMessage(it)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
     }
 }

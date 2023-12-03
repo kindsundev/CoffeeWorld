@@ -14,7 +14,7 @@ import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.databinding.FragmentCafeBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
-import kind.sun.dev.coffeeworld.utils.helper.view.checkThenHide
+import kind.sun.dev.coffeeworld.utils.helper.view.checkToHide
 import kind.sun.dev.coffeeworld.utils.helper.view.toggleNetworkErrorLayout
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopAdapter
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
     FragmentCafeBinding::inflate
-){
+) {
     override val viewModel: CafeViewModel by viewModels()
     private lateinit var transformedData: List<CafeShopViewItem>
 
@@ -52,12 +52,15 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
         )
     }
 
-    override fun prepareData() { requestGetData() }
+    override fun prepareData() {
+        requestGetData()
+    }
 
-    private fun requestGetData() {
+    private fun requestGetData(isSwipeToRefreshLoading: Boolean = false) {
         var hasLocalData = false
         lifecycleScope.launch {
             viewModel.onFetchAllCafes(
+                isLoading = isSwipeToRefreshLoading,
                 onDataFromLocal = {
                     if (!it.isNullOrEmpty()) {
                         hasLocalData = true
@@ -65,7 +68,7 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
                     } else {
                         showNetworkErrorLayout()
                     }
-                    binding.swipeRefreshLayout.checkThenHide()
+                    binding.swipeRefreshLayout.checkToHide()
                 },
                 onFailedMessage = {
                     if (!hasLocalData) {
@@ -90,7 +93,7 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
         binding.apply {
             swipeRefreshLayout.apply {
                 setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.gold))
-                setOnRefreshListener { requestGetData() }
+                setOnRefreshListener { requestGetData(true) }
             }
             rvCafe.apply {
                 setHasFixedSize(true)
@@ -101,9 +104,9 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
     }
 
     override fun observeViewModel() {
-        observeNetworkResult(viewModel.cafe,
+        viewModel.cafe.observeNetworkResult(
             onSuccess = { result ->
-                binding.swipeRefreshLayout.checkThenHide()
+                binding.swipeRefreshLayout.checkToHide()
                 binding.layoutNetworkError.root.toggleNetworkErrorLayout(false)
                 bindDataToCafeAdapter(result.data).also {
                     lifecycleScope.launch { viewModel.onSyncAllCafes(result.data) }
@@ -114,7 +117,6 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
             }
         )
     }
-
 
     private fun bindDataToCafeAdapter(result: List<CafeModel>) {
         arrayOf<String>(

@@ -4,16 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import kind.sun.dev.coffeeworld.data.local.dao.CafeDao
 import kind.sun.dev.coffeeworld.data.local.dao.UserDao
-import kind.sun.dev.coffeeworld.data.local.model.CafeModel
-import kind.sun.dev.coffeeworld.data.local.model.UserModel
+import kind.sun.dev.coffeeworld.data.local.entity.CafeEntity
+import kind.sun.dev.coffeeworld.data.local.entity.UserEntity
 
 @Database(
-    entities = [UserModel::class, CafeModel::class],
+    entities = [UserEntity::class, CafeEntity::class],
     exportSchema = true,
     version = 1
 )
+@TypeConverters(AppConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao

@@ -14,7 +14,7 @@ import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 @AndroidEntryPoint
 
 class PhoneDialogFragment(
-    private val onUpdateSuccess: () -> Unit
+    private val onUpdateSuccess: (message: String) -> Unit
 ) : BaseDialog<DialogUpdatePhoneBinding, UserViewModel>(DialogUpdatePhoneBinding::inflate) {
 
     override val viewModel by viewModels<UserViewModel>()
@@ -27,11 +27,9 @@ class PhoneDialogFragment(
     override fun initViews() {}
 
     override fun observeViewModel() {
-        observeNetworkResult(
-            liveData = viewModel.messageResponse,
+        viewModel.messageResponse.observeNetworkResult(
             onSuccess = {
-                StyleableToast.makeText(requireContext(), it.data, R.style.toast_success).show().also {
-                    onUpdateSuccess()
+                onUpdateSuccess(it.data).also {
                     onCancel()
                 }
             },

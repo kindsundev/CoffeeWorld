@@ -28,8 +28,7 @@ class PasswordDialogFragment : BaseDialog<DialogUpdatePasswordBinding, UserViewM
     override fun initViews() {}
 
     override fun observeViewModel() {
-        observeNetworkResult(
-            liveData = viewModel.messageResponse,
+        viewModel.messageResponse.observeNetworkResult(
             onSuccess = {
                 StyleableToast.makeText(requireContext(), it.data, R.style.toast_success).show()
                     .also { onCancel() }

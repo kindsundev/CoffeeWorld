@@ -9,7 +9,7 @@ import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.databinding.FragmentHomeBinding
-import kind.sun.dev.coffeeworld.utils.helper.view.showSnackbarMessage
+import kind.sun.dev.coffeeworld.utils.helper.view.showSnackbar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -42,12 +42,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, BaseViewModel>(
 
     private fun checkDoubleBackPressed() {
         if (doubleBackPressed) requireActivity().finish()
-
-        showSnackbarMessage(
-            context = requireContext(),
-            root = binding.root as CoordinatorLayout,
-            resMessageId = R.string.press_back_again
-        ).also {
+        requireContext().showSnackbar(binding.root as CoordinatorLayout, R.string.press_back_again).also {
             lifecycleScope.launch {
                 doubleBackPressed = true
                 delay(2000)

@@ -1,6 +1,7 @@
 package kind.sun.dev.coffeeworld.contract
 
 import androidx.lifecycle.LiveData
+import kind.sun.dev.coffeeworld.data.local.entity.UserEntity
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
 import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
 import kind.sun.dev.coffeeworld.data.remote.response.UserResponse
@@ -19,19 +20,12 @@ interface UserContract {
 
         fun validateUpdatePhone(phoneNumber: String): Pair<Boolean, String>
 
-        fun validateUpdatePassword(
-            currentPassword: String,
-            newPassword: String,
-            reNewPassword: String
-        ): Pair<Boolean, String>
+        fun validateUpdatePassword(currentPassword: String, newPassword: String, reNewPassword: String): Pair<Boolean, String>
     }
 
 
     interface ViewModel {
-        fun onFetchUser(
-            onDataFromLocal: (UserModel?) -> Unit,
-            onFailedMessage: (String) -> Unit
-        )
+        fun onFetchUser(isLoading: Boolean, onDataFromLocal: (UserModel?) -> Unit, onFailedMessage: (String) -> Unit)
 
         suspend fun onSyncUser(userModel: UserModel)
 
@@ -54,11 +48,11 @@ interface UserContract {
         val messageResponse: LiveData<NetworkResult<MessageResponse>>
         val username: String?
 
-        suspend fun handleFetchUser()
+        suspend fun handleFetchUser(isLoading: Boolean)
 
         suspend fun handleSyncUser(userModel: UserModel)
 
-        suspend fun handleGetUser(): UserModel?
+        suspend fun handleGetUser(id: String): UserEntity?
 
         suspend fun handleUpdateAvatar(avatar: File)
 

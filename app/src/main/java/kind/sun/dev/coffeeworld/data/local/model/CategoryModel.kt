@@ -1,7 +1,9 @@
 package kind.sun.dev.coffeeworld.data.local.model
 
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "category_table")
 data class CategoryModel(
     val id: Int,
     @SerializedName("cafe_id")

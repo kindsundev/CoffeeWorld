@@ -1,16 +1,14 @@
 package kind.sun.dev.coffeeworld.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.contract.CafeContract
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
-import kind.sun.dev.coffeeworld.utils.api.NetworkResult
+import kind.sun.dev.coffeeworld.data.local.model.MenuModel
+import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.dataset.CafeShopDataSet
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
-import kind.sun.dev.coffeeworld.base.BaseViewModel
-import kind.sun.dev.coffeeworld.data.local.model.MenuModel
-import kind.sun.dev.coffeeworld.data.remote.response.CafeResponse
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,21 +17,27 @@ import javax.inject.Inject
 class CafeViewModel @Inject constructor(
     private val cafeService: CafeContract.Service,
 ): BaseViewModel(), CafeContract.ViewModel {
-    val cafe: LiveData<NetworkResult<CafeResponse>> get() = cafeService.cafeResponse
+    val cafe get() = cafeService.cafeResponse
+    val menu get() = cafeService.menuResponse
 
     override suspend fun onFetchAllCafes(
+        isLoading: Boolean,
         onDataFromLocal: (List<CafeModel>?) -> Unit,
         onFailedMessage: (String) -> Unit
     ) {
         handleCheckAndRoute(
             conditionChecker = null,
-            onPassedCheck = { viewModelScope.launch { cafeService.handleFetchAllCafes() } },
+            onPassedCheck = {
+                viewModelScope.launch { cafeService.handleFetchAllCafes(isLoading) }
+            },
             onFailedCheck = { reason, localDataRequired ->
                 if (localDataRequired) {
                     viewModelScope.launch {
-                        onDataFromLocal(cafeService.handleGetAllCafes())
-                        delay(300)
-                        onFailedMessage(reason)
+                        cafeService.handleGetCafe(Constants.DB_CAFE_LIST_KEY).let {
+                            onDataFromLocal(it.items)
+                            delay(300)
+                            onFailedMessage(reason)
+                        }
                     }
                 } else {
                     onFailedMessage(reason)
@@ -43,14 +47,29 @@ class CafeViewModel @Inject constructor(
     }
 
     override suspend fun onSyncAllCafes(cafes: List<CafeModel>) {
-        cafeService.handleSyncAllCafes(cafes)
+        cafeService.handleSyncCafes(cafes)
     }
 
-    override suspend fun onFetchMenuForCafe(cafeId: Int) {
 
+    override suspend fun onFetchMenu(
+        cafeId: Int,
+        onDataFromLocal: (MenuModel?) -> Unit,
+        onFailedMessage: (String) -> Unit
+    ) {
+        handleCheckAndRoute(
+            conditionChecker = null,
+            onPassedCheck = { viewModelScope.launch { cafeService.handleFetchMenu(cafeId) } },
+            onFailedCheck = { reason, localDataRequired ->
+                if (localDataRequired) {
+
+                } else {
+
+                }
+            }
+        )
     }
 
-    override suspend fun onSyncMenuOfCafe(menus: List<MenuModel>) {
+    override suspend fun onSyncMenu(menu: MenuModel) {
 
     }
 

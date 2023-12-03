@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.databinding.ActivityMainBinding
 import kind.sun.dev.coffeeworld.utils.helper.network.NetworkReceiverHelper
-import kind.sun.dev.coffeeworld.utils.helper.view.showSnackbarMessage
+import kind.sun.dev.coffeeworld.utils.helper.view.showSnackbar
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showNetworkState(resMessageId: Int) {
-        showSnackbarMessage(this, binding.root as CoordinatorLayout, resMessageId)
+        showSnackbar(binding.root as CoordinatorLayout, resMessageId)
     }
 
     fun getBottomNavigationHeight() = binding.bottomNavView.height

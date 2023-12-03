@@ -10,6 +10,7 @@ import kind.sun.dev.coffeeworld.BuildConfig
 import kind.sun.dev.coffeeworld.base.BaseRepository
 import kind.sun.dev.coffeeworld.contract.UserContract
 import kind.sun.dev.coffeeworld.data.local.dao.UserDao
+import kind.sun.dev.coffeeworld.data.local.entity.UserEntity
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
 import kind.sun.dev.coffeeworld.data.remote.api.UserApi
 import kind.sun.dev.coffeeworld.data.remote.request.UserEmailRequest
@@ -17,6 +18,7 @@ import kind.sun.dev.coffeeworld.data.remote.request.UserPasswordRequest
 import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
 import kind.sun.dev.coffeeworld.data.remote.response.UserResponse
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
+import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
 import kotlinx.coroutines.async
@@ -59,9 +61,10 @@ class UserRepository @Inject constructor(
         }
     }
 
-    override suspend fun handleFetchUser() {
+    override suspend fun handleFetchUser(isLoading: Boolean) {
         username?.let {
             performNetworkOperation(
+                isShowProgress = !isLoading,
                 networkRequest = { remoteApi.getUser(it) },
                 networkResult = _user
             )
@@ -69,11 +72,15 @@ class UserRepository @Inject constructor(
     }
 
     override suspend fun handleSyncUser(userModel: UserModel) {
-        coroutineScope.launch { localDao.upsertUser(userModel) }
+        coroutineScope.launch {
+            localDao.upsertUser(
+                UserEntity(Constants.DB_USER_KEY, userModel)
+            )
+        }
     }
 
-    override suspend fun handleGetUser(): UserModel? {
-        return coroutineScope.async { localDao.getUser() }.await()
+    override suspend fun handleGetUser(id: String): UserEntity? {
+        return coroutineScope.async { localDao.getUser(id) }.await()
     }
 
     override suspend fun handleUpdateAvatar(avatar: File) {

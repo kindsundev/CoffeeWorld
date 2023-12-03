@@ -13,7 +13,7 @@ import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 
 @AndroidEntryPoint
 class AddressDialogFragment(
-    private val onUpdateSuccess: () -> Unit
+    private val onUpdateSuccess: (message: String) -> Unit
 ) : BaseDialog<DialogUpdateAddressBinding, UserViewModel>(DialogUpdateAddressBinding::inflate) {
 
     override val viewModel: UserViewModel by viewModels()
@@ -28,11 +28,9 @@ class AddressDialogFragment(
     override fun initViews() {}
 
     override fun observeViewModel() {
-        observeNetworkResult(
-            liveData = viewModel.messageResponse,
+        viewModel.messageResponse.observeNetworkResult(
             onSuccess = {
-                StyleableToast.makeText(requireContext(), it.data, R.style.toast_success).show().also {
-                    onUpdateSuccess()
+                onUpdateSuccess(it.data).also {
                     onCancel()
                 }
             },
@@ -41,7 +39,6 @@ class AddressDialogFragment(
             }
         )
     }
-
 
     fun onClickUpdateAddress(view: View) {
         view.setScaleAnimation {

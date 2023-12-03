@@ -27,7 +27,7 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding, AuthV
     override fun initViews() {}
 
     override fun observeViewModel() {
-        observeNetworkResult(viewModel.messageResponse,
+        viewModel.messageResponse.observeNetworkResult(
             onSuccess = {
                 Toast.makeText(activity, it.data, Toast.LENGTH_LONG).show()
                 popFragment()

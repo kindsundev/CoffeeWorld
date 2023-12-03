@@ -1,13 +1,11 @@
 package kind.sun.dev.coffeeworld.data.local.model
 
-import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-data class MenuModel(
-    @PrimaryKey
+class BeverageCategoryModel(
     val id: String,
     @SerializedName("cafe_id")
     val cafeId: Int,
-    @SerializedName("beverage_category")
-    val beverageCategories: List<BeverageCategoryModel>
+    val category: CategoryModel,
+    val drinks: List<DrinkModel>
 )

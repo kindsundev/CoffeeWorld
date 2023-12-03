@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AvatarBottomFragment(
-    private val onUpdateSuccess: () -> Unit
+    private val onUpdateSuccess: (message: String) -> Unit
 ) : BaseBottomSheet<FragmentAvatarBinding, UserViewModel>(false, FragmentAvatarBinding::inflate) {
 
     private val fileInternalHelper by lazy { FileInternalHelper(requireContext()) }
@@ -101,8 +101,7 @@ class AvatarBottomFragment(
     override fun initViews() {}
 
     override fun observeViewModel() {
-        observeNetworkResult(
-            liveData = viewModel.messageResponse,
+        viewModel.messageResponse.observeNetworkResult(
             onSuccess = { requireDeleteFile(it.data) },
             onError = { StyleableToast.makeText(requireContext(), it, R.style.toast_error).show() }
         )
@@ -111,8 +110,7 @@ class AvatarBottomFragment(
     private fun requireDeleteFile(message: String) = lifecycleScope.launch {
         fileInternalHelper.deletePhoto(currentFileName).also { deleted ->
             if (deleted) {
-                StyleableToast.makeText(requireContext(), message, R.style.toast_permission).show()
-                onUpdateSuccess.invoke().also { this@AvatarBottomFragment.dismiss() }
+                onUpdateSuccess.invoke(message).also { this@AvatarBottomFragment.dismiss() }
             }
         }
     }
@@ -121,16 +119,14 @@ class AvatarBottomFragment(
         actionListener = openGallery.also {
             checkSDKTiramisu(
                 onSDKTiramisu = {
-                    checkPermission(
-                        context = requireContext(),
+                    requireContext().checkPermission(
                         permission = Manifest.permission.READ_MEDIA_IMAGES,
                         onGranted = { openImagePicker() },
                         onDenied = { requestPermission.launch(Manifest.permission.READ_MEDIA_IMAGES) }
                     )
                 },
                 onNotTiramisu = {
-                    checkPermission(
-                        context = requireContext(),
+                    requireContext().checkPermission(
                         permission = Manifest.permission.READ_EXTERNAL_STORAGE,
                         onGranted = { openImagePicker() },
                         onDenied = { requestPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE) }
@@ -154,8 +150,7 @@ class AvatarBottomFragment(
 
     fun onClickOpenCamera() {
         actionListener = openCamera.also {
-            checkPermission(
-                context = requireContext(),
+            requireContext().checkPermission(
                 permission = Manifest.permission.CAMERA,
                 onGranted = { captureImageFromCamera() },
                 onDenied = { requestPermission.launch(Manifest.permission.CAMERA) }

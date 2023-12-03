@@ -6,7 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.contract.UserContract
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
+import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.validator.ProfileValidator
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -30,15 +32,24 @@ class UserViewModel @Inject constructor(
     val messageResponse get() = userService.messageResponse
 
     override fun onFetchUser(
+        isLoading: Boolean,
         onDataFromLocal: (UserModel?) -> Unit,
         onFailedMessage: (String) -> Unit
     ) {
         handleCheckAndRoute(
             conditionChecker = null,
-            onPassedCheck = { viewModelScope.launch { userService.handleFetchUser() } },
+            onPassedCheck = {
+                viewModelScope.launch { userService.handleFetchUser(isLoading) }
+            },
             onFailedCheck = { reason, localDataRequired ->
                 if (localDataRequired) {
-                    viewModelScope.launch { onDataFromLocal(userService.handleGetUser()) }
+                    viewModelScope.launch {
+                        userService.handleGetUser(Constants.DB_USER_KEY)?.let {
+                            onDataFromLocal(it.detail)
+                            delay(300)
+                            onFailedMessage(reason)
+                        }
+                    }
                 } else {
                     onFailedMessage(reason)
                 }

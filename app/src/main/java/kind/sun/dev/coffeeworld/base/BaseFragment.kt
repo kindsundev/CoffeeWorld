@@ -14,6 +14,7 @@ import kind.sun.dev.coffeeworld.contract.FragmentContract
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.custom.CustomLoadingDialog
 import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
+import kind.sun.dev.coffeeworld.utils.helper.view.observerNetworkResult
 import kind.sun.dev.coffeeworld.view.MainActivity
 import javax.inject.Inject
 
@@ -66,27 +67,17 @@ abstract class BaseFragment<V : ViewDataBinding, VM: BaseViewModel>(
 
     open fun cleanUp() {}
 
-    protected fun <T> observeNetworkResult(
-        liveData: LiveData<NetworkResult<T>>,
+    protected fun <T> LiveData<NetworkResult<T>>.observeNetworkResult(
         onSuccess: (T) -> Unit,
         onError: (String) -> Unit
     ) {
-        liveData.observe(viewLifecycleOwner) { result ->
-            when(result) {
-                is NetworkResult.Success -> {
-                    if (loadingDialog.isAdded) loadingDialog.dismiss()
-                    result.data?.let { onSuccess.invoke(it) }
-                }
-                is NetworkResult.Error -> {
-                    if (loadingDialog.isAdded) loadingDialog.dismiss()
-                    result.message?.let { onError.invoke(it) }
-                }
-                is NetworkResult.Loading -> {
-                    if (loadingDialog.isAdded) loadingDialog.dismiss()
-                    loadingDialog.show(childFragmentManager, this.tag)
-                }
+        observerNetworkResult(viewLifecycleOwner, childFragmentManager, loadingDialog,
+            onSuccess = {
+                onSuccess.invoke(it)
+            }, onError = {
+                onError.invoke(it)
             }
-        }
+        )
     }
 
     protected fun navigateToFragment(resId: Int, bundle: Bundle? = null) {

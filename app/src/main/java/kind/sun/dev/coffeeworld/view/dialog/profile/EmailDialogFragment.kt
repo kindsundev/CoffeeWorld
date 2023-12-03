@@ -15,7 +15,7 @@ import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 
 @AndroidEntryPoint
 class EmailDialogFragment(
-    private val onUpdateSuccess: () -> Unit
+    private val onUpdateSuccess: (message: String) -> Unit
 ) : BaseDialog<DialogUpdateEmailBinding, UserViewModel>(DialogUpdateEmailBinding::inflate) {
 
     override val viewModel by viewModels<UserViewModel>()
@@ -29,11 +29,9 @@ class EmailDialogFragment(
     override fun initViews() {}
 
     override fun observeViewModel() {
-        observeNetworkResult(
-            liveData = viewModel.messageResponse,
+        viewModel.messageResponse.observeNetworkResult(
             onSuccess = {
-                StyleableToast.makeText(requireContext(), it.data, R.style.toast_success).show().also {
-                    onUpdateSuccess()
+                onUpdateSuccess(it.data).also {
                     onCancel()
                 }
             },
