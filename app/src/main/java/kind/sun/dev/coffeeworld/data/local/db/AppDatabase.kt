@@ -8,10 +8,11 @@ import androidx.room.TypeConverters
 import kind.sun.dev.coffeeworld.data.local.dao.CafeDao
 import kind.sun.dev.coffeeworld.data.local.dao.UserDao
 import kind.sun.dev.coffeeworld.data.local.entity.CafeEntity
+import kind.sun.dev.coffeeworld.data.local.entity.MenuEntity
 import kind.sun.dev.coffeeworld.data.local.entity.UserEntity
 
 @Database(
-    entities = [UserEntity::class, CafeEntity::class],
+    entities = [UserEntity::class, CafeEntity::class, MenuEntity::class],
     exportSchema = true,
     version = 1
 )

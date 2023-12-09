@@ -2,6 +2,7 @@ package kind.sun.dev.coffeeworld.contract
 
 import androidx.lifecycle.LiveData
 import kind.sun.dev.coffeeworld.data.local.entity.CafeEntity
+import kind.sun.dev.coffeeworld.data.local.entity.MenuEntity
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.data.local.model.MenuModel
 import kind.sun.dev.coffeeworld.data.remote.response.CafeMenuResponse
@@ -17,8 +18,9 @@ interface CafeContract {
             onDataFromLocal: (List<CafeModel>?) -> Unit,
             onFailedMessage: (String) -> Unit)
 
-        suspend fun onSyncAllCafes(cafes: List<CafeModel>)
+        suspend fun onRetrieveAllCafes(): List<CafeModel>?
 
+        suspend fun onSyncAllCafes(cafes: List<CafeModel>)
 
         suspend fun onFetchMenu(
             cafeId: Int, onDataFromLocal: (MenuModel?) -> Unit, onFailedMessage: (String) -> Unit
@@ -40,11 +42,13 @@ interface CafeContract {
 
         suspend fun handleSyncCafes(cafes: List<CafeModel>)
 
-        suspend fun handleGetCafe(id : String): CafeEntity
+        suspend fun handleGetCafe(id : String): CafeEntity?
 
         suspend fun handleFetchMenu(cafeId: Int)
 
         suspend fun handleSyncMenu(menu: MenuModel)
+
+        suspend fun handleGetMenu(cafeId: Int): MenuEntity?
     }
 
 }

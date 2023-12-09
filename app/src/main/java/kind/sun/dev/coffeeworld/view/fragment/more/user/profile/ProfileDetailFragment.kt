@@ -7,7 +7,7 @@ import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
 import kind.sun.dev.coffeeworld.databinding.FragmentProfileDetailBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
-import kind.sun.dev.coffeeworld.utils.helper.view.getParcelableSafe
+import kind.sun.dev.coffeeworld.utils.helper.view.getParcelableHelper
 
 @AndroidEntryPoint
 class ProfileDetailFragment : BaseBottomSheet<FragmentProfileDetailBinding, BaseViewModel>(
@@ -22,7 +22,7 @@ class ProfileDetailFragment : BaseBottomSheet<FragmentProfileDetailBinding, Base
 
 
     override fun prepareData() {
-        userModel = arguments?.getParcelableSafe(Constants.USER_KEY)
+        userModel = arguments?.getParcelableHelper(Constants.USER_KEY)
     }
 
     override fun initViews() {

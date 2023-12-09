@@ -33,8 +33,8 @@ class CafeViewModel @Inject constructor(
             onFailedCheck = { reason, localDataRequired ->
                 if (localDataRequired) {
                     viewModelScope.launch {
-                        cafeService.handleGetCafe(Constants.DB_CAFE_LIST_KEY).let {
-                            onDataFromLocal(it.items)
+                        onRetrieveAllCafes()?.let {
+                            onDataFromLocal(it)
                             delay(300)
                             onFailedMessage(reason)
                         }
@@ -46,10 +46,13 @@ class CafeViewModel @Inject constructor(
         )
     }
 
+    override suspend fun onRetrieveAllCafes(): List<CafeModel>? {
+        return cafeService.handleGetCafe(Constants.DB_CAFE_LIST_KEY)?.items
+    }
+
     override suspend fun onSyncAllCafes(cafes: List<CafeModel>) {
         cafeService.handleSyncCafes(cafes)
     }
-
 
     override suspend fun onFetchMenu(
         cafeId: Int,
@@ -61,16 +64,22 @@ class CafeViewModel @Inject constructor(
             onPassedCheck = { viewModelScope.launch { cafeService.handleFetchMenu(cafeId) } },
             onFailedCheck = { reason, localDataRequired ->
                 if (localDataRequired) {
-
+                    viewModelScope.launch {
+                        cafeService.handleGetMenu(cafeId)?.let {
+                            onDataFromLocal.invoke(MenuModel("", it.cafeId, it.beverageCategories))
+                            delay(300)
+                            onFailedMessage(reason)
+                        }
+                    }
                 } else {
-
+                    onFailedMessage(reason)
                 }
             }
         )
     }
 
     override suspend fun onSyncMenu(menu: MenuModel) {
-
+        cafeService.handleSyncMenu(menu)
     }
 
     override fun convertToCafeViewItem(title: Array<String>, data: List<CafeModel>): MutableList<CafeShopViewItem> {
@@ -105,6 +114,4 @@ class CafeViewModel @Inject constructor(
             }
         }
     }
-
-
 }

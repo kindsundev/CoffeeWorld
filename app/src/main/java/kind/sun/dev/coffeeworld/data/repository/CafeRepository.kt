@@ -6,6 +6,7 @@ import kind.sun.dev.coffeeworld.base.BaseRepository
 import kind.sun.dev.coffeeworld.contract.CafeContract
 import kind.sun.dev.coffeeworld.data.local.dao.CafeDao
 import kind.sun.dev.coffeeworld.data.local.entity.CafeEntity
+import kind.sun.dev.coffeeworld.data.local.entity.MenuEntity
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.data.local.model.MenuModel
 import kind.sun.dev.coffeeworld.data.remote.api.CafeApi
@@ -58,7 +59,17 @@ class CafeRepository @Inject constructor(
     }
 
     override suspend fun handleSyncMenu(menu: MenuModel) {
-        coroutineScope.launch { localDao }
+        coroutineScope.launch {
+            localDao.upsertMenu(
+                MenuEntity(menu.cafeId, menu.beverageCategories)
+            )
+        }
+    }
+
+    override suspend fun handleGetMenu(cafeId: Int): MenuEntity {
+        return coroutineScope.async {
+            localDao.getMenu(cafeId)
+        }.await()
     }
 
 }

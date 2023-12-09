@@ -6,9 +6,11 @@ object Constants {
     const val LAST_SAVE_KEY = "LAST_SAVE_AT_"
     const val CAFE_KEY = "CAFE_KEY"
     const val USER_KEY = "USER_KEY"
+    const val ORDER_CAFE_KEY = "ORDER_CAFE_KEY"
     const val MORE = "More"
     const val DURATION_SHORT = 100L
     const val SCALE_LOW = 0.96f
     const val DB_CAFE_LIST_KEY = "LOCAL_DB_CAFE_LIST"
     const val DB_USER_KEY = "LOCAL_DB_USER"
+    const val DB_MENU_KEY = "LOCAL_DB_MENU"
 }
