@@ -18,6 +18,7 @@ import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.helper.storage.FileInternalHelper
 import kind.sun.dev.coffeeworld.utils.helper.view.checkPermission
 import kind.sun.dev.coffeeworld.utils.helper.view.checkSDKTiramisu
+import kind.sun.dev.coffeeworld.utils.helper.view.showToastError
 import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
@@ -103,7 +104,7 @@ class AvatarBottomFragment(
     override fun observeViewModel() {
         viewModel.messageResponse.observeNetworkResult(
             onSuccess = { requireDeleteFile(it.data) },
-            onError = { StyleableToast.makeText(requireContext(), it, R.style.toast_error).show() }
+            onError = { requireContext().showToastError(it) }
         )
     }
 

@@ -18,6 +18,12 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/*
+* Why test load variables like this?
+* Because it involves handling the display of the CustomLoadingDialog or LoadingDialog of the SwipeLayout
+* Detail: if view set false: CustomLoadingDialog will shows, otherwise LoadingDialog of SwipeLayout will shows
+* */
+
 class CafeRepository @Inject constructor(
     private val remoteApi: CafeApi,
     private val localDao: CafeDao
@@ -50,9 +56,9 @@ class CafeRepository @Inject constructor(
         }.await()
     }
 
-    override suspend fun handleFetchMenu(cafeId: Int) {
+    override suspend fun handleFetchMenu(isLoading: Boolean, cafeId: Int) {
         performNetworkOperation(
-            isShowProgress = false,
+            isShowProgress = !isLoading,
             networkRequest = { remoteApi.fetchMenu(cafeId) },
             networkResult = _menu
         )

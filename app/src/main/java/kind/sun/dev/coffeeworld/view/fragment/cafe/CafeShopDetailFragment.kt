@@ -9,6 +9,7 @@ import kind.sun.dev.coffeeworld.databinding.FragmentCafeShopDetailBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.helper.view.getParcelableHelper
+import kind.sun.dev.coffeeworld.utils.helper.view.isExist
 import kind.sun.dev.coffeeworld.viewmodel.CafeViewModel
 import kotlinx.coroutines.launch
 
@@ -20,20 +21,17 @@ class CafeShopDetailFragment : BaseBottomSheet<FragmentCafeShopDetailBinding, Ca
 
     override val viewModel: CafeViewModel  by viewModels()
 
+
     override fun setupDataBinding() {
         binding.fragment = this
+        binding.lifecycleOwner = this
     }
 
     override fun prepareData() {
         cafeModel = arguments?.getParcelableHelper(Constants.CAFE_KEY)
         lifecycleScope.launch {
             cafeModel?.id?.let { id ->
-                viewModel.onFetchMenu( id,
-                    onDataFromLocal = {
-                        Logger.error("${it?.beverageCategories?.size}")
-                    },
-                    onFailedMessage = {}
-                )
+                viewModel.onFetchMenu( false, id, {}, {})
             }
         }
 

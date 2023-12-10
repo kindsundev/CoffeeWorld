@@ -15,11 +15,12 @@ class OrderCafeShopAdapter(
         private val binding: ItemCafeShopRowBinding
     ): RecyclerView.ViewHolder(binding.root) {
 
-        internal fun bindView(cafeModel: CafeModel) = binding.apply {
+        internal fun onBind(cafeModel: CafeModel) = binding.apply {
             cafe = cafeModel
             root.setOnClickListener {
                 onItemClickListener.invoke(cafeModel.id)
             }
+            executePendingBindings()
         }
     }
 
@@ -32,6 +33,6 @@ class OrderCafeShopAdapter(
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: CafeViewHolder, position: Int) {
-        holder.bindView(data[position])
+        holder.onBind(data[position])
     }
 }

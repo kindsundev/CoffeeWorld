@@ -9,6 +9,7 @@ import kind.sun.dev.coffeeworld.databinding.FragmentRegisterBinding
 import kind.sun.dev.coffeeworld.viewmodel.AuthViewModel
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
+import kind.sun.dev.coffeeworld.utils.helper.view.showToastSuccess
 
 @AndroidEntryPoint
 class RegisterFragment: BaseFragment<FragmentRegisterBinding, AuthViewModel>(
@@ -28,7 +29,7 @@ class RegisterFragment: BaseFragment<FragmentRegisterBinding, AuthViewModel>(
     override fun observeViewModel() {
         viewModel.messageResponse.observeNetworkResult(
             onSuccess = {
-                Toast.makeText(activity, it.data, Toast.LENGTH_LONG).show()
+                requireContext().showToastSuccess(it.data)
                 popFragment()
             },
             onError = {

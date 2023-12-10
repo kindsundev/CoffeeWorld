@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import io.github.muddz.styleabletoast.StyleableToast
 import kind.sun.dev.coffeeworld.R
 
 val Context.screenWidth: Int
@@ -65,10 +66,34 @@ fun Context.showAlertDialog(resTitleId: Int, resMessageId: Int, onConfirmListene
     }.show()
 }
 
-inline fun Context.checkPermission (permission: String, onGranted: () -> Unit, onDenied: () -> Unit) {
+fun Context.checkPermission (permission: String, onGranted: () -> Unit, onDenied: () -> Unit) {
     if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
         onGranted()
     } else {
         onDenied()
     }
+}
+
+fun Context.showToastError(message: String) {
+    StyleableToast.makeText(this, message, R.style.toast_error).show()
+}
+
+fun Context.showToastSuccess(message: String) {
+    StyleableToast.makeText(this, message, R.style.toast_success).show()
+}
+
+fun Context.showToastNetwork(message: String) {
+    StyleableToast.makeText(this, message, R.style.toast_network).show()
+}
+
+fun Context.showToastPermission(message: String) {
+    StyleableToast.makeText(this, message, R.style.toast_permission).show()
+}
+
+fun Context.showToastWarning(message: String) {
+    StyleableToast.makeText(this, message, R.style.toast_warning).show()
+}
+
+fun Context.showToastThanks(message: String) {
+    StyleableToast.makeText(this, message, R.style.toast_thanks).show()
 }

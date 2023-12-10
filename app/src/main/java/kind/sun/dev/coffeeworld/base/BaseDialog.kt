@@ -16,7 +16,7 @@ import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.contract.FragmentContract
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.custom.CustomLoadingDialog
-import kind.sun.dev.coffeeworld.utils.helper.view.observerNetworkResultOnce
+import kind.sun.dev.coffeeworld.utils.helper.view.monitorNetworkOperationOnce
 import javax.inject.Inject
 
 abstract class BaseDialog<V: ViewDataBinding, VM: BaseViewModel>(
@@ -60,7 +60,7 @@ abstract class BaseDialog<V: ViewDataBinding, VM: BaseViewModel>(
         onSuccess: (T) -> Unit,
         onError: (String) -> Unit
     ) {
-        observerNetworkResultOnce(this@BaseDialog, childFragmentManager, loadingDialog,
+        monitorNetworkOperationOnce(this@BaseDialog, childFragmentManager, loadingDialog,
             onSuccess = {
                 onSuccess.invoke(it)
             }, onError = {

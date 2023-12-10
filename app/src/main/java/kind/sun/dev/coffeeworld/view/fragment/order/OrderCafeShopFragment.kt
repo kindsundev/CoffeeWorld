@@ -2,6 +2,7 @@ package kind.sun.dev.coffeeworld.view.fragment.order
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.View
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -67,10 +68,11 @@ class OrderCafeShopFragment : BaseBottomSheet<FragmentOrderCafeShopBinding, Cafe
     }
 
     private fun toggleRecyclerView(isShow: Boolean) = binding.apply {
-        if (isShow) {
+        if (isShow && rvCafeShop.visibility == View.GONE) {
             emptyShop.remove()
             rvCafeShop.show()
-        } else {
+        }
+        if (!isShow && rvCafeShop.visibility == View.VISIBLE) {
             rvCafeShop.remove()
             emptyShop.show()
         }

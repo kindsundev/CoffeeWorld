@@ -8,6 +8,7 @@ import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.databinding.FragmentForgotPasswordBinding
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
+import kind.sun.dev.coffeeworld.utils.helper.view.showToastSuccess
 import kind.sun.dev.coffeeworld.viewmodel.AuthViewModel
 
 @AndroidEntryPoint
@@ -29,7 +30,7 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding, AuthV
     override fun observeViewModel() {
         viewModel.messageResponse.observeNetworkResult(
             onSuccess = {
-                Toast.makeText(activity, it.data, Toast.LENGTH_LONG).show()
+                requireContext().showToastSuccess(it.data)
                 popFragment()
             },
             onError = {

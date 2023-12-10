@@ -16,6 +16,7 @@ import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.dataset.MoreDataSet
 import kind.sun.dev.coffeeworld.utils.helper.view.checkToHide
 import kind.sun.dev.coffeeworld.utils.helper.view.showAlertDialog
+import kind.sun.dev.coffeeworld.utils.helper.view.showToastError
 import kind.sun.dev.coffeeworld.view.adapter.profile.ProfileAdapter
 import kind.sun.dev.coffeeworld.view.dialog.profile.AddressDialogFragment
 import kind.sun.dev.coffeeworld.view.dialog.profile.AvatarBottomFragment
@@ -84,15 +85,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, UserViewModel>(
     override fun observeViewModel() {
         viewModel.userResponse.observeNetworkResult(
             onSuccess = { result ->
-                Logger.warning("called")
                 binding.swipeRefreshLayout.checkToHide()
                 notifyUser(result.data).also {
                     lifecycleScope.launch { viewModel.onSyncUser(result.data) }
                 }
             },
-            onError = {
-                StyleableToast.makeText(requireContext(), it, R.style.toast_error).show()
-            }
+            onError = { requireContext().showToastError(it) }
         )
     }
 

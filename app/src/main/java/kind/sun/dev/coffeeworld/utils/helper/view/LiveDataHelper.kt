@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.custom.CustomLoadingDialog
 
-fun <T> LiveData<NetworkResult<T>>.observerNetworkResult(
+fun <T> LiveData<NetworkResult<T>>.monitorNetworkOperation(
     lifecycleOwner: LifecycleOwner,
     fragmentManager: FragmentManager,
     loadingDialog: CustomLoadingDialog,
@@ -19,7 +19,7 @@ fun <T> LiveData<NetworkResult<T>>.observerNetworkResult(
     }
 }
 
-fun <T> LiveData<NetworkResult<T>>.observerNetworkResultOnce(
+fun <T> LiveData<NetworkResult<T>>.monitorNetworkOperationOnce(
     lifecycleOwner: LifecycleOwner,
     fragmentManager: FragmentManager,
     loadingDialog: CustomLoadingDialog,

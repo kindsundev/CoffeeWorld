@@ -9,3 +9,5 @@ fun Int.dpToPx(context: Context): Int {
     val density = context.resources.displayMetrics.density
     return (this * density + 0.5f).toInt()
 }
+
+fun Int.isExist(): Boolean = this != null && this != -1

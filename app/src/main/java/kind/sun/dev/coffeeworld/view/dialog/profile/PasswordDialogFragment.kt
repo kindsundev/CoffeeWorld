@@ -11,6 +11,8 @@ import kind.sun.dev.coffeeworld.base.BaseDialog
 import kind.sun.dev.coffeeworld.databinding.DialogUpdatePasswordBinding
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
+import kind.sun.dev.coffeeworld.utils.helper.view.showToastError
+import kind.sun.dev.coffeeworld.utils.helper.view.showToastSuccess
 import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 
 @AndroidEntryPoint
@@ -30,12 +32,10 @@ class PasswordDialogFragment : BaseDialog<DialogUpdatePasswordBinding, UserViewM
     override fun observeViewModel() {
         viewModel.messageResponse.observeNetworkResult(
             onSuccess = {
-                StyleableToast.makeText(requireContext(), it.data, R.style.toast_success).show()
-                    .also { onCancel() }
+                requireContext().showToastSuccess(it.data)
+                onCancel()
             },
-            onError = {
-                StyleableToast.makeText(requireContext(), it, R.style.toast_error).show()
-            }
+            onError = { requireContext().showToastError(it) }
         )
     }
 

@@ -55,18 +55,19 @@ class CafeViewModel @Inject constructor(
     }
 
     override suspend fun onFetchMenu(
+        isLoading: Boolean,
         cafeId: Int,
         onDataFromLocal: (MenuModel?) -> Unit,
         onFailedMessage: (String) -> Unit
     ) {
         handleCheckAndRoute(
             conditionChecker = null,
-            onPassedCheck = { viewModelScope.launch { cafeService.handleFetchMenu(cafeId) } },
+            onPassedCheck = { viewModelScope.launch { cafeService.handleFetchMenu(isLoading, cafeId) } },
             onFailedCheck = { reason, localDataRequired ->
                 if (localDataRequired) {
                     viewModelScope.launch {
-                        cafeService.handleGetMenu(cafeId)?.let {
-                            onDataFromLocal.invoke(MenuModel("", it.cafeId, it.beverageCategories))
+                        onRetrieveMenu(cafeId)?.let {
+                            onDataFromLocal(it)
                             delay(300)
                             onFailedMessage(reason)
                         }
@@ -76,6 +77,12 @@ class CafeViewModel @Inject constructor(
                 }
             }
         )
+    }
+
+    override suspend fun onRetrieveMenu(cafeId: Int): MenuModel? {
+        return cafeService.handleGetMenu(cafeId)?.let {
+            MenuModel("", it.cafeId, it.beverageCategories)
+        }
     }
 
     override suspend fun onSyncMenu(menu: MenuModel) {

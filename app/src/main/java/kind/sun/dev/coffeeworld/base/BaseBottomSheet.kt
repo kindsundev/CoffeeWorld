@@ -14,7 +14,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kind.sun.dev.coffeeworld.contract.FragmentContract
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.custom.CustomLoadingDialog
-import kind.sun.dev.coffeeworld.utils.helper.view.observerNetworkResult
+import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
+import kind.sun.dev.coffeeworld.utils.helper.view.monitorNetworkOperation
 import javax.inject.Inject
 
 abstract class BaseBottomSheet<V: ViewDataBinding, VM: BaseViewModel>(
@@ -24,7 +25,10 @@ abstract class BaseBottomSheet<V: ViewDataBinding, VM: BaseViewModel>(
     private var _binding: V? = null
     protected val binding: V get() = _binding as V
 
+    @Inject lateinit var preferences: PreferencesHelper
+
     @Inject lateinit var loadingDialog: CustomLoadingDialog
+
     abstract val viewModel: VM
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -64,7 +68,7 @@ abstract class BaseBottomSheet<V: ViewDataBinding, VM: BaseViewModel>(
         onSuccess: (T) -> Unit,
         onError: (String) -> Unit
     ) {
-        observerNetworkResult(viewLifecycleOwner, childFragmentManager, loadingDialog,
+        monitorNetworkOperation(viewLifecycleOwner, childFragmentManager, loadingDialog,
             onSuccess = {
                 onSuccess.invoke(it)
             }, onError = {

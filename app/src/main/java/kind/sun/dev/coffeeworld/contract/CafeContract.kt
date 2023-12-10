@@ -23,8 +23,13 @@ interface CafeContract {
         suspend fun onSyncAllCafes(cafes: List<CafeModel>)
 
         suspend fun onFetchMenu(
-            cafeId: Int, onDataFromLocal: (MenuModel?) -> Unit, onFailedMessage: (String) -> Unit
+            isLoading: Boolean,
+            cafeId: Int,
+            onDataFromLocal: (MenuModel?) -> Unit,
+            onFailedMessage: (String) -> Unit
         )
+
+        suspend fun onRetrieveMenu(cafeId: Int): MenuModel?
 
         suspend fun onSyncMenu(menu: MenuModel)
 
@@ -44,7 +49,7 @@ interface CafeContract {
 
         suspend fun handleGetCafe(id : String): CafeEntity?
 
-        suspend fun handleFetchMenu(cafeId: Int)
+        suspend fun handleFetchMenu(isLoading: Boolean, cafeId: Int)
 
         suspend fun handleSyncMenu(menu: MenuModel)
 

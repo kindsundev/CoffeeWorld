@@ -6,6 +6,7 @@ object Constants {
     const val LAST_SAVE_KEY = "LAST_SAVE_AT_"
     const val CAFE_KEY = "CAFE_KEY"
     const val USER_KEY = "USER_KEY"
+    const val CURRENT_CAFE_ID_KEY = "CURRENT_CAFE_ID"
     const val ORDER_CAFE_KEY = "ORDER_CAFE_KEY"
     const val MORE = "More"
     const val DURATION_SHORT = 100L

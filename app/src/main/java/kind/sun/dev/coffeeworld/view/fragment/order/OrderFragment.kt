@@ -6,9 +6,11 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
+import kind.sun.dev.coffeeworld.data.local.model.MenuModel
 import kind.sun.dev.coffeeworld.databinding.FragmentOrderBinding
 import kind.sun.dev.coffeeworld.utils.common.Logger
-import kind.sun.dev.coffeeworld.utils.helper.view.showToast
+import kind.sun.dev.coffeeworld.utils.helper.view.isExist
+import kind.sun.dev.coffeeworld.utils.helper.view.showToastError
 import kind.sun.dev.coffeeworld.viewmodel.CafeViewModel
 import kind.sun.dev.coffeeworld.viewmodel.OrderViewModel
 import kotlinx.coroutines.launch
@@ -20,7 +22,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
     override val viewModel: OrderViewModel by viewModels()
     private val cafeViewModel: CafeViewModel by viewModels()
 
-    private var cafeModels: List<CafeModel>?= null
+    private var cafeList: List<CafeModel>?= null
+    private var menuModel: MenuModel? = null
+
+    private var hasCafeId: Boolean = false
+        get() = preferences.currentCafeId?.isExist() ?: false
+
 
     override fun initAnything() {
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -39,27 +46,67 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
 
     override fun prepareData() {
         lifecycleScope.launch {
-            cafeViewModel.onRetrieveAllCafes()?.let {
-                cafeModels = it
-//                binding.spinner.adapter = CafeSpinnerAdapter(requireContext(), it)
-            } ?: cafeViewModel.onFetchAllCafes(
-                isLoading = true, onDataFromLocal = {}, onFailedMessage = {}
-            )
+            cafeList = checkCafeListFromLocal()
+            menuModel = checkMenuModelFromLocal()
         }
+    }
+
+    private suspend fun checkCafeListFromLocal() : List<CafeModel>? {
+        cafeViewModel.apply {
+            onRetrieveAllCafes()?.let result@{
+                return@result
+            } ?: onFetchAllCafes(true, {},{})
+        }
+        return null
+    }
+
+    private suspend fun checkMenuModelFromLocal(): MenuModel? {
+        cafeViewModel.apply {
+            if (hasCafeId) onRetrieveMenu(preferences.currentCafeId!!)?.let result@{
+                return@result
+            } ?: onFetchMenu(true, preferences.currentCafeId!!,{}, {})
+        }
+        return null
     }
 
     override fun initViews() {
-
-    }
-
-    override fun observeViewModel() {
-
-    }
-
-    fun onClickCafeShop() {
-        OrderCafeShopFragment.newInstance(childFragmentManager, cafeModels) {
-            requireContext().showToast("$it")
+        // todo: check data (current has problem!)
+        if (menuModel != null) {
+            initMenuLayout()
         }
+    }
+
+    override fun observeViewModel() { observeCafeResult() }
+
+    private fun observeCafeResult() = cafeViewModel.apply {
+        cafe.observeNetworkResult(
+            onSuccess = {
+                cafeList = it.data
+                if (!hasCafeId) requestPickCafeShop()
+            },
+            onError = { requireContext().showToastError(it) }
+        )
+
+        menu.observeNetworkResult(
+            onSuccess = { menuModel = it.data },
+            onError = { requireContext().showToastError(it) }
+        )
+    }
+
+    fun onClickCafeShop() = requestPickCafeShop()
+
+    private fun requestPickCafeShop(){
+        OrderCafeShopFragment.newInstance(childFragmentManager, cafeList) {
+            preferences.currentCafeId = it.also {
+                lifecycleScope.launch {
+                    cafeViewModel.onFetchMenu(true, it, {}, {})
+                }
+            }
+        }
+    }
+
+    private fun initMenuLayout() = binding.apply {
+        menuModel?.let { Logger.debug("${it.beverageCategories.size}") } ?: Logger.warning("null")
     }
 
     fun onClickSearch() {

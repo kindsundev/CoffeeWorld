@@ -3,6 +3,7 @@ package kind.sun.dev.coffeeworld.utils.helper.storage
 import android.content.Context
 import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kind.sun.dev.coffeeworld.utils.common.Constants.CURRENT_CAFE_ID_KEY
 import kind.sun.dev.coffeeworld.utils.common.Constants.LAST_SAVE_KEY
 import kind.sun.dev.coffeeworld.utils.common.Constants.SHARED_PREFERENCES_KEY
 import kind.sun.dev.coffeeworld.utils.common.Constants.USER_TOKEN_KEY
@@ -21,7 +22,9 @@ class PreferencesHelper @Inject constructor(
         get() = sharedPrefs.getString(USER_TOKEN_KEY, null)
         set(value) {
             ioScope.launch {
-                sharedPrefs.edit { putString(USER_TOKEN_KEY, value) }
+                if (value?.isNotBlank() == true) {
+                    sharedPrefs.edit { putString(USER_TOKEN_KEY, value) }
+                }
             }
         }
 
@@ -29,7 +32,19 @@ class PreferencesHelper @Inject constructor(
         get() = sharedPrefs.getString(LAST_SAVE_KEY, null)
         set(value) {
             ioScope.launch {
-                sharedPrefs.edit { putString(LAST_SAVE_KEY, value) }
+                if (lastSave?.isNotBlank() == true) {
+                    sharedPrefs.edit { putString(LAST_SAVE_KEY, value) }
+                }
+            }
+        }
+
+    var currentCafeId: Int?
+        get() = sharedPrefs.getInt(CURRENT_CAFE_ID_KEY, -1)
+        set(value) {
+            ioScope.launch {
+                sharedPrefs.edit {
+                    value?.let { putInt(CURRENT_CAFE_ID_KEY, value) }
+                }
             }
         }
 }

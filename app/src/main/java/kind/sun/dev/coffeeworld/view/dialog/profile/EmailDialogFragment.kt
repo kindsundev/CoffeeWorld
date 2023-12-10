@@ -11,6 +11,7 @@ import kind.sun.dev.coffeeworld.base.BaseDialog
 import kind.sun.dev.coffeeworld.databinding.DialogUpdateEmailBinding
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
+import kind.sun.dev.coffeeworld.utils.helper.view.showToastError
 import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 
 @AndroidEntryPoint
@@ -31,13 +32,10 @@ class EmailDialogFragment(
     override fun observeViewModel() {
         viewModel.messageResponse.observeNetworkResult(
             onSuccess = {
-                onUpdateSuccess(it.data).also {
-                    onCancel()
-                }
+                onUpdateSuccess(it.data)
+                onCancel()
             },
-            onError = {
-                StyleableToast.makeText(requireContext(), it, R.style.toast_error).show()
-            }
+            onError = { requireContext().showToastError(it) }
         )
     }
 
