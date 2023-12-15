@@ -22,8 +22,8 @@ class CafeViewModel @Inject constructor(
 
     override suspend fun onFetchAllCafes(
         isLoading: Boolean,
-        onDataFromLocal: (List<CafeModel>?) -> Unit,
-        onFailedMessage: (String) -> Unit
+        onDataFromLocal: ((List<CafeModel>?) -> Unit)?,
+        onFailedMessage: ((String) -> Unit)?
     ) {
         handleCheckAndRoute(
             conditionChecker = null,
@@ -34,13 +34,13 @@ class CafeViewModel @Inject constructor(
                 if (localDataRequired) {
                     viewModelScope.launch {
                         onRetrieveAllCafes()?.let {
-                            onDataFromLocal(it)
+                            onDataFromLocal?.invoke(it)
                             delay(300)
-                            onFailedMessage(reason)
+                            onFailedMessage?.invoke(reason)
                         }
                     }
                 } else {
-                    onFailedMessage(reason)
+                    onFailedMessage?.invoke(reason)
                 }
             }
         )
@@ -57,8 +57,8 @@ class CafeViewModel @Inject constructor(
     override suspend fun onFetchMenu(
         isLoading: Boolean,
         cafeId: Int,
-        onDataFromLocal: (MenuModel?) -> Unit,
-        onFailedMessage: (String) -> Unit
+        onDataFromLocal: ((MenuModel?) -> Unit)?,
+        onFailedMessage: ((String) -> Unit)?
     ) {
         handleCheckAndRoute(
             conditionChecker = null,
@@ -67,21 +67,21 @@ class CafeViewModel @Inject constructor(
                 if (localDataRequired) {
                     viewModelScope.launch {
                         onRetrieveMenu(cafeId)?.let {
-                            onDataFromLocal(it)
+                            onDataFromLocal?.invoke(it)
                             delay(300)
-                            onFailedMessage(reason)
+                            onFailedMessage?.invoke(reason)
                         }
                     }
                 } else {
-                    onFailedMessage(reason)
+                    onFailedMessage?.invoke(reason)
                 }
             }
         )
     }
 
     override suspend fun onRetrieveMenu(cafeId: Int): MenuModel? {
-        return cafeService.handleGetMenu(cafeId)?.let {
-            MenuModel("", it.cafeId, it.beverageCategories)
+        return cafeService.handleGetMenu(cafeId)?.run {
+            MenuModel("", cafeId, beverageCategories)
         }
     }
 

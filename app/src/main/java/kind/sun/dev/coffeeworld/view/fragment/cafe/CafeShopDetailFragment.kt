@@ -31,7 +31,7 @@ class CafeShopDetailFragment : BaseBottomSheet<FragmentCafeShopDetailBinding, Ca
         cafeModel = arguments?.getParcelableHelper(Constants.CAFE_KEY)
         lifecycleScope.launch {
             cafeModel?.id?.let { id ->
-                viewModel.onFetchMenu( false, id, {}, {})
+                viewModel.onFetchMenu( false, id)
             }
         }
 

@@ -15,8 +15,9 @@ interface CafeContract {
     interface ViewModel {
         suspend fun onFetchAllCafes(
             isLoading: Boolean,
-            onDataFromLocal: (List<CafeModel>?) -> Unit,
-            onFailedMessage: (String) -> Unit)
+            onDataFromLocal: ((List<CafeModel>?) -> Unit)? = null,
+            onFailedMessage: ((String) -> Unit)? = null
+        )
 
         suspend fun onRetrieveAllCafes(): List<CafeModel>?
 
@@ -25,8 +26,8 @@ interface CafeContract {
         suspend fun onFetchMenu(
             isLoading: Boolean,
             cafeId: Int,
-            onDataFromLocal: (MenuModel?) -> Unit,
-            onFailedMessage: (String) -> Unit
+            onDataFromLocal: ((MenuModel?) -> Unit)? = null,
+            onFailedMessage: ((String) -> Unit)? = null
         )
 
         suspend fun onRetrieveMenu(cafeId: Int): MenuModel?

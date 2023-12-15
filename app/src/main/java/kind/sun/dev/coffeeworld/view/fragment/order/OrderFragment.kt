@@ -22,7 +22,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
     override val viewModel: OrderViewModel by viewModels()
     private val cafeViewModel: CafeViewModel by viewModels()
 
-    private var cafeList: List<CafeModel>?= null
+    private var cafeList: List<CafeModel>? = null
     private var menuModel: MenuModel? = null
 
     private var hasCafeId: Boolean = false
@@ -48,58 +48,72 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
         lifecycleScope.launch {
             cafeList = checkCafeListFromLocal()
             menuModel = checkMenuModelFromLocal()
+            Logger.error(cafeList?.size.toString())
+            Logger.debug(menuModel?.beverageCategories?.size.toString())
         }
     }
 
-    private suspend fun checkCafeListFromLocal() : List<CafeModel>? {
-        cafeViewModel.apply {
-            onRetrieveAllCafes()?.let result@{
-                return@result
-            } ?: onFetchAllCafes(true, {},{})
+    private suspend fun checkCafeListFromLocal(): List<CafeModel>? {
+        cafeViewModel.run {
+            onRetrieveAllCafes()?.let { result ->
+                return result
+            } ?: onFetchAllCafes(true)
+            return null
         }
-        return null
     }
 
     private suspend fun checkMenuModelFromLocal(): MenuModel? {
-        cafeViewModel.apply {
-            if (hasCafeId) onRetrieveMenu(preferences.currentCafeId!!)?.let result@{
-                return@result
-            } ?: onFetchMenu(true, preferences.currentCafeId!!,{}, {})
+        cafeViewModel.run {
+            if (hasCafeId) {
+                onRetrieveMenu(preferences.currentCafeId!!)?.let { result ->
+                    onSyncMenu(result)
+                    return result
+                } ?: onFetchMenu(true, preferences.currentCafeId!!)
+            }
+            return null
         }
-        return null
     }
 
     override fun initViews() {
-        // todo: check data (current has problem!)
         if (menuModel != null) {
             initMenuLayout()
         }
     }
 
-    override fun observeViewModel() { observeCafeResult() }
+    override fun observeViewModel() {
+        observeCafeResult()
+    }
 
     private fun observeCafeResult() = cafeViewModel.apply {
         cafe.observeNetworkResult(
             onSuccess = {
                 cafeList = it.data
+                cafeList?.let {
+                    lifecycleScope.launch { onSyncAllCafes(it) }
+                }
                 if (!hasCafeId) requestPickCafeShop()
             },
             onError = { requireContext().showToastError(it) }
         )
 
         menu.observeNetworkResult(
-            onSuccess = { menuModel = it.data },
+            onSuccess = {
+                menuModel = it.data
+                menuModel?.let {
+                    lifecycleScope.launch { onSyncMenu(it) }
+                }
+            },
             onError = { requireContext().showToastError(it) }
         )
     }
 
     fun onClickCafeShop() = requestPickCafeShop()
 
-    private fun requestPickCafeShop(){
+    private fun requestPickCafeShop() {
         OrderCafeShopFragment.newInstance(childFragmentManager, cafeList) {
             preferences.currentCafeId = it.also {
                 lifecycleScope.launch {
-                    cafeViewModel.onFetchMenu(true, it, {}, {})
+                    cafeViewModel.onFetchMenu(true, it)
                 }
             }
         }
