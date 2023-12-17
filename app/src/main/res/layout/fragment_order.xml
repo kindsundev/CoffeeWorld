@@ -10,10 +10,11 @@
             type="kind.sun.dev.coffeeworld.view.fragment.order.OrderFragment" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray_background"
+        android:orientation="vertical"
         tools:context=".view.order.OrderFragment">
 
         <RelativeLayout
@@ -38,40 +39,46 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginVertical="10dp"
                 android:layout_centerVertical="true"
+                android:layout_marginVertical="10dp"
                 android:orientation="horizontal">
 
                 <ImageButton
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:onClick="@{() -> fragment.onClickCafeShop()}"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/coffee_shop"
+                    android:onClick="@{() -> fragment.onClickCafeShop()}"
                     android:src="@drawable/ic_baseline_category" />
 
                 <ImageButton
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:onClick="@{() -> fragment.onClickSearch()}"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/search"
+                    android:onClick="@{() -> fragment.onClickSearch()}"
                     android:src="@drawable/ic_baseline_search_color" />
 
                 <ImageButton
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:onClick="@{() -> fragment.onClickFavorite()}"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/favorite"
+                    android:onClick="@{() -> fragment.onClickFavorite()}"
                     android:src="@drawable/ic_baseline_favorite_color" />
 
             </LinearLayout>
 
         </RelativeLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="56dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 
 </layout>

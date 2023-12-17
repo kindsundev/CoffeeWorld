@@ -3,12 +3,14 @@ package kind.sun.dev.coffeeworld.contract
 import androidx.lifecycle.LiveData
 import kind.sun.dev.coffeeworld.data.local.entity.CafeEntity
 import kind.sun.dev.coffeeworld.data.local.entity.MenuEntity
+import kind.sun.dev.coffeeworld.data.local.model.BeverageCategoryModel
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.data.local.model.MenuModel
 import kind.sun.dev.coffeeworld.data.remote.response.CafeMenuResponse
 import kind.sun.dev.coffeeworld.data.remote.response.CafeResponse
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
+import kind.sun.dev.coffeeworld.view.adapter.order.menu.OrderMenuViewItem
 
 interface CafeContract {
 
@@ -36,7 +38,10 @@ interface CafeContract {
 
         fun convertToCafeViewItem(title: Array<String>, data: List<CafeModel>): MutableList<CafeShopViewItem>
 
+        fun convertToMenuViewItem(data: List<BeverageCategoryModel>): List<OrderMenuViewItem>
+
         fun filterCafeList(name: String, list: List<CafeShopViewItem>): List<CafeShopViewItem>
+
     }
 
 

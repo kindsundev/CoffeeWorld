@@ -3,14 +3,15 @@ package kind.sun.dev.coffeeworld.view.fragment.order
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.data.local.model.MenuModel
 import kind.sun.dev.coffeeworld.databinding.FragmentOrderBinding
-import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.helper.view.isExist
 import kind.sun.dev.coffeeworld.utils.helper.view.showToastError
+import kind.sun.dev.coffeeworld.view.adapter.order.menu.OrderMenuAdapter
 import kind.sun.dev.coffeeworld.viewmodel.CafeViewModel
 import kind.sun.dev.coffeeworld.viewmodel.OrderViewModel
 import kotlinx.coroutines.launch
@@ -23,7 +24,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
     private val cafeViewModel: CafeViewModel by viewModels()
 
     private var cafeList: List<CafeModel>? = null
-    private var menuModel: MenuModel? = null
+    private lateinit var menuAdapter: OrderMenuAdapter
 
     private var hasCafeId: Boolean = false
         get() = preferences.currentCafeId?.isExist() ?: false
@@ -47,9 +48,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
     override fun prepareData() {
         lifecycleScope.launch {
             cafeList = checkCafeListFromLocal()
-            menuModel = checkMenuModelFromLocal()
-            Logger.error(cafeList?.size.toString())
-            Logger.debug(menuModel?.beverageCategories?.size.toString())
+            checkMenuModelFromLocal()
         }
     }
 
@@ -67,6 +66,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
             if (hasCafeId) {
                 onRetrieveMenu(preferences.currentCafeId!!)?.let { result ->
                     onSyncMenu(result)
+                    initMenuLayout(result)
                     return result
                 } ?: onFetchMenu(true, preferences.currentCafeId!!)
             }
@@ -75,9 +75,26 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
     }
 
     override fun initViews() {
-        if (menuModel != null) {
-            initMenuLayout()
+        // todo: init layout default, because result of request is call in the back
+    }
+
+    private fun initMenuLayout(result: MenuModel) {
+        // todo: with context background thread here
+        val data = cafeViewModel.convertToMenuViewItem(result.beverageCategories)
+        // todo: with context main thread here
+        menuAdapter = OrderMenuAdapter(data)
+        binding.rvMenu.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = menuAdapter
         }
+        /*
+        * todo: event listener of aadapter:
+        *  - click category => scroll to box drinks (category_id)
+        *  - click banner => navigate to x.x.x.fragment
+        *  - click coffee root => navigate to x.x.x.fragment
+        *  - click coffee fab => navigate to x.x.x.fragment
+        *  note: equals id at Constants
+        * */
     }
 
     override fun observeViewModel() {
@@ -97,13 +114,15 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
         )
 
         menu.observeNetworkResult(
-            onSuccess = {
-                menuModel = it.data
-                menuModel?.let {
+            onSuccess = { result ->
+                result?.data?.let {
                     lifecycleScope.launch { onSyncMenu(it) }
+                    initMenuLayout(it)
                 }
             },
-            onError = { requireContext().showToastError(it) }
+            onError = {
+                // todo: show ui empty
+            }
         )
     }
 
@@ -119,9 +138,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
         }
     }
 
-    private fun initMenuLayout() = binding.apply {
-        menuModel?.let { Logger.debug("${it.beverageCategories.size}") } ?: Logger.warning("null")
-    }
 
     fun onClickSearch() {
 

@@ -4,11 +4,17 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.contract.CafeContract
+import kind.sun.dev.coffeeworld.data.local.model.BeverageCategoryModel
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
+import kind.sun.dev.coffeeworld.data.local.model.CategoryModel
 import kind.sun.dev.coffeeworld.data.local.model.MenuModel
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.dataset.CafeShopDataSet
+import kind.sun.dev.coffeeworld.utils.dataset.OrderDataSet
 import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
+import kind.sun.dev.coffeeworld.view.adapter.order.menu.OrderMenuViewItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,6 +25,8 @@ class CafeViewModel @Inject constructor(
 ): BaseViewModel(), CafeContract.ViewModel {
     val cafe get() = cafeService.cafeResponse
     val menu get() = cafeService.menuResponse
+
+    val scope = CoroutineScope(Dispatchers.IO)
 
     override suspend fun onFetchAllCafes(
         isLoading: Boolean,
@@ -109,13 +117,35 @@ class CafeViewModel @Inject constructor(
         }
     }
 
+    override fun convertToMenuViewItem(data: List<BeverageCategoryModel>): List<OrderMenuViewItem> {
+        val categories = mutableListOf<CategoryModel>()
+        val coffees = mutableListOf<OrderMenuViewItem.Coffees>()
+
+        data.forEach { item ->
+            categories.add(item.category)
+            if (item.drinks.isNotEmpty()) {
+                coffees.add(
+                    OrderMenuViewItem.Coffees(item.category.id, item.category.name,item.drinks)
+                )
+            }
+        }
+
+        return mutableListOf<OrderMenuViewItem>().apply {
+            add(OrderMenuViewItem.Categories(categories))
+            add(OrderMenuViewItem.Banners(OrderDataSet.getBannerItem()))
+            addAll(coffees)
+        }
+    }
+
     override fun filterCafeList(name: String, list: List<CafeShopViewItem>): List<CafeShopViewItem> {
         val formatName = name.lowercase()
         return mutableListOf<CafeShopViewItem>().apply {
-            list.forEach { item ->
-                if (item is CafeShopViewItem.ItemShop) {
-                    if (item.cafe.name.lowercase().contains(formatName)) {
-                        add(item)
+            scope.launch {
+                list.forEach { item ->
+                    if (item is CafeShopViewItem.ItemShop) {
+                        if (item.cafe.name.lowercase().contains(formatName)) {
+                            add(item)
+                        }
                     }
                 }
             }

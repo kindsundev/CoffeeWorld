@@ -13,7 +13,7 @@ import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.helper.view.getParcelableArrayListHelper
 import kind.sun.dev.coffeeworld.utils.helper.view.remove
 import kind.sun.dev.coffeeworld.utils.helper.view.show
-import kind.sun.dev.coffeeworld.view.adapter.order.OrderCafeShopAdapter
+import kind.sun.dev.coffeeworld.view.adapter.order.shop.OrderCafeShopAdapter
 import kind.sun.dev.coffeeworld.viewmodel.CafeViewModel
 import java.util.ArrayList
 

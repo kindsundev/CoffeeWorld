@@ -38,6 +38,11 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="fab_circle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
     <style name="dialog_material" parent="@style/MaterialAlertDialog.MaterialComponents">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:background">@android:color/transparent</item>

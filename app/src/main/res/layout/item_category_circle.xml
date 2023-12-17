@@ -11,20 +11,22 @@
     </data>
 
     <LinearLayout
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:orientation="vertical">
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_category"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/img_coffee"
             app:imageFromByteArrayToBitmap="@{category.image}"
             app:shapeAppearanceOverlay="@style/image_circle" />
 
         <TextView
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"

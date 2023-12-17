@@ -8,10 +8,13 @@ object Constants {
     const val USER_KEY = "USER_KEY"
     const val CURRENT_CAFE_ID_KEY = "CURRENT_CAFE_ID"
     const val ORDER_CAFE_KEY = "ORDER_CAFE_KEY"
-    const val MORE = "More"
+    const val CATEGORY_MORE_ID = -1
     const val DURATION_SHORT = 100L
     const val SCALE_LOW = 0.96f
     const val DB_CAFE_LIST_KEY = "LOCAL_DB_CAFE_LIST"
     const val DB_USER_KEY = "LOCAL_DB_USER"
-    const val DB_MENU_KEY = "LOCAL_DB_MENU"
+    const val ORDER_CATEGORY_EVENT = "ORDER_CATEGORY_EVENT"
+    const val ORDER_BANNER_EVENT = "ORDER_BANNER_EVENT"
+    const val ORDER_COFFEE_ROOT_EVENT = "ORDER_COFFEE_ROOT_EVENT"
+    const val ORDER_COFFEE_FAB_EVENT = "ORDER_COFFEE_FAB_EVENT"
 }
