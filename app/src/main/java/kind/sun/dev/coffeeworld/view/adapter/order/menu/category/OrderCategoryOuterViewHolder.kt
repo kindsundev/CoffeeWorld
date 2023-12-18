@@ -2,6 +2,7 @@ package kind.sun.dev.coffeeworld.view.adapter.order.menu.category
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kind.sun.dev.coffeeworld.data.local.model.DrinkModel
 import kind.sun.dev.coffeeworld.databinding.ItemOrderCategoryBinding
 import kind.sun.dev.coffeeworld.view.adapter.order.menu.OrderMenuViewItem
 
@@ -13,7 +14,7 @@ internal class OrderCategoryOuterViewHolder(
 
     internal fun bindView(
         items: OrderMenuViewItem.Categories,
-        onItemClickListener: ((type: (String), id: (Int)) -> Unit)? = null
+        onItemClickListener: ((type : (String), id: (Int), drink: (DrinkModel)?) -> Unit)? = null
     ) {
         setupRecyclerView()
         categoryAdapter.items = items.categories

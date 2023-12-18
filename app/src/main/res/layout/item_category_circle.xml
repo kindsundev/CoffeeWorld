@@ -12,31 +12,40 @@
 
     <LinearLayout
         android:layout_width="80dp"
+        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/img_category"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/img_coffee"
-            app:imageFromByteArrayToBitmap="@{category.image}"
-            app:shapeAppearanceOverlay="@style/image_circle" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_layout_solid_peach_circle"
+            android:padding="8dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/img_category"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_coffee"
+                app:imageFromByteArrayToBitmap="@{category.image}"
+                app:shapeAppearanceOverlay="@style/image_circle" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
+            android:maxLines="1"
             android:text="@{category.name}"
             app:autoSizeMaxTextSize="14sp"
             app:autoSizeMinTextSize="4sp"
             app:autoSizeStepGranularity="0.5sp"
-            android:ellipsize="end"
-            android:maxLines="1"
             app:autoSizeTextType="uniform"
             tools:text="Name" />
 

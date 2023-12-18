@@ -6,12 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.utils.custom.CustomLoadingDialog
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
-import kotlinx.coroutines.CoroutineScope
 
 fun View.hideKeyboard() {
     (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
@@ -69,3 +68,12 @@ fun SwipeRefreshLayout.checkToHide() {
 }
 
 fun CustomLoadingDialog.checkToDismiss() { if (isAdded) dismiss() }
+
+fun RecyclerView.smoothToPositionWithOffset(position: Int, snapMode: Int = LinearSmoothScroller.SNAP_TO_START) {
+    val smoothScroller = object : LinearSmoothScroller(this.context) {
+        override fun getVerticalSnapPreference(): Int = snapMode
+        override fun getHorizontalSnapPreference(): Int = snapMode
+    }
+    smoothScroller.targetPosition = position
+    layoutManager?.startSmoothScroll(smoothScroller)
+}

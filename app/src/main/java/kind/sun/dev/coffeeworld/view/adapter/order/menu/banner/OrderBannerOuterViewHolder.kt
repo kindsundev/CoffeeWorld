@@ -2,6 +2,7 @@ package kind.sun.dev.coffeeworld.view.adapter.order.menu.banner
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kind.sun.dev.coffeeworld.data.local.model.DrinkModel
 import kind.sun.dev.coffeeworld.databinding.ItemOrderCollectionBinding
 import kind.sun.dev.coffeeworld.view.adapter.order.menu.OrderMenuViewItem
 
@@ -13,7 +14,7 @@ internal class OrderBannerOuterViewHolder(
 
     internal fun bindView(
         banners: OrderMenuViewItem.Banners,
-        onItemClickListener: ((type: (String), id: (Int)) -> Unit)? = null
+        onItemClickListener: ((type : (String), id: (Int), drink: (DrinkModel)?) -> Unit)? = null
     ) {
         initView()
         bannerAdapter.items = banners.items

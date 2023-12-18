@@ -18,7 +18,7 @@ internal class OrderCoffeeInnerAdapter : RecyclerView.Adapter<OrderCoffeeInnerAd
             field = value
         }
 
-    internal var onItemClickListener: ((type : (String), id: (Int)) -> Unit)? = null
+    internal var onItemClickListener: ((type : (String), id: (Int), drink: (DrinkModel)?) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoffeeViewHolder {
         return CoffeeViewHolder(
@@ -42,10 +42,10 @@ internal class OrderCoffeeInnerAdapter : RecyclerView.Adapter<OrderCoffeeInnerAd
         fun bindView(item: DrinkModel) = binding.apply {
             drink = item
             root.setOnClickScaleListener {
-                onItemClickListener?.invoke(Constants.ORDER_COFFEE_ROOT_EVENT, item.id)
+                onItemClickListener?.invoke(Constants.ORDER_COFFEE_ROOT_EVENT, item.id, item)
             }
             fabAdd.setOnClickScaleListener {
-                onItemClickListener?.invoke(Constants.ORDER_COFFEE_FAB_EVENT, item.id)
+                onItemClickListener?.invoke(Constants.ORDER_COFFEE_FAB_EVENT, item.id, item)
             }
             executePendingBindings()
         }

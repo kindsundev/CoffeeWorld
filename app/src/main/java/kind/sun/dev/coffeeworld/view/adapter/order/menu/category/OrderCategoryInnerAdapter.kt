@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.data.local.model.CategoryModel
+import kind.sun.dev.coffeeworld.data.local.model.DrinkModel
 import kind.sun.dev.coffeeworld.databinding.ItemCategoryCircleBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
+import kind.sun.dev.coffeeworld.utils.helper.view.setOnClickScaleListener
 import kind.sun.dev.coffeeworld.view.adapter.BaseDiffUtil
 
 internal class OrderCategoryInnerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -18,7 +20,8 @@ internal class OrderCategoryInnerAdapter : RecyclerView.Adapter<RecyclerView.Vie
             field = value
         }
 
-    internal var onItemClickListener: ((type : (String), id: (Int)) -> Unit)? = null
+    internal var onItemClickListener: ((type : (String), id: (Int), drink: (DrinkModel)?) -> Unit)? = null
+
 
     companion object {
         const val DEFAULT_TYPE = 0
@@ -58,8 +61,8 @@ internal class OrderCategoryInnerAdapter : RecyclerView.Adapter<RecyclerView.Vie
 
         internal fun bindView(item: CategoryModel) = binding.apply {
             category = item
-            root.setOnClickListener {
-                onItemClickListener?.invoke(Constants.ORDER_CATEGORY_EVENT, item.id)
+            root.setOnClickScaleListener {
+                onItemClickListener?.invoke(Constants.ORDER_CATEGORY_EVENT, item.id, null)
             }
             executePendingBindings()
         }
@@ -72,9 +75,9 @@ internal class OrderCategoryInnerAdapter : RecyclerView.Adapter<RecyclerView.Vie
         internal fun bindView() = binding.apply {
             imgCategory.setBackgroundResource(R.drawable.ic_baseline_more_horiz_24)
             tvName.text = root.context.getString(R.string.more)
-            root.setOnClickListener {
+            root.setOnClickScaleListener {
                 onItemClickListener?.invoke(
-                    Constants.ORDER_CATEGORY_EVENT, Constants.CATEGORY_MORE_ID
+                    Constants.ORDER_CATEGORY_EVENT, Constants.CATEGORY_MORE_ID, null
                 )
             }
         }
