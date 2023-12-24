@@ -3,7 +3,6 @@ package kind.sun.dev.coffeeworld.view.fragment.cafe
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,9 +22,9 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
-    FragmentCafeBinding::inflate
+    layoutInflater = FragmentCafeBinding::inflate,
+    viewModelClass = CafeViewModel::class.java
 ) {
-    override val viewModel: CafeViewModel by viewModels()
     private lateinit var transformedData: List<CafeShopViewItem>
 
     private val cafeShopAdapter: CafeShopAdapter by lazy {
@@ -59,7 +58,7 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
     private fun requestGetData(isSwipeToRefreshLoading: Boolean = false) {
         var hasLocalData = false
         lifecycleScope.launch {
-            viewModel.onFetchAllCafes(
+            viewModel?.onFetchAllCafes(
                 isLoading = isSwipeToRefreshLoading,
                 onDataFromLocal = {
                     if (!it.isNullOrEmpty()) {
@@ -104,12 +103,12 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
     }
 
     override fun observeViewModel() {
-        viewModel.cafe.observeNetworkResult(
+        viewModel!!.cafe.observeNetworkResult(
             onSuccess = { result ->
                 binding.swipeRefreshLayout.checkToHide()
                 binding.layoutNetworkError.root.toggleNetworkErrorLayout(false)
                 bindDataToCafeAdapter(result.data).also {
-                    lifecycleScope.launch { viewModel.onSyncAllCafes(result.data) }
+                    lifecycleScope.launch { viewModel!!.onSyncAllCafes(result.data) }
                 }
             },
             onError = {
@@ -123,13 +122,14 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
             requireContext().getString(R.string.nearby_coffee_shop),
             requireContext().getString(R.string.other_coffee_shop)
         ).also { tittles ->
-            cafeShopAdapter.items = viewModel.convertToCafeViewItem(tittles, result).also {
+            cafeShopAdapter.items = viewModel!!.convertToCafeViewItem(tittles, result).also {
                 transformedData = it
             }
         }
     }
 
     fun onSearchChanged(name: String) {
-        cafeShopAdapter.items = viewModel.filterCafeList(name, transformedData)
+        if (viewModel == null) return
+        cafeShopAdapter.items = viewModel!!.filterCafeList(name, transformedData)
     }
 }

@@ -2,33 +2,21 @@ package kind.sun.dev.coffeeworld.view.fragment.home
 
 import androidx.activity.OnBackPressedCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseFragment
-import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.databinding.FragmentHomeBinding
 import kind.sun.dev.coffeeworld.utils.helper.view.showSnackbar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding, BaseViewModel>(
-    FragmentHomeBinding::inflate
+class HomeFragment : BaseFragment<FragmentHomeBinding, Nothing>(
+    layoutInflater = FragmentHomeBinding::inflate,
+    viewModelClass = null
 ) {
-
-    override val viewModel: BaseViewModel by viewModels()
-
     private var doubleBackPressed = false
-
-    override fun setupDataBinding() {
-
-    }
-
-    override fun prepareData() {
-        // todo-task: create base view model
-    }
 
     override fun initAnything() {
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -53,10 +41,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, BaseViewModel>(
 
 
     override fun initViews() {
-
-    }
-
-    override fun observeViewModel() {
 
     }
 }

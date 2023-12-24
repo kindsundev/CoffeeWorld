@@ -2,7 +2,6 @@ package kind.sun.dev.coffeeworld.view.fragment.more.user.profile
 
 import android.os.Bundle
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,11 +27,10 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProfileFragment : BaseFragment<FragmentProfileBinding, UserViewModel>(
-    FragmentProfileBinding::inflate
+    layoutInflater = FragmentProfileBinding::inflate,
+    viewModelClass = UserViewModel::class.java
 ) {
     private lateinit var userModel: UserModel
-
-    override val viewModel: UserViewModel by viewModels()
 
     private val profileAdapter : ProfileAdapter by lazy {
         ProfileAdapter(MoreDataSet.getProfileFragmentOptions()) {
@@ -41,17 +39,15 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, UserViewModel>(
     }
 
     override fun setupDataBinding() {
-        binding.apply {
-            fragment = this@ProfileFragment
-            lifecycleOwner = this@ProfileFragment
-        }
+        binding.fragment = this
+        binding.lifecycleOwner = this
     }
 
     override fun prepareData() { requestGetData() }
 
     private fun requestGetData(isSwipeToRefreshLoading: Boolean = false) {
         var hasLocalData = false
-        viewModel.onFetchUser(
+        viewModel?.onFetchUser(
             isLoading = isSwipeToRefreshLoading,
             onDataFromLocal = {
                 it?.let {
@@ -82,11 +78,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, UserViewModel>(
     }
 
     override fun observeViewModel() {
-        viewModel.userResponse.observeNetworkResult(
+        viewModel!!.userResponse.observeNetworkResult(
             onSuccess = { result ->
                 binding.swipeRefreshLayout.checkToHide()
                 notifyUser(result.data).also {
-                    lifecycleScope.launch { viewModel.onSyncUser(result.data) }
+                    lifecycleScope.launch { viewModel!!.onSyncUser(result.data) }
                 }
             },
             onError = { requireContext().showToastError(it) }
@@ -123,7 +119,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, UserViewModel>(
 
     private fun onUpdateSuccess(message: String) {
         StyleableToast.makeText(requireContext(), message, R.style.toast_success).show()
-        viewModel.onFetchUser(
+        viewModel!!.onFetchUser(
             isLoading = true,
             onDataFromLocal = {
                 it?.let { notifyUser(it) }

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseBSDF
@@ -19,9 +18,10 @@ import kind.sun.dev.coffeeworld.viewmodel.CafeViewModel
 import java.util.ArrayList
 
 class OrderCafeShopBSDF : BaseBSDF<BsdfSelectItemDefaultBinding, CafeViewModel>(
-    isFullScreen = false, bindingInflater = BsdfSelectItemDefaultBinding::inflate
+    layoutInflater = BsdfSelectItemDefaultBinding::inflate,
+    viewModelClass = CafeViewModel::class.java,
+    isFullScreen = false,
 ){
-    override val viewModel: CafeViewModel by viewModels()
     private var cafes: List<CafeModel>?= null
     var onItemClicked: ((id: Int) -> Unit)? = null
 
@@ -47,8 +47,6 @@ class OrderCafeShopBSDF : BaseBSDF<BsdfSelectItemDefaultBinding, CafeViewModel>(
     override fun prepareData() {
         cafes = arguments?.getParcelableArrayListHelper(Constants.ORDER_CAFE_KEY)
     }
-
-    override fun setupDataBinding() {}
 
     override fun initViews() {
         binding.apply {
@@ -79,6 +77,4 @@ class OrderCafeShopBSDF : BaseBSDF<BsdfSelectItemDefaultBinding, CafeViewModel>(
             emptyShop.show()
         }
     }
-
-    override fun observeViewModel() {}
 }

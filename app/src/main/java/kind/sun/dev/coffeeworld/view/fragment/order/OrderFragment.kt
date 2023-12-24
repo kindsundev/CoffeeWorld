@@ -31,16 +31,15 @@ import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
-    FragmentOrderBinding::inflate
+    layoutInflater = FragmentOrderBinding::inflate,
+    viewModelClass = OrderViewModel::class.java
 ){
-    override val viewModel: OrderViewModel by viewModels()
     private val cafeViewModel: CafeViewModel by viewModels()
 
     private var scope = CoroutineScope(Dispatchers.IO)
     private lateinit var menuAdapter: OrderMenuAdapter
     private var cafes: List<CafeModel>? = null
     private var categories: List<CategoryModel>? = null
-
 
     private var hasCafeId: Boolean = false
         get() = preferences.currentCafeId?.isExist() ?: false

@@ -1,7 +1,6 @@
 package kind.sun.dev.coffeeworld.view.fragment.auth
 
 import android.view.View
-import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseFragment
@@ -12,10 +11,9 @@ import kind.sun.dev.coffeeworld.viewmodel.AuthViewModel
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
-    FragmentLoginBinding::inflate
+    layoutInflater = FragmentLoginBinding::inflate,
+    viewModelClass = AuthViewModel::class.java
 ) {
-    override val viewModel: AuthViewModel by viewModels()
-
     override fun setupDataBinding() {
         binding.apply {
             fragment = this@LoginFragment
@@ -33,7 +31,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
     override fun initViews() {}
 
     override fun observeViewModel() {
-        viewModel.loginResponse.observeNetworkResult(
+        viewModel!!.loginResponse.observeNetworkResult(
             onSuccess = {
                 preferences.userToken = it.data.token
                 navigateToFragment(R.id.action_loginFragment_to_homeFragment)
@@ -54,7 +52,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
 
     fun onCLickLogin(view: View) {
         view.setScaleAnimation {
-            viewModel.onLogin {
+            viewModel?.onLogin {
                 binding.tvError.showErrorMessage(it)
             }
         }

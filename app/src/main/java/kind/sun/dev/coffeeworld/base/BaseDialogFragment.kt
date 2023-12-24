@@ -11,26 +11,32 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kind.sun.dev.coffeeworld.R
-import kind.sun.dev.coffeeworld.contract.FragmentContract
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.custom.CustomLoadingDialog
 import kind.sun.dev.coffeeworld.utils.helper.view.monitorNetworkOperationOnce
 import javax.inject.Inject
 
-abstract class BaseDF<V: ViewDataBinding, VM: BaseViewModel>(
-    private val bindingInflater: (inflater: LayoutInflater) -> V
-) : DialogFragment(), FragmentContract {
+abstract class BaseDialogFragment<V: ViewDataBinding, VM: BaseViewModel>(
+    private val bindingInflater: (inflater: LayoutInflater) -> V,
+    private val viewModelClass: Class<VM>?
+) : DialogFragment() {
 
     private var _binding: V? = null
     protected val binding: V get() = _binding as V
 
-    protected abstract val viewModel: VM
+    protected val viewModel : VM? by lazy {
+        viewModelClass?.let {
+            ViewModelProvider(this)[it]
+        }
+    }
+
     @Inject lateinit var loadingDialog: CustomLoadingDialog
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        _binding = bindingInflater.invoke(layoutInflater)
+        _binding = this.bindingInflater.invoke(layoutInflater)
         return MaterialAlertDialogBuilder(
             requireContext(), R.style.dialog_material
         ).apply {
@@ -53,14 +59,14 @@ abstract class BaseDF<V: ViewDataBinding, VM: BaseViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        observeViewModel()
+        if (viewModel != null) observeViewModel()
     }
 
     protected fun <T> LiveData<NetworkResult<T>>.observeNetworkResult(
         onSuccess: (T) -> Unit,
         onError: (String) -> Unit
     ) {
-        monitorNetworkOperationOnce(this@BaseDF, childFragmentManager, loadingDialog,
+        monitorNetworkOperationOnce(this@BaseDialogFragment, childFragmentManager, loadingDialog,
             onSuccess = {
                 onSuccess.invoke(it)
             }, onError = {
@@ -71,6 +77,15 @@ abstract class BaseDF<V: ViewDataBinding, VM: BaseViewModel>(
 
     override fun onDestroyView() {
         super.onDestroyView()
+        cleanUp()
         _binding = null
     }
+
+    open fun initViews() {}
+    open fun setupDataBinding() {}
+    open fun prepareData() {}
+    open fun initAnything() {}
+    open fun cleanUp() {}
+    open fun observeViewModel() { }
+
 }

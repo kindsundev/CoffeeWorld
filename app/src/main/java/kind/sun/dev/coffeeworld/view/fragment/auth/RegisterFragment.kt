@@ -1,8 +1,6 @@
 package kind.sun.dev.coffeeworld.view.fragment.auth
 
 import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.databinding.FragmentRegisterBinding
@@ -13,10 +11,9 @@ import kind.sun.dev.coffeeworld.utils.helper.view.showToastSuccess
 
 @AndroidEntryPoint
 class RegisterFragment: BaseFragment<FragmentRegisterBinding, AuthViewModel>(
-    FragmentRegisterBinding::inflate
+    layoutInflater = FragmentRegisterBinding::inflate,
+    viewModelClass = AuthViewModel::class.java
 ){
-    override val viewModel: AuthViewModel by viewModels()
-
     override fun setupDataBinding() {
         binding.apply {
             fragment = this@RegisterFragment
@@ -27,7 +24,7 @@ class RegisterFragment: BaseFragment<FragmentRegisterBinding, AuthViewModel>(
     override fun initViews() {}
 
     override fun observeViewModel() {
-        viewModel.messageResponse.observeNetworkResult(
+        viewModel!!.messageResponse.observeNetworkResult(
             onSuccess = {
                 requireContext().showToastSuccess(it.data)
                 popFragment()
@@ -40,7 +37,7 @@ class RegisterFragment: BaseFragment<FragmentRegisterBinding, AuthViewModel>(
 
     fun onCLickRegister(view: View) {
         view.setScaleAnimation {
-            viewModel.onRegister {
+            viewModel?.onRegister {
                 binding.tvResponse.showErrorMessage(it)
             }
         }

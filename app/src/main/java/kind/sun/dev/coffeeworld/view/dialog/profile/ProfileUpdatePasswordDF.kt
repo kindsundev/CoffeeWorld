@@ -2,10 +2,9 @@ package kind.sun.dev.coffeeworld.view.dialog.profile
 
 import android.text.InputType
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.AndroidEntryPoint
-import kind.sun.dev.coffeeworld.base.BaseDF
+import kind.sun.dev.coffeeworld.base.BaseDialogFragment
 import kind.sun.dev.coffeeworld.databinding.DfProfileUpdatePasswordBinding
 import kind.sun.dev.coffeeworld.utils.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.utils.helper.view.showErrorMessage
@@ -14,10 +13,10 @@ import kind.sun.dev.coffeeworld.utils.helper.view.showToastSuccess
 import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 
 @AndroidEntryPoint
-class ProfileUpdatePasswordDF : BaseDF<DfProfileUpdatePasswordBinding, UserViewModel>(
-    DfProfileUpdatePasswordBinding::inflate
+class ProfileUpdatePasswordDF : BaseDialogFragment<DfProfileUpdatePasswordBinding, UserViewModel>(
+    bindingInflater = DfProfileUpdatePasswordBinding::inflate,
+    viewModelClass = UserViewModel::class.java
 ){
-    override val viewModel by viewModels<UserViewModel>()
     val isPasswordVisible = MutableLiveData<Boolean>(false)
 
     override fun setupDataBinding() {
@@ -25,10 +24,8 @@ class ProfileUpdatePasswordDF : BaseDF<DfProfileUpdatePasswordBinding, UserViewM
         binding.profileViewModel = viewModel
     }
 
-    override fun initViews() {}
-
     override fun observeViewModel() {
-        viewModel.messageResponse.observeNetworkResult(
+        viewModel!!.messageResponse.observeNetworkResult(
             onSuccess = {
                 requireContext().showToastSuccess(it.data)
                 onCancel()
@@ -63,7 +60,7 @@ class ProfileUpdatePasswordDF : BaseDF<DfProfileUpdatePasswordBinding, UserViewM
 
     fun onClickUpdatePassword(view: View) {
         view.setScaleAnimation {
-            viewModel.onUpdatePassword {
+            viewModel?.onUpdatePassword {
                 binding.tvError.showErrorMessage(it)
             }
         }

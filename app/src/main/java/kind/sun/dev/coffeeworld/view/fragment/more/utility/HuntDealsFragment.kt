@@ -1,27 +1,15 @@
 package kind.sun.dev.coffeeworld.view.fragment.more.utility
 
-import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.base.BaseFragment
-import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.databinding.FragmentHuntDealsBinding
 
 @AndroidEntryPoint
-class HuntDealsFragment : BaseFragment<FragmentHuntDealsBinding, BaseViewModel>(
-    FragmentHuntDealsBinding::inflate
+class HuntDealsFragment : BaseFragment<FragmentHuntDealsBinding, Nothing>(
+    layoutInflater = FragmentHuntDealsBinding::inflate,
+    viewModelClass = null
 ) {
-
-    override val viewModel: BaseViewModel by viewModels()
-
-    override fun setupDataBinding() {
-
-    }
-
     override fun initViews() {
-
-    }
-
-    override fun observeViewModel() {
 
     }
 }

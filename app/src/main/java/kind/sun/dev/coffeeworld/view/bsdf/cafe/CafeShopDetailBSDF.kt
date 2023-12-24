@@ -1,6 +1,5 @@
 package kind.sun.dev.coffeeworld.view.bsdf.cafe
 
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.base.BaseBSDF
@@ -13,12 +12,11 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CafeShopDetailBSDF : BaseBSDF<BsdfCafeShopDetailBinding, CafeViewModel>(
-    isFullScreen = true, BsdfCafeShopDetailBinding::inflate
+    layoutInflater = BsdfCafeShopDetailBinding::inflate,
+    viewModelClass = CafeViewModel::class.java,
+    isFullScreen = true,
 ){
     private var cafeModel: CafeModel? = null
-
-    override val viewModel: CafeViewModel  by viewModels()
-
 
     override fun setupDataBinding() {
         binding.fragment = this
@@ -29,7 +27,7 @@ class CafeShopDetailBSDF : BaseBSDF<BsdfCafeShopDetailBinding, CafeViewModel>(
         cafeModel = arguments?.getParcelableHelper(Constants.CAFE_KEY)
         lifecycleScope.launch {
             cafeModel?.id?.let { id ->
-                viewModel.onFetchMenu( false, id)
+                viewModel?.onFetchMenu( true, id)
             }
         }
 
@@ -45,11 +43,11 @@ class CafeShopDetailBSDF : BaseBSDF<BsdfCafeShopDetailBinding, CafeViewModel>(
     }
 
     override fun observeViewModel() {
-        viewModel.menu.observeNetworkResult(
+        viewModel!!.menu.observeNetworkResult(
             onSuccess = {
                 lifecycleScope.launch {
                     if (it.success) {
-                        viewModel.onSyncMenu(it.data)
+                        viewModel!!.onSyncMenu(it.data)
                     }
                 }
             }, onError = {}

@@ -26,7 +26,7 @@ class CafeViewModel @Inject constructor(
     val cafe get() = cafeService.cafeResponse
     val menu get() = cafeService.menuResponse
 
-    val scope = CoroutineScope(Dispatchers.IO)
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     override suspend fun onFetchAllCafes(
         isLoading: Boolean,

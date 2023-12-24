@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kind.sun.dev.coffeeworld.R
-import kind.sun.dev.coffeeworld.contract.FragmentContract
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.custom.CustomLoadingDialog
 import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
@@ -19,16 +19,21 @@ import kind.sun.dev.coffeeworld.view.MainActivity
 import javax.inject.Inject
 
 abstract class BaseFragment<V : ViewDataBinding, VM: BaseViewModel>(
-    private val bindingInflater: (inflater: LayoutInflater) -> V
-) : Fragment(), FragmentContract {
+    private val layoutInflater: (inflater: LayoutInflater) -> V,
+    private val viewModelClass: Class<VM>?,
+) : Fragment() {
 
     private var _binding: V? = null
     protected val binding: V get() = _binding as V
-    protected abstract val viewModel: VM
+
+    protected val viewModel : VM? by lazy {
+        viewModelClass?.let {
+            ViewModelProvider(this)[it]
+        }
+    }
 
     private lateinit var mainActivity: MainActivity
     private val navController by lazy { findNavController() }
-
     @Inject lateinit var preferences: PreferencesHelper
     @Inject lateinit var loadingDialog: CustomLoadingDialog
 
@@ -42,22 +47,19 @@ abstract class BaseFragment<V : ViewDataBinding, VM: BaseViewModel>(
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = bindingInflater.invoke(inflater)
+        _binding = layoutInflater.invoke(inflater)
         setupDataBinding()
         prepareData()
         return binding.root
     }
 
-    open fun prepareData() {}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAnything()
         initViews()
-        observeViewModel()
+        if (viewModel != null) observeViewModel()
     }
-
-    open fun initAnything() {}
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -65,7 +67,12 @@ abstract class BaseFragment<V : ViewDataBinding, VM: BaseViewModel>(
         _binding = null
     }
 
+    abstract fun initViews()
+    open fun setupDataBinding() {}
+    open fun prepareData() {}
+    open fun initAnything() {}
     open fun cleanUp() {}
+    open fun observeViewModel() { }
 
     protected fun <T> LiveData<NetworkResult<T>>.observeNetworkResult(
         onSuccess: (T) -> Unit,

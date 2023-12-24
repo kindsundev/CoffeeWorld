@@ -1,23 +1,19 @@
 package kind.sun.dev.coffeeworld.view.fragment.more
 
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseFragment
-import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.databinding.FragmentMoreBinding
 import kind.sun.dev.coffeeworld.utils.dataset.MoreDataSet
 import kind.sun.dev.coffeeworld.view.adapter.more.MoreAdapter
 
 @AndroidEntryPoint
-class MoreFragment : BaseFragment<FragmentMoreBinding, BaseViewModel>(
-    FragmentMoreBinding::inflate
+class MoreFragment : BaseFragment<FragmentMoreBinding, Nothing>(
+    layoutInflater = FragmentMoreBinding::inflate,
+    viewModelClass = null
 ){
-    override val viewModel: BaseViewModel by viewModels()
-
-    override fun setupDataBinding() {}
 
     override fun initAnything() {
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -39,8 +35,6 @@ class MoreFragment : BaseFragment<FragmentMoreBinding, BaseViewModel>(
             }
         }
     }
-
-    override fun observeViewModel() {}
 
     private fun navigateFragment(id: MoreDataSet.Id) {
         when(id) {

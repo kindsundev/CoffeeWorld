@@ -8,10 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kind.sun.dev.coffeeworld.contract.FragmentContract
 import kind.sun.dev.coffeeworld.utils.api.NetworkResult
 import kind.sun.dev.coffeeworld.utils.custom.CustomLoadingDialog
 import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
@@ -19,17 +19,22 @@ import kind.sun.dev.coffeeworld.utils.helper.view.monitorNetworkOperation
 import javax.inject.Inject
 
 abstract class BaseBSDF<V: ViewDataBinding, VM: BaseViewModel>(
-    private val isFullScreen: Boolean,
-    private val bindingInflater: (inflater: LayoutInflater) -> V
-) : BottomSheetDialogFragment(), FragmentContract {
+    private val layoutInflater: (inflater: LayoutInflater) -> V,
+    private val viewModelClass: Class<VM>?,
+    private val isFullScreen: Boolean
+) : BottomSheetDialogFragment() {
+
     private var _binding: V? = null
     protected val binding: V get() = _binding as V
 
+    protected val viewModel : VM? by lazy {
+        viewModelClass?.let {
+            ViewModelProvider(this)[it]
+        }
+    }
+
     @Inject lateinit var preferences: PreferencesHelper
-
     @Inject lateinit var loadingDialog: CustomLoadingDialog
-
-    abstract val viewModel: VM
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         if (isFullScreen) {
@@ -48,20 +53,31 @@ abstract class BaseBSDF<V: ViewDataBinding, VM: BaseViewModel>(
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = bindingInflater.invoke(inflater)
+        _binding = layoutInflater.invoke(inflater)
         setupDataBinding()
         prepareData()
         return binding.root
     }
 
-    open fun prepareData() {}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        observeViewModel()
+        if (viewModel != null) observeViewModel()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        cleanUp()
+        _binding = null
+    }
+
+    abstract fun initViews()
+    open fun setupDataBinding() {}
+    open fun prepareData() {}
+    open fun initAnything() {}
+    open fun cleanUp() {}
+    open fun observeViewModel() {}
     protected fun exit() : Unit = this.dismiss()
 
     protected fun <T> LiveData<NetworkResult<T>>.observeNetworkResult(
@@ -75,10 +91,5 @@ abstract class BaseBSDF<V: ViewDataBinding, VM: BaseViewModel>(
                 onError.invoke(it)
             }
         )
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

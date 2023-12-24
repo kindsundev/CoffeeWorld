@@ -2,12 +2,10 @@ package kind.sun.dev.coffeeworld.view.adapter.order.category
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kind.sun.dev.coffeeworld.data.local.model.CategoryModel
 import kind.sun.dev.coffeeworld.databinding.ItemCategoryDefaultBinding
 import kind.sun.dev.coffeeworld.utils.helper.view.setOnClickScaleListener
-import kind.sun.dev.coffeeworld.view.adapter.BaseDiffUtil
 
 class OrderCategoryAdapter(
     val items: List<CategoryModel>,

@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseBSDF
 import kind.sun.dev.coffeeworld.data.local.model.CategoryModel
 import kind.sun.dev.coffeeworld.databinding.BsdfSelectItemDefaultBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
-import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.helper.view.getParcelableArrayListHelper
 import kind.sun.dev.coffeeworld.utils.helper.view.remove
 import kind.sun.dev.coffeeworld.utils.helper.view.show
@@ -19,9 +17,10 @@ import kind.sun.dev.coffeeworld.view.adapter.order.category.OrderCategoryAdapter
 import kind.sun.dev.coffeeworld.viewmodel.CafeViewModel
 
 class OrderCategoryBSDF : BaseBSDF<BsdfSelectItemDefaultBinding, CafeViewModel>(
-    isFullScreen = false, bindingInflater = BsdfSelectItemDefaultBinding::inflate
+    layoutInflater = BsdfSelectItemDefaultBinding::inflate,
+    viewModelClass = CafeViewModel::class.java,
+    isFullScreen = false,
 ) {
-    override val viewModel: CafeViewModel by viewModels()
     private var categories: List<CategoryModel>? = null
     var onItemClicked: ((id: Int) -> Unit)? = null
 
@@ -77,7 +76,4 @@ class OrderCategoryBSDF : BaseBSDF<BsdfSelectItemDefaultBinding, CafeViewModel>(
             emptyShop.show()
         }
     }
-
-    override fun observeViewModel() {}
-
 }

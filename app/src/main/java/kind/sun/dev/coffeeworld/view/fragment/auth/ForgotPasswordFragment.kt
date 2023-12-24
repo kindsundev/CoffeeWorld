@@ -1,8 +1,6 @@
 package kind.sun.dev.coffeeworld.view.fragment.auth
 
 import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.databinding.FragmentForgotPasswordBinding
@@ -13,10 +11,9 @@ import kind.sun.dev.coffeeworld.viewmodel.AuthViewModel
 
 @AndroidEntryPoint
 class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding, AuthViewModel>(
-    FragmentForgotPasswordBinding::inflate
+    layoutInflater =  FragmentForgotPasswordBinding::inflate,
+    viewModelClass = AuthViewModel::class.java
 ) {
-    override val viewModel: AuthViewModel by viewModels()
-
     override fun setupDataBinding() {
         binding.apply {
             fragment = this@ForgotPasswordFragment
@@ -28,7 +25,7 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding, AuthV
     override fun initViews() {}
 
     override fun observeViewModel() {
-        viewModel.messageResponse.observeNetworkResult(
+        viewModel!!.messageResponse.observeNetworkResult(
             onSuccess = {
                 requireContext().showToastSuccess(it.data)
                 popFragment()
@@ -41,7 +38,7 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding, AuthV
 
     fun onCLickForgotPassword(view: View) {
         view.setScaleAnimation {
-            viewModel.onPasswordReset {
+            viewModel?.onPasswordReset {
                 binding.tvResponse.showErrorMessage(it)
             }
         }

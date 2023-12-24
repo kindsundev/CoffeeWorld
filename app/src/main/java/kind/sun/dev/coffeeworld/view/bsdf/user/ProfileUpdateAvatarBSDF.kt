@@ -7,7 +7,6 @@ import android.net.Uri
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.muddz.styleabletoast.StyleableToast
@@ -25,15 +24,16 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ProfileUpdateAvatarBSDF(
     private val onUpdateSuccess: (message: String) -> Unit
-) : BaseBSDF<BsdfProfileUpdateAvatarBinding, UserViewModel>(false, BsdfProfileUpdateAvatarBinding::inflate) {
-
+) : BaseBSDF<BsdfProfileUpdateAvatarBinding, UserViewModel>(
+    layoutInflater = BsdfProfileUpdateAvatarBinding::inflate,
+    viewModelClass = UserViewModel::class.java,
+    isFullScreen = false
+) {
     private val fileInternalHelper by lazy { FileInternalHelper(requireContext()) }
     private lateinit var currentFileName: String
     private var actionListener: Int = 0
     private val openGallery = 1
     private val openCamera = 2
-
-    override val viewModel: UserViewModel by viewModels()
 
     private val requestPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -88,7 +88,7 @@ class ProfileUpdateAvatarBSDF(
             }
             if (avatarFile?.exists() == true) {
                 currentFileName = avatarFile.name
-                viewModel.onUpdateAvatar(avatarFile) {
+                viewModel?.onUpdateAvatar(avatarFile) {
                     StyleableToast.makeText(requireContext(), it, R.style.toast_success).show()
                 }
             }
@@ -102,7 +102,7 @@ class ProfileUpdateAvatarBSDF(
     override fun initViews() {}
 
     override fun observeViewModel() {
-        viewModel.messageResponse.observeNetworkResult(
+        viewModel!!.messageResponse.observeNetworkResult(
             onSuccess = { requireDeleteFile(it.data) },
             onError = { requireContext().showToastError(it) }
         )
