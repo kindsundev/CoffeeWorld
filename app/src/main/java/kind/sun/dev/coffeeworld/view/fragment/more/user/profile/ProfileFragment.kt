@@ -12,18 +12,17 @@ import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
 import kind.sun.dev.coffeeworld.databinding.FragmentProfileBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
-import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.dataset.MoreDataSet
 import kind.sun.dev.coffeeworld.utils.helper.view.checkToHide
 import kind.sun.dev.coffeeworld.utils.helper.view.showAlertDialog
 import kind.sun.dev.coffeeworld.utils.helper.view.showToastError
 import kind.sun.dev.coffeeworld.view.adapter.profile.ProfileAdapter
-import kind.sun.dev.coffeeworld.view.dialog.profile.AddressDialogFragment
-import kind.sun.dev.coffeeworld.view.dialog.profile.AvatarBottomFragment
-import kind.sun.dev.coffeeworld.view.dialog.profile.EmailDialogFragment
-import kind.sun.dev.coffeeworld.view.dialog.profile.NameDialogFragment
-import kind.sun.dev.coffeeworld.view.dialog.profile.PasswordDialogFragment
-import kind.sun.dev.coffeeworld.view.dialog.profile.PhoneDialogFragment
+import kind.sun.dev.coffeeworld.view.dialog.profile.ProfileUpdateAddressDF
+import kind.sun.dev.coffeeworld.view.bsdf.user.ProfileUpdateAvatarBSDF
+import kind.sun.dev.coffeeworld.view.dialog.profile.ProfileUpdateEmailDF
+import kind.sun.dev.coffeeworld.view.dialog.profile.ProfileUpdateNameDF
+import kind.sun.dev.coffeeworld.view.dialog.profile.ProfileUpdatePasswordDF
+import kind.sun.dev.coffeeworld.view.dialog.profile.ProfileUpdatePhoneDF
 import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
@@ -96,12 +95,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, UserViewModel>(
 
     private fun onItemClickListener(itemId: MoreDataSet.Id) {
         when(itemId) {
-            MoreDataSet.Id.AVATAR -> AvatarBottomFragment(::onUpdateSuccess).show(childFragmentManager, null)
-            MoreDataSet.Id.NAME -> NameDialogFragment(::onUpdateSuccess).show(childFragmentManager, null)
-            MoreDataSet.Id.EMAIL -> EmailDialogFragment(::onUpdateSuccess).show(childFragmentManager, null)
-            MoreDataSet.Id.ADDRESS -> AddressDialogFragment(::onUpdateSuccess).show(childFragmentManager, null)
-            MoreDataSet.Id.PHONE -> PhoneDialogFragment(::onUpdateSuccess).show(childFragmentManager, null)
-            MoreDataSet.Id.PASSWORD -> PasswordDialogFragment().show(childFragmentManager, null)
+            MoreDataSet.Id.AVATAR -> ProfileUpdateAvatarBSDF(::onUpdateSuccess).show(childFragmentManager, null)
+            MoreDataSet.Id.NAME -> ProfileUpdateNameDF(::onUpdateSuccess).show(childFragmentManager, null)
+            MoreDataSet.Id.EMAIL -> ProfileUpdateEmailDF(::onUpdateSuccess).show(childFragmentManager, null)
+            MoreDataSet.Id.ADDRESS -> ProfileUpdateAddressDF(::onUpdateSuccess).show(childFragmentManager, null)
+            MoreDataSet.Id.PHONE -> ProfileUpdatePhoneDF(::onUpdateSuccess).show(childFragmentManager, null)
+            MoreDataSet.Id.PASSWORD -> ProfileUpdatePasswordDF().show(childFragmentManager, null)
             MoreDataSet.Id.LOG_OUT -> onClickLogout()
             MoreDataSet.Id.PROFILE -> {
                 navigateToFragment(

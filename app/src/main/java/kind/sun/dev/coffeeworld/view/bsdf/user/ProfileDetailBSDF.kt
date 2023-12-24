@@ -1,17 +1,17 @@
-package kind.sun.dev.coffeeworld.view.fragment.more.user.profile
+package kind.sun.dev.coffeeworld.view.bsdf.user
 
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import kind.sun.dev.coffeeworld.base.BaseBottomSheet
+import kind.sun.dev.coffeeworld.base.BaseBSDF
 import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
-import kind.sun.dev.coffeeworld.databinding.FragmentProfileDetailBinding
+import kind.sun.dev.coffeeworld.databinding.BsdfProfileDetailBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.helper.view.getParcelableHelper
 
 @AndroidEntryPoint
-class ProfileDetailFragment : BaseBottomSheet<FragmentProfileDetailBinding, BaseViewModel>(
-    isFullScreen = false, FragmentProfileDetailBinding::inflate
+class ProfileDetailBSDF : BaseBSDF<BsdfProfileDetailBinding, BaseViewModel>(
+    isFullScreen = false, BsdfProfileDetailBinding::inflate
 ){
 
     override val viewModel: BaseViewModel  by viewModels()

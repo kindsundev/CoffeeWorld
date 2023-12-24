@@ -135,9 +135,9 @@
     </fragment>
     <dialog
         android:id="@+id/cafeShopDetailFragment"
-        android:name="kind.sun.dev.coffeeworld.view.fragment.cafe.CafeShopDetailFragment"
+        android:name="kind.sun.dev.coffeeworld.view.bsdf.cafe.CafeShopDetailBSDF"
         android:label="cafe_shop_detail_fragment"
-        tools:layout="@layout/fragment_cafe_shop_detail" />
+        tools:layout="@layout/bsdf_cafe_shop_detail" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="kind.sun.dev.coffeeworld.view.fragment.more.user.profile.ProfileFragment"
@@ -194,9 +194,9 @@
         tools:layout="@layout/fragment_payment" />
     <dialog
         android:id="@+id/profileDetailFragment"
-        android:name="kind.sun.dev.coffeeworld.view.fragment.more.user.profile.ProfileDetailFragment"
+        android:name="kind.sun.dev.coffeeworld.view.bsdf.user.ProfileDetailBSDF"
         android:label="profile_detail_fragment"
-        tools:layout="@layout/fragment_profile_detail" />
+        tools:layout="@layout/bsdf_profile_detail" />
     <fragment
         android:id="@+id/registerFragment"
         android:name="kind.sun.dev.coffeeworld.view.fragment.auth.RegisterFragment"

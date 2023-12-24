@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
+import kind.sun.dev.coffeeworld.data.local.model.CategoryModel
 import kind.sun.dev.coffeeworld.data.local.model.DrinkModel
 import kind.sun.dev.coffeeworld.data.local.model.MenuModel
 import kind.sun.dev.coffeeworld.databinding.FragmentOrderBinding
@@ -14,10 +15,12 @@ import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.dataset.OrderDataSet
 import kind.sun.dev.coffeeworld.utils.helper.view.isExist
-import kind.sun.dev.coffeeworld.utils.helper.view.showToast
 import kind.sun.dev.coffeeworld.utils.helper.view.showToastError
 import kind.sun.dev.coffeeworld.utils.helper.view.smoothToPositionWithOffset
 import kind.sun.dev.coffeeworld.view.adapter.order.menu.OrderMenuAdapter
+import kind.sun.dev.coffeeworld.view.adapter.order.menu.OrderMenuViewItem
+import kind.sun.dev.coffeeworld.view.bsdf.order.OrderCafeShopBSDF
+import kind.sun.dev.coffeeworld.view.bsdf.order.OrderCategoryBSDF
 import kind.sun.dev.coffeeworld.viewmodel.CafeViewModel
 import kind.sun.dev.coffeeworld.viewmodel.OrderViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -33,9 +36,11 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
     override val viewModel: OrderViewModel by viewModels()
     private val cafeViewModel: CafeViewModel by viewModels()
 
-    private var cafeList: List<CafeModel>? = null
-    private lateinit var menuAdapter: OrderMenuAdapter
     private var scope = CoroutineScope(Dispatchers.IO)
+    private lateinit var menuAdapter: OrderMenuAdapter
+    private var cafes: List<CafeModel>? = null
+    private var categories: List<CategoryModel>? = null
+
 
     private var hasCafeId: Boolean = false
         get() = preferences.currentCafeId?.isExist() ?: false
@@ -58,7 +63,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
 
     override fun prepareData() {
         lifecycleScope.launch {
-            cafeList = checkCafeListFromLocal()
+            cafes = checkCafeListFromLocal()
             checkMenuModelFromLocal()
         }
     }
@@ -91,25 +96,26 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
 
     private fun initMenuLayout(result: MenuModel) {
         scope.launch {
-            val data = cafeViewModel.convertToMenuViewItem(result.beverageCategories)
+            val data = cafeViewModel.convertToMenuViewItem(result.beverageCategories).also {
+                if (it[0] is OrderMenuViewItem.Categories) {
+                    categories = (it[0] as OrderMenuViewItem.Categories).categories
+                    Logger.error(message = "${categories?.size}")
+                }
+            }
             withContext(Dispatchers.Main) {
                 menuAdapter = OrderMenuAdapter(data)
                 binding.rvMenu.apply {
                     layoutManager = LinearLayoutManager(requireContext())
                     adapter = menuAdapter
                 }
-                onMenuItemClickListener()
-            }
-        }
-    }
-
-    private fun onMenuItemClickListener() {
-        menuAdapter.onItemClickListener = { type, id, drink ->
-            when(type) {
-                Constants.ORDER_BANNER_EVENT -> onBannerClickListener(id)
-                Constants.ORDER_CATEGORY_EVENT -> onCategoryClickListener(id)
-                Constants.ORDER_COFFEE_ROOT_EVENT -> drink?.let { onDrinkRootClickListener(it) }
-                Constants.ORDER_COFFEE_FAB_EVENT -> drink?.let { onDrinkFabCLickListener(it) }
+                menuAdapter.onItemClickListener = { type, id, drink ->
+                    when(type) {
+                        Constants.ORDER_BANNER_EVENT -> onBannerClickListener(id)
+                        Constants.ORDER_CATEGORY_EVENT -> onCategoryClickListener(id)
+                        Constants.ORDER_COFFEE_ROOT_EVENT -> drink?.let { onDrinkRootClickListener(it) }
+                        Constants.ORDER_COFFEE_FAB_EVENT -> drink?.let { onDrinkFabCLickListener(it) }
+                    }
+                }
             }
         }
     }
@@ -136,6 +142,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
     }
 
     private fun onCategoryClickListener(id: Int) {
+        if (id == Constants.CATEGORY_MORE_ID) {
+            OrderCategoryBSDF.newInstance(childFragmentManager, categories) {
+                onCategoryClickListener(it)
+            }
+            return
+        }
         menuAdapter.getCoffeesPositionByCategoryId(id).let { position ->
             if (position != OrderMenuAdapter.NO_POSITION) {
                 binding.rvMenu.smoothToPositionWithOffset(position)
@@ -145,12 +157,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
 
     private fun onDrinkRootClickListener(drink: DrinkModel) {
         // todo navigate x.x.x fragment
-        Logger.debug("root: ${drink.name}")
     }
 
     private fun onDrinkFabCLickListener(drink: DrinkModel) {
         // todo navigate x.x.x bottom sheet fragment
-        Logger.debug("fab: ${drink.name}")
     }
 
     override fun observeViewModel() {
@@ -160,8 +170,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
     private fun observeCafeResult() = cafeViewModel.apply {
         cafe.observeNetworkResult(
             onSuccess = {
-                cafeList = it.data
-                cafeList?.let {
+                cafes = it.data
+                cafes?.let {
                     lifecycleScope.launch { onSyncAllCafes(it) }
                 }
                 if (!hasCafeId) requestPickCafeShop()
@@ -185,7 +195,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(
     fun onClickCafeShop() = requestPickCafeShop()
 
     private fun requestPickCafeShop() {
-        OrderCafeShopFragment.newInstance(childFragmentManager, cafeList) {
+        OrderCafeShopBSDF.newInstance(childFragmentManager, cafes) {
             preferences.currentCafeId = it.also {
                 lifecycleScope.launch {
                     cafeViewModel.onFetchMenu(true, it)

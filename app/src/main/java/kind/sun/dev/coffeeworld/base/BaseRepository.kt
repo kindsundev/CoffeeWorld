@@ -20,7 +20,7 @@ import retrofit2.Response
 open class BaseRepository {
 
     private val baseExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        Logger.error("BaseExceptionHandler: ${throwable.message}")
+        Logger.error(message = "BaseExceptionHandler: ${throwable.message}")
     }
 
     protected val coroutineScope by lazy { CoroutineScope(Dispatchers.IO) }
@@ -66,7 +66,7 @@ open class BaseRepository {
         return try {
             JSONObject(string()).getString("message")
         } catch (e: JSONException) {
-            Logger.error("JSONException: ${e.message.toString()}")
+            Logger.error(message = "JSONException: ${e.message.toString()}")
             "Something went wrong"
         }
     }

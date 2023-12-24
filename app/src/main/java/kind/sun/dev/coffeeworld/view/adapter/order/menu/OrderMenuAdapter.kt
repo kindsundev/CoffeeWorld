@@ -77,7 +77,6 @@ class OrderMenuAdapter(
     fun getCoffeesPositionByCategoryId(id: Int): Int {
         for ((index, item) in menu.withIndex()) {
             if (item is OrderMenuViewItem.Coffees && item.categoryId == id) {
-                Logger.warning("${item.categoryName}")
                 return index
             }
         }

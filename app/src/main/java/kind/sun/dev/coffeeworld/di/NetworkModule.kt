@@ -12,6 +12,7 @@ import kind.sun.dev.coffeeworld.data.remote.api.CafeApi
 import kind.sun.dev.coffeeworld.data.remote.api.UserApi
 import kind.sun.dev.coffeeworld.utils.api.AuthInterceptor
 import kind.sun.dev.coffeeworld.utils.api.ErrorInterceptor
+import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.custom.WithAuth
 import kind.sun.dev.coffeeworld.utils.custom.WithoutAuth
 import kind.sun.dev.coffeeworld.utils.helper.network.NetworkHelper
@@ -50,7 +51,11 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        return HttpLoggingInterceptor { message ->
+            Logger.debug(Logger.API, message)
+        }.apply {
+            level = HttpLoggingInterceptor.Level.BASIC
+        }
     }
 
     @Provides

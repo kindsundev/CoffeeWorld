@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.view.fragment.order
+package kind.sun.dev.coffeeworld.view.bsdf.order
 
 import android.os.Bundle
 import android.os.Parcelable
@@ -6,9 +6,10 @@ import android.view.View
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import kind.sun.dev.coffeeworld.base.BaseBottomSheet
+import kind.sun.dev.coffeeworld.R
+import kind.sun.dev.coffeeworld.base.BaseBSDF
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
-import kind.sun.dev.coffeeworld.databinding.FragmentOrderCafeShopBinding
+import kind.sun.dev.coffeeworld.databinding.BsdfSelectItemDefaultBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.helper.view.getParcelableArrayListHelper
 import kind.sun.dev.coffeeworld.utils.helper.view.remove
@@ -17,12 +18,12 @@ import kind.sun.dev.coffeeworld.view.adapter.order.shop.OrderCafeShopAdapter
 import kind.sun.dev.coffeeworld.viewmodel.CafeViewModel
 import java.util.ArrayList
 
-class OrderCafeShopFragment : BaseBottomSheet<FragmentOrderCafeShopBinding, CafeViewModel>(
-    isFullScreen = false, bindingInflater = FragmentOrderCafeShopBinding::inflate
+class OrderCafeShopBSDF : BaseBSDF<BsdfSelectItemDefaultBinding, CafeViewModel>(
+    isFullScreen = false, bindingInflater = BsdfSelectItemDefaultBinding::inflate
 ){
     override val viewModel: CafeViewModel by viewModels()
-    private var cafeModels: List<CafeModel>?= null
-    private var onItemClicked: ((id: Int) -> Unit)? = null
+    private var cafes: List<CafeModel>?= null
+    var onItemClicked: ((id: Int) -> Unit)? = null
 
     companion object {
         fun newInstance(
@@ -30,7 +31,7 @@ class OrderCafeShopFragment : BaseBottomSheet<FragmentOrderCafeShopBinding, Cafe
             data: List<CafeModel>?,
             onItemClickListener: ((id: Int) -> Unit)? = null
         ) {
-            return OrderCafeShopFragment().apply {
+            return OrderCafeShopBSDF().apply {
                 data?.let {
                     arguments = Bundle().apply {
                         putParcelableArrayList(
@@ -39,27 +40,28 @@ class OrderCafeShopFragment : BaseBottomSheet<FragmentOrderCafeShopBinding, Cafe
                     }
                     onItemClicked = onItemClickListener
                 }
-            }.show(fragmentManager, OrderCafeShopFragment::class.simpleName)
+            }.show(fragmentManager, OrderCafeShopBSDF::class.simpleName)
         }
     }
 
     override fun prepareData() {
-        cafeModels = arguments?.getParcelableArrayListHelper(Constants.ORDER_CAFE_KEY)
+        cafes = arguments?.getParcelableArrayListHelper(Constants.ORDER_CAFE_KEY)
     }
 
     override fun setupDataBinding() {}
 
     override fun initViews() {
         binding.apply {
-            if (cafeModels.isNullOrEmpty()) {
+            tvTitle.text = requireContext().getString(R.string.select_cafe_shop)
+            if (cafes.isNullOrEmpty()) {
                 toggleRecyclerView(false)
             } else {
                 toggleRecyclerView(true)
-                rvCafeShop.apply {
+                rvItems.apply {
                     layoutManager = LinearLayoutManager(requireContext())
-                    adapter = OrderCafeShopAdapter(cafeModels!!) {
+                    adapter = OrderCafeShopAdapter(cafes!!) {
                         onItemClicked?.invoke(it)
-                        this@OrderCafeShopFragment.dismiss()
+                        this@OrderCafeShopBSDF.dismiss()
                     }
                     hasFixedSize()
                 }
@@ -68,12 +70,12 @@ class OrderCafeShopFragment : BaseBottomSheet<FragmentOrderCafeShopBinding, Cafe
     }
 
     private fun toggleRecyclerView(isShow: Boolean) = binding.apply {
-        if (isShow && rvCafeShop.visibility == View.GONE) {
+        if (isShow && rvItems.visibility == View.GONE) {
             emptyShop.remove()
-            rvCafeShop.show()
+            rvItems.show()
         }
-        if (!isShow && rvCafeShop.visibility == View.VISIBLE) {
-            rvCafeShop.remove()
+        if (!isShow && rvItems.visibility == View.VISIBLE) {
+            rvItems.remove()
             emptyShop.show()
         }
     }

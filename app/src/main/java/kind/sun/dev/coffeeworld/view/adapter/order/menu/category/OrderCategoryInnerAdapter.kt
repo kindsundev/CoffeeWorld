@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.data.local.model.CategoryModel
 import kind.sun.dev.coffeeworld.data.local.model.DrinkModel
-import kind.sun.dev.coffeeworld.databinding.ItemCategoryCircleBinding
+import kind.sun.dev.coffeeworld.databinding.ItemCategoryDefaultBinding
+import kind.sun.dev.coffeeworld.databinding.ItemCategoryMoreBinding
 import kind.sun.dev.coffeeworld.utils.common.Constants
 import kind.sun.dev.coffeeworld.utils.helper.view.setOnClickScaleListener
 import kind.sun.dev.coffeeworld.view.adapter.BaseDiffUtil
@@ -31,14 +31,16 @@ internal class OrderCategoryInnerAdapter : RecyclerView.Adapter<RecyclerView.Vie
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return if (viewType == DEFAULT_TYPE) {
-            CategoryDefaultViewHolder(ItemCategoryCircleBinding.inflate(layoutInflater, parent, false))
+            CategoryDefaultViewHolder(ItemCategoryDefaultBinding.inflate(layoutInflater, parent, false))
         } else {
-            CategoryMoreViewHolder(ItemCategoryCircleBinding.inflate(layoutInflater, parent, false))
+            CategoryMoreViewHolder(ItemCategoryMoreBinding.inflate(layoutInflater, parent, false))
         }
     }
 
     override fun getItemCount(): Int {
-        return if (items.size >= 8) 8 else items.size
+        if (items.size in 4..7) return 4
+        if (items.size >= 8) return 8
+        return items.size
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -56,7 +58,7 @@ internal class OrderCategoryInnerAdapter : RecyclerView.Adapter<RecyclerView.Vie
     }
 
     inner class CategoryDefaultViewHolder(
-        private val binding: ItemCategoryCircleBinding
+        private val binding: ItemCategoryDefaultBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         internal fun bindView(item: CategoryModel) = binding.apply {
@@ -69,17 +71,13 @@ internal class OrderCategoryInnerAdapter : RecyclerView.Adapter<RecyclerView.Vie
     }
 
     inner class CategoryMoreViewHolder(
-        private val binding: ItemCategoryCircleBinding
+        private val binding: ItemCategoryMoreBinding
     ): RecyclerView.ViewHolder(binding.root) {
 
-        internal fun bindView() = binding.apply {
-            imgCategory.setBackgroundResource(R.drawable.ic_baseline_more_horiz_24)
-            tvName.text = root.context.getString(R.string.more)
-            root.setOnClickScaleListener {
-                onItemClickListener?.invoke(
-                    Constants.ORDER_CATEGORY_EVENT, Constants.CATEGORY_MORE_ID, null
-                )
-            }
+        internal fun bindView() = binding.root.setOnClickScaleListener {
+            onItemClickListener?.invoke(
+                Constants.ORDER_CATEGORY_EVENT, Constants.CATEGORY_MORE_ID, null
+            )
         }
 
     }

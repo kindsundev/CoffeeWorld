@@ -49,13 +49,13 @@ class UserRepository @Inject constructor(
                     .body
                 claims["username"] as String?
             } catch (e: SignatureException) {
-                Logger.error("Invalid signature: ${e.message}")
+                Logger.error(message = "Invalid signature: ${e.message}")
                 null
             } catch (e: ExpiredJwtException) {
-                Logger.error("Token has expired: ${e.message}")
+                Logger.error(message = "Token has expired: ${e.message}")
                 null
             } catch (e: Exception) {
-                Logger.error("Decrypt token: ${e.message}")
+                Logger.error(message = "Decrypt token: ${e.message}")
                 null
             }
         }

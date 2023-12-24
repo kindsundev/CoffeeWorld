@@ -1,4 +1,4 @@
-package kind.sun.dev.coffeeworld.view.dialog.profile
+package kind.sun.dev.coffeeworld.view.bsdf.user
 
 import android.Manifest
 import android.content.Intent
@@ -12,8 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.muddz.styleabletoast.StyleableToast
 import kind.sun.dev.coffeeworld.R
-import kind.sun.dev.coffeeworld.base.BaseBottomSheet
-import kind.sun.dev.coffeeworld.databinding.FragmentAvatarBinding
+import kind.sun.dev.coffeeworld.base.BaseBSDF
+import kind.sun.dev.coffeeworld.databinding.BsdfProfileUpdateAvatarBinding
 import kind.sun.dev.coffeeworld.utils.common.Logger
 import kind.sun.dev.coffeeworld.utils.helper.storage.FileInternalHelper
 import kind.sun.dev.coffeeworld.utils.helper.view.checkPermission
@@ -23,9 +23,9 @@ import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AvatarBottomFragment(
+class ProfileUpdateAvatarBSDF(
     private val onUpdateSuccess: (message: String) -> Unit
-) : BaseBottomSheet<FragmentAvatarBinding, UserViewModel>(false, FragmentAvatarBinding::inflate) {
+) : BaseBSDF<BsdfProfileUpdateAvatarBinding, UserViewModel>(false, BsdfProfileUpdateAvatarBinding::inflate) {
 
     private val fileInternalHelper by lazy { FileInternalHelper(requireContext()) }
     private lateinit var currentFileName: String
@@ -58,7 +58,7 @@ class AvatarBottomFragment(
             try {
                 result.data?.data?.let { handleImageFromSource(uri = it) }
             } catch (e: Exception) {
-                Logger.error("[Avatar] takeImageCameraLauncher: ${e.message}")
+                Logger.error(message = "[Avatar] takeImageCameraLauncher: ${e.message}")
             }
         }
     }
@@ -71,7 +71,7 @@ class AvatarBottomFragment(
                 val bitmap = result.data?.extras?.get("data") as Bitmap
                 handleImageFromSource(bitmap = bitmap)
             } catch (e: Exception) {
-                Logger.error("[Avatar] takeImageCameraLauncher: ${e.message}")
+                Logger.error(message = "[Avatar] takeImageCameraLauncher: ${e.message}")
             }
         }
     }
@@ -111,7 +111,7 @@ class AvatarBottomFragment(
     private fun requireDeleteFile(message: String) = lifecycleScope.launch {
         fileInternalHelper.deletePhoto(currentFileName).also { deleted ->
             if (deleted) {
-                onUpdateSuccess.invoke(message).also { this@AvatarBottomFragment.dismiss() }
+                onUpdateSuccess.invoke(message).also { this@ProfileUpdateAvatarBSDF.dismiss() }
             }
         }
     }
@@ -145,7 +145,7 @@ class AvatarBottomFragment(
                     type = "image/*"
                 })
         } catch (e: Exception) {
-            Logger.error("pickImageGalleryLauncher: ${e.message}")
+            Logger.error(message = "pickImageGalleryLauncher: ${e.message}")
         }
     }
 
@@ -164,7 +164,7 @@ class AvatarBottomFragment(
             val takeImageIntentCapture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             takeImageCamera.launch(takeImageIntentCapture)
         } catch (e: Exception) {
-            Logger.error("takeImageCameraLauncher: ${e.message}")
+            Logger.error(message = "takeImageCameraLauncher: ${e.message}")
         }
     }
 }

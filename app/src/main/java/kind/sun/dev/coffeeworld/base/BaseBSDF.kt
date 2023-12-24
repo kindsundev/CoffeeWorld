@@ -18,7 +18,7 @@ import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
 import kind.sun.dev.coffeeworld.utils.helper.view.monitorNetworkOperation
 import javax.inject.Inject
 
-abstract class BaseBottomSheet<V: ViewDataBinding, VM: BaseViewModel>(
+abstract class BaseBSDF<V: ViewDataBinding, VM: BaseViewModel>(
     private val isFullScreen: Boolean,
     private val bindingInflater: (inflater: LayoutInflater) -> V
 ) : BottomSheetDialogFragment(), FragmentContract {

@@ -1,8 +1,11 @@
 package kind.sun.dev.coffeeworld.data.local.model
 
+import android.os.Parcelable
 import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "category_table")
 data class CategoryModel(
     val id: Int,
@@ -10,7 +13,8 @@ data class CategoryModel(
     val cafeId: Int,
     val name: String,
     val image: ByteArray? = null
-) {
+): Parcelable {
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

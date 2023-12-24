@@ -5,20 +5,21 @@ import android.util.Log
 object Logger {
 
     private const val TAG = "DEBUG"
+    const val API = "API_DEBUG"
 
-    fun error(message: String) {
-        Log.e(TAG, message)
+    fun error(tag: String = TAG, message: String) {
+        Log.e(tag, message)
     }
 
-    fun info(message: String) {
-        Log.i(TAG, message)
+    fun info(tag: String = TAG, message: String) {
+        Log.i(tag, message)
     }
 
-    fun warning(message: String) {
-        Log.w(TAG, message)
+    fun warning(tag: String = TAG, message: String) {
+        Log.w(tag, message)
     }
 
-    fun debug(message: String) {
-        Log.d(TAG, message)
+    fun debug(tag: String = TAG, message: String) {
+        Log.d(tag, message)
     }
 }

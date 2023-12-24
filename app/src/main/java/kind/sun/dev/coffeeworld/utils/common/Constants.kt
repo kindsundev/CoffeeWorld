@@ -8,6 +8,7 @@ object Constants {
     const val USER_KEY = "USER_KEY"
     const val CURRENT_CAFE_ID_KEY = "CURRENT_CAFE_ID"
     const val ORDER_CAFE_KEY = "ORDER_CAFE_KEY"
+    const val ORDER_CATEGORY_KEY = "ORDER_CATEGORY_KEY"
     const val CATEGORY_MORE_ID = -1
     const val DURATION_SHORT = 100L
     const val SCALE_LOW = 0.96f

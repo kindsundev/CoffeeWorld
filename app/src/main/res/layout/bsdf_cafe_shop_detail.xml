@@ -6,7 +6,7 @@
     <data>
         <variable
             name="fragment"
-            type="kind.sun.dev.coffeeworld.view.fragment.cafe.CafeShopDetailFragment" />
+            type="kind.sun.dev.coffeeworld.view.bsdf.cafe.CafeShopDetailBSDF" />
         <variable
             name="cafeModel"
             type="kind.sun.dev.coffeeworld.data.local.model.CafeModel" />
