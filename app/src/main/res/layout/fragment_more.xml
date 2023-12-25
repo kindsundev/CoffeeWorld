@@ -12,7 +12,7 @@
         android:background="@color/white_light"
         android:elevation="4dp"
         android:orientation="vertical"
-        tools:context=".view.more.MoreFragment">
+        tools:context=".ui.more.MoreFragment">
 
         <Toolbar
             android:layout_width="match_parent"

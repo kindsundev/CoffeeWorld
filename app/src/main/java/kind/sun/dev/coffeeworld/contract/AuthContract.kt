@@ -6,7 +6,7 @@ import kind.sun.dev.coffeeworld.data.remote.request.LoginRequest
 import kind.sun.dev.coffeeworld.data.remote.request.RegisterRequest
 import kind.sun.dev.coffeeworld.data.remote.response.LoginResponse
 import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
-import kind.sun.dev.coffeeworld.utils.api.NetworkResult
+import kind.sun.dev.coffeeworld.util.api.NetworkResult
 
 interface AuthContract {
 

@@ -2,8 +2,8 @@ package kind.sun.dev.coffeeworld.base
 
 import androidx.lifecycle.MutableLiveData
 import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
-import kind.sun.dev.coffeeworld.utils.api.NetworkResult
-import kind.sun.dev.coffeeworld.utils.common.Logger
+import kind.sun.dev.coffeeworld.util.api.NetworkResult
+import kind.sun.dev.coffeeworld.util.common.Logger
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -5,7 +5,7 @@ import kind.sun.dev.coffeeworld.data.local.entity.UserEntity
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
 import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
 import kind.sun.dev.coffeeworld.data.remote.response.UserResponse
-import kind.sun.dev.coffeeworld.utils.api.NetworkResult
+import kind.sun.dev.coffeeworld.util.api.NetworkResult
 import java.io.File
 
 interface UserContract {

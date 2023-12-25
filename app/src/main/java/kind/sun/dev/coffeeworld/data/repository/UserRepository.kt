@@ -17,10 +17,10 @@ import kind.sun.dev.coffeeworld.data.remote.request.UserEmailRequest
 import kind.sun.dev.coffeeworld.data.remote.request.UserPasswordRequest
 import kind.sun.dev.coffeeworld.data.remote.response.MessageResponse
 import kind.sun.dev.coffeeworld.data.remote.response.UserResponse
-import kind.sun.dev.coffeeworld.utils.api.NetworkResult
-import kind.sun.dev.coffeeworld.utils.common.Constants
-import kind.sun.dev.coffeeworld.utils.common.Logger
-import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
+import kind.sun.dev.coffeeworld.util.api.NetworkResult
+import kind.sun.dev.coffeeworld.util.common.Constants
+import kind.sun.dev.coffeeworld.util.common.Logger
+import kind.sun.dev.coffeeworld.util.helper.storage.PreferencesHelper
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

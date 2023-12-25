@@ -11,20 +11,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kind.sun.dev.coffeeworld.R
-import kind.sun.dev.coffeeworld.utils.api.NetworkResult
-import kind.sun.dev.coffeeworld.utils.custom.CustomLoadingDialog
-import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
-import kind.sun.dev.coffeeworld.utils.helper.view.monitorNetworkOperation
-import kind.sun.dev.coffeeworld.view.MainActivity
+import kind.sun.dev.coffeeworld.util.api.NetworkResult
+import kind.sun.dev.coffeeworld.util.custom.CustomLoadingDialog
+import kind.sun.dev.coffeeworld.util.helper.storage.PreferencesHelper
+import kind.sun.dev.coffeeworld.util.helper.view.monitorNetworkOperation
+import kind.sun.dev.coffeeworld.ui.MainActivity
 import javax.inject.Inject
 
-abstract class BaseFragment<V : ViewDataBinding, VM: BaseViewModel>(
-    private val layoutInflater: (inflater: LayoutInflater) -> V,
+abstract class BaseFragment<VB : ViewDataBinding, VM: BaseViewModel>(
+    private val layoutInflater: (inflater: LayoutInflater) -> VB,
     private val viewModelClass: Class<VM>?,
 ) : Fragment() {
 
-    private var _binding: V? = null
-    protected val binding: V get() = _binding as V
+    private var _binding: VB? = null
+    protected val binding: VB get() = _binding as VB
 
     protected val viewModel : VM? by lazy {
         viewModelClass?.let {

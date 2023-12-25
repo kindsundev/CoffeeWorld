@@ -8,7 +8,7 @@ import kind.sun.dev.coffeeworld.data.remote.request.AuthRequest
 import kind.sun.dev.coffeeworld.data.remote.request.LoginRequest
 import kind.sun.dev.coffeeworld.data.remote.request.RegisterRequest
 import kind.sun.dev.coffeeworld.data.remote.response.LoginResponse
-import kind.sun.dev.coffeeworld.utils.api.NetworkResult
+import kind.sun.dev.coffeeworld.util.api.NetworkResult
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(

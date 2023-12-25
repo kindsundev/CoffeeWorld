@@ -7,7 +7,7 @@
 
         <variable
             name="fragment"
-            type="kind.sun.dev.coffeeworld.view.fragment.order.OrderFragment" />
+            type="kind.sun.dev.coffeeworld.ui.fragment.order.OrderFragment" />
     </data>
 
     <LinearLayout
@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:background="@color/gray_background"
         android:orientation="vertical"
-        tools:context=".view.order.OrderFragment">
+        tools:context=".ui.order.OrderFragment">
 
         <RelativeLayout
             android:layout_width="match_parent"

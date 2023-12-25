@@ -5,7 +5,7 @@
     <data>
         <variable
             name="fragment"
-            type="kind.sun.dev.coffeeworld.view.fragment.auth.LoginFragment" />
+            type="kind.sun.dev.coffeeworld.ui.fragment.auth.LoginFragment" />
 
         <variable
             name="authViewModel"
@@ -81,7 +81,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
+                <kind.sun.dev.coffeeworld.util.custom.CustomEditTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
@@ -91,7 +91,7 @@
                     app:etv_text_hint="Username" />
 
 
-                <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
+                <kind.sun.dev.coffeeworld.util.custom.CustomEditTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="24dp"

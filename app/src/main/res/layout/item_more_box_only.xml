@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="kind.sun.dev.coffeeworld.view.adapter.more.MoreViewItem.Item" />
+            type="kind.sun.dev.coffeeworld.ui.adapter.more.MoreViewItem.Item" />
     </data>
 
     <RelativeLayout

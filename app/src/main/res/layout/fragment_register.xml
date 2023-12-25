@@ -5,7 +5,7 @@
     <data>
         <variable
             name="fragment"
-            type="kind.sun.dev.coffeeworld.view.fragment.auth.RegisterFragment" />
+            type="kind.sun.dev.coffeeworld.ui.fragment.auth.RegisterFragment" />
 
         <variable
             name="authViewModel"
@@ -63,7 +63,7 @@
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
-                <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
+                <kind.sun.dev.coffeeworld.util.custom.CustomEditTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
@@ -73,7 +73,7 @@
                     app:etv_text_hint="Name"
                     app:textValue="@={authViewModel.nameRegister}" />
 
-                <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
+                <kind.sun.dev.coffeeworld.util.custom.CustomEditTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
@@ -83,7 +83,7 @@
                     app:etv_text_hint="Email"
                     app:textValue="@={authViewModel.emailRegister}" />
 
-                <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
+                <kind.sun.dev.coffeeworld.util.custom.CustomEditTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
@@ -93,7 +93,7 @@
                     app:etv_text_hint="Username"
                     app:textValue="@={authViewModel.usernameRegister}" />
 
-                <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
+                <kind.sun.dev.coffeeworld.util.custom.CustomEditTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
@@ -103,7 +103,7 @@
                     app:etv_text_hint="Password"
                     app:textValue="@={authViewModel.passwordRegister}" />
 
-                <kind.sun.dev.coffeeworld.utils.custom.CustomEditTextView
+                <kind.sun.dev.coffeeworld.util.custom.CustomEditTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"

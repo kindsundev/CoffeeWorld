@@ -12,8 +12,8 @@ import kind.sun.dev.coffeeworld.data.local.model.MenuModel
 import kind.sun.dev.coffeeworld.data.remote.api.CafeApi
 import kind.sun.dev.coffeeworld.data.remote.response.CafeMenuResponse
 import kind.sun.dev.coffeeworld.data.remote.response.CafeResponse
-import kind.sun.dev.coffeeworld.utils.api.NetworkResult
-import kind.sun.dev.coffeeworld.utils.common.Constants
+import kind.sun.dev.coffeeworld.util.api.NetworkResult
+import kind.sun.dev.coffeeworld.util.common.Constants
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject

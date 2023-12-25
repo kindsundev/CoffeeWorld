@@ -14,18 +14,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kind.sun.dev.coffeeworld.R
-import kind.sun.dev.coffeeworld.utils.api.NetworkResult
-import kind.sun.dev.coffeeworld.utils.custom.CustomLoadingDialog
-import kind.sun.dev.coffeeworld.utils.helper.view.monitorNetworkOperationOnce
+import kind.sun.dev.coffeeworld.util.api.NetworkResult
+import kind.sun.dev.coffeeworld.util.custom.CustomLoadingDialog
+import kind.sun.dev.coffeeworld.util.helper.view.monitorNetworkOperationOnce
 import javax.inject.Inject
 
-abstract class BaseDialogFragment<V: ViewDataBinding, VM: BaseViewModel>(
-    private val bindingInflater: (inflater: LayoutInflater) -> V,
+abstract class BaseDialogFragment<VB: ViewDataBinding, VM: BaseViewModel>(
+    private val bindingInflater: (inflater: LayoutInflater) -> VB,
     private val viewModelClass: Class<VM>?
 ) : DialogFragment() {
 
-    private var _binding: V? = null
-    protected val binding: V get() = _binding as V
+    private var _binding: VB? = null
+    protected val binding: VB get() = _binding as VB
 
     protected val viewModel : VM? by lazy {
         viewModelClass?.let {

@@ -7,7 +7,7 @@
 
         <variable
             name="fragment"
-            type="kind.sun.dev.coffeeworld.view.fragment.cafe.CafeFragment" />
+            type="kind.sun.dev.coffeeworld.ui.fragment.cafe.CafeFragment" />
 
     </data>
 

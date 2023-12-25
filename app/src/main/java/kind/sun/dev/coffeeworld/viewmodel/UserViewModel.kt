@@ -6,8 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kind.sun.dev.coffeeworld.contract.UserContract
 import kind.sun.dev.coffeeworld.data.local.model.UserModel
-import kind.sun.dev.coffeeworld.utils.common.Constants
-import kind.sun.dev.coffeeworld.utils.validator.ProfileValidator
+import kind.sun.dev.coffeeworld.util.common.Constants
+import kind.sun.dev.coffeeworld.util.validator.ProfileValidator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File

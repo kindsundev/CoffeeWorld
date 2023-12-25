@@ -4,7 +4,7 @@
     <data>
         <variable
             name="fragment"
-            type="kind.sun.dev.coffeeworld.view.dialog.profile.ProfileUpdateEmailDF" />
+            type="kind.sun.dev.coffeeworld.ui.dialog.profile.ProfileUpdateEmailDF" />
         <variable
             name="profileViewModel"
             type="kind.sun.dev.coffeeworld.viewmodel.UserViewModel" />

@@ -8,9 +8,9 @@ import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.data.local.model.MenuModel
 import kind.sun.dev.coffeeworld.data.remote.response.CafeMenuResponse
 import kind.sun.dev.coffeeworld.data.remote.response.CafeResponse
-import kind.sun.dev.coffeeworld.utils.api.NetworkResult
-import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
-import kind.sun.dev.coffeeworld.view.adapter.order.menu.OrderMenuViewItem
+import kind.sun.dev.coffeeworld.util.api.NetworkResult
+import kind.sun.dev.coffeeworld.ui.adapter.cafe.CafeShopViewItem
+import kind.sun.dev.coffeeworld.ui.adapter.order.menu.OrderMenuViewItem
 
 interface CafeContract {
 

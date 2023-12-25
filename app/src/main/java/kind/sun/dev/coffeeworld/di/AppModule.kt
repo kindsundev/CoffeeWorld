@@ -9,7 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import kind.sun.dev.coffeeworld.data.local.dao.CafeDao
 import kind.sun.dev.coffeeworld.data.local.dao.UserDao
 import kind.sun.dev.coffeeworld.data.local.db.AppDatabase
-import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
+import kind.sun.dev.coffeeworld.util.helper.storage.PreferencesHelper
 import javax.inject.Singleton
 
 @Module

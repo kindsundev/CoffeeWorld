@@ -12,20 +12,20 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kind.sun.dev.coffeeworld.utils.api.NetworkResult
-import kind.sun.dev.coffeeworld.utils.custom.CustomLoadingDialog
-import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
-import kind.sun.dev.coffeeworld.utils.helper.view.monitorNetworkOperation
+import kind.sun.dev.coffeeworld.util.api.NetworkResult
+import kind.sun.dev.coffeeworld.util.custom.CustomLoadingDialog
+import kind.sun.dev.coffeeworld.util.helper.storage.PreferencesHelper
+import kind.sun.dev.coffeeworld.util.helper.view.monitorNetworkOperation
 import javax.inject.Inject
 
-abstract class BaseBSDF<V: ViewDataBinding, VM: BaseViewModel>(
-    private val layoutInflater: (inflater: LayoutInflater) -> V,
+abstract class BaseBSDF<VB: ViewDataBinding, VM: BaseViewModel>(
+    private val layoutInflater: (inflater: LayoutInflater) -> VB,
     private val viewModelClass: Class<VM>?,
     private val isFullScreen: Boolean
 ) : BottomSheetDialogFragment() {
 
-    private var _binding: V? = null
-    protected val binding: V get() = _binding as V
+    private var _binding: VB? = null
+    protected val binding: VB get() = _binding as VB
 
     protected val viewModel : VM? by lazy {
         viewModelClass?.let {

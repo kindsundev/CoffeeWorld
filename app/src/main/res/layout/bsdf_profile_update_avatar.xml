@@ -5,7 +5,7 @@
     <data>
         <variable
             name="fragment"
-            type="kind.sun.dev.coffeeworld.view.bsdf.user.ProfileUpdateAvatarBSDF" />
+            type="kind.sun.dev.coffeeworld.ui.bsdf.user.ProfileUpdateAvatarBSDF" />
     </data>
 
     <LinearLayout

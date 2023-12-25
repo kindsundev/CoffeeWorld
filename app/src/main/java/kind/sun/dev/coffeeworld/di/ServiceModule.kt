@@ -15,7 +15,7 @@ import kind.sun.dev.coffeeworld.data.remote.api.UserApi
 import kind.sun.dev.coffeeworld.data.repository.AuthRepository
 import kind.sun.dev.coffeeworld.data.repository.CafeRepository
 import kind.sun.dev.coffeeworld.data.repository.UserRepository
-import kind.sun.dev.coffeeworld.utils.helper.storage.PreferencesHelper
+import kind.sun.dev.coffeeworld.util.helper.storage.PreferencesHelper
 import javax.inject.Singleton
 
 @Module

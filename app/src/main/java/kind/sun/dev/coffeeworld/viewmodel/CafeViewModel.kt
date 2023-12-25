@@ -8,11 +8,11 @@ import kind.sun.dev.coffeeworld.data.local.model.BeverageCategoryModel
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.data.local.model.CategoryModel
 import kind.sun.dev.coffeeworld.data.local.model.MenuModel
-import kind.sun.dev.coffeeworld.utils.common.Constants
-import kind.sun.dev.coffeeworld.utils.dataset.CafeShopDataSet
-import kind.sun.dev.coffeeworld.utils.dataset.OrderDataSet
-import kind.sun.dev.coffeeworld.view.adapter.cafe.CafeShopViewItem
-import kind.sun.dev.coffeeworld.view.adapter.order.menu.OrderMenuViewItem
+import kind.sun.dev.coffeeworld.util.common.Constants
+import kind.sun.dev.coffeeworld.util.dataset.CafeShopDataSet
+import kind.sun.dev.coffeeworld.util.dataset.OrderDataSet
+import kind.sun.dev.coffeeworld.ui.adapter.cafe.CafeShopViewItem
+import kind.sun.dev.coffeeworld.ui.adapter.order.menu.OrderMenuViewItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

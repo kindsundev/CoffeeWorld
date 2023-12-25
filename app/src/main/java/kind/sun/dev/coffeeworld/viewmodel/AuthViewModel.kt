@@ -7,7 +7,7 @@ import kind.sun.dev.coffeeworld.data.remote.request.AuthRequest
 import kind.sun.dev.coffeeworld.data.remote.request.LoginRequest
 import kind.sun.dev.coffeeworld.data.remote.request.RegisterRequest
 import kind.sun.dev.coffeeworld.contract.AuthContract
-import kind.sun.dev.coffeeworld.utils.validator.AuthValidator
+import kind.sun.dev.coffeeworld.util.validator.AuthValidator
 import kind.sun.dev.coffeeworld.base.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
