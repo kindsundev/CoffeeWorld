@@ -1,10 +1,10 @@
 package kind.sun.dev.coffeeworld.ui.adapter.order.category
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kind.sun.dev.coffeeworld.data.local.model.CategoryModel
 import kind.sun.dev.coffeeworld.databinding.ItemCategoryDefaultBinding
+import kind.sun.dev.coffeeworld.util.helper.view.inflateBinding
 import kind.sun.dev.coffeeworld.util.helper.view.setOnClickScaleListener
 
 class OrderCategoryAdapter(
@@ -13,11 +13,7 @@ class OrderCategoryAdapter(
 ): RecyclerView.Adapter<OrderCategoryAdapter.CategoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        return CategoryViewHolder(
-            ItemCategoryDefaultBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
-            )
-        )
+        return CategoryViewHolder(parent.inflateBinding(ItemCategoryDefaultBinding::inflate))
     }
 
     override fun getItemCount(): Int = items.size

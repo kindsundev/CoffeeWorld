@@ -3,11 +3,11 @@ package kind.sun.dev.coffeeworld.ui.adapter.cafe
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseDiffUtil
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.databinding.ItemCafeShopBinding
 import kind.sun.dev.coffeeworld.databinding.ItemCafeShopTitleBinding
+import kind.sun.dev.coffeeworld.util.helper.view.inflateBinding
 import java.lang.IllegalArgumentException
 
 class CafeShopAdapter(
@@ -20,18 +20,18 @@ class CafeShopAdapter(
             field = value
         }
 
+    companion object {
+        const val TITLE_TYPE = 1
+        const val SHOP_TYPE = 2
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CafeShopViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            R.layout.item_cafe_shop -> {
-                CafeShopViewHolder.ItemShopViewHolder(
-                    ItemCafeShopBinding.inflate(layoutInflater, parent, false)
-                )
+            SHOP_TYPE -> {
+                CafeShopViewHolder.ItemShopViewHolder(parent.inflateBinding(ItemCafeShopBinding::inflate))
             }
-            R.layout.item_cafe_shop_title -> {
-                CafeShopViewHolder.TitleShopViewHolder(
-                    ItemCafeShopTitleBinding.inflate(layoutInflater, parent, false)
-                )
+            TITLE_TYPE -> {
+                CafeShopViewHolder.TitleShopViewHolder(parent.inflateBinding(ItemCafeShopTitleBinding::inflate))
             }
             else -> throw IllegalArgumentException("Unknown view type: $viewType")
         }
@@ -41,10 +41,10 @@ class CafeShopAdapter(
         holder.onItemClickListener = onItemCLickListener
         when(holder) {
             is CafeShopViewHolder.TitleShopViewHolder -> {
-                holder.onBind(items[position] as CafeShopViewItem.Title)
+                holder.bindView(items[position] as CafeShopViewItem.Title)
             }
             is CafeShopViewHolder.ItemShopViewHolder -> {
-                holder.onBind(items[position] as CafeShopViewItem.ItemShop)
+                holder.bindView(items[position] as CafeShopViewItem.Shop)
             }
         }
     }
@@ -53,8 +53,8 @@ class CafeShopAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {
-            is CafeShopViewItem.Title -> R.layout.item_cafe_shop_title
-            is CafeShopViewItem.ItemShop -> R.layout.item_cafe_shop
+            is CafeShopViewItem.Title -> TITLE_TYPE
+            is CafeShopViewItem.Shop -> SHOP_TYPE
         }
     }
 }

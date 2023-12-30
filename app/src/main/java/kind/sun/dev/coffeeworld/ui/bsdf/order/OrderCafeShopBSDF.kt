@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseBSDF
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
@@ -17,6 +18,7 @@ import kind.sun.dev.coffeeworld.ui.adapter.order.shop.OrderCafeShopAdapter
 import kind.sun.dev.coffeeworld.viewmodel.CafeViewModel
 import java.util.ArrayList
 
+@AndroidEntryPoint
 class OrderCafeShopBSDF : BaseBSDF<BsdfSelectItemDefaultBinding, CafeViewModel>(
     layoutInflater = BsdfSelectItemDefaultBinding::inflate,
     viewModelClass = CafeViewModel::class.java,

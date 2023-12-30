@@ -13,44 +13,34 @@ import kind.sun.dev.coffeeworld.databinding.ItemMoreRowBinding
 import kind.sun.dev.coffeeworld.databinding.ItemMoreTitleBinding
 import kind.sun.dev.coffeeworld.databinding.ItemUserInfoBinding
 import kind.sun.dev.coffeeworld.ui.adapter.more.MoreViewItem
-import kind.sun.dev.coffeeworld.util.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.util.dataset.MoreDataSet
+import kind.sun.dev.coffeeworld.util.helper.view.setOnClickScaleListener
 
 sealed class ProfileViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
     var onItemClickListener : ((itemId: (MoreDataSet.Id)) -> Unit)? = null
 
-    protected fun onClickMoreItem(view: View, optionId: MoreDataSet.Id) {
-        view.setScaleAnimation {
-            onItemClickListener?.invoke(optionId)
-        }
-    }
-
     class TitleViewHolder(private val binding: ItemMoreTitleBinding): ProfileViewHolder(binding) {
-        fun onBind(title: MoreViewItem.Title) {
-            binding.tvTitle.setText(title.resTitle)
-        }
+        fun bindView(title: MoreViewItem.Title) = binding.tvTitle.setText(title.resTitle)
     }
 
     class UserInfoViewHolder(private val binding: ItemUserInfoBinding): ProfileViewHolder(binding) {
-        fun onBind(user: UserModel) {
-            binding.apply {
-                userModel = user
-                executePendingBindings()
-                imgAvatar.setOnClickListener { onClickMoreItem(it, MoreDataSet.Id.AVATAR) }
-                root.setOnClickListener { onClickMoreItem(it, MoreDataSet.Id.PROFILE) }
-            }
+
+        fun bindView(user: UserModel) = binding.apply {
+            userModel = user
+            imgAvatar.setOnClickScaleListener { onItemClickListener?.invoke(MoreDataSet.Id.AVATAR) }
+            root.setOnClickScaleListener { onItemClickListener?.invoke(MoreDataSet.Id.PROFILE) }
+            executePendingBindings()
         }
     }
 
     class OptionViewHolder(private val binding: ItemMoreRowBinding): ProfileViewHolder(binding) {
-        fun onBind(data: MoreViewItem.Item) {
-            binding.apply {
-                item = data
-                executePendingBindings()
-                root.setOnClickListener { onClickMoreItem(it, data.id) }
-                applyNewStyle(data)
-            }
+
+        fun bindView(data: MoreViewItem.Item) = binding.apply {
+            item = data
+            root.setOnClickScaleListener { onItemClickListener?.invoke(data.id) }
+            executePendingBindings()
+            applyNewStyle(data)
         }
 
 

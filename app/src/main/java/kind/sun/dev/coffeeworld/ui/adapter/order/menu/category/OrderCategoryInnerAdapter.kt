@@ -1,6 +1,5 @@
 package kind.sun.dev.coffeeworld.ui.adapter.order.menu.category
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kind.sun.dev.coffeeworld.base.BaseDiffUtil
@@ -9,6 +8,7 @@ import kind.sun.dev.coffeeworld.data.local.model.DrinkModel
 import kind.sun.dev.coffeeworld.databinding.ItemCategoryDefaultBinding
 import kind.sun.dev.coffeeworld.databinding.ItemCategoryMoreBinding
 import kind.sun.dev.coffeeworld.util.common.Constants
+import kind.sun.dev.coffeeworld.util.helper.view.inflateBinding
 import kind.sun.dev.coffeeworld.util.helper.view.setOnClickScaleListener
 
 internal class OrderCategoryInnerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -28,11 +28,10 @@ internal class OrderCategoryInnerAdapter : RecyclerView.Adapter<RecyclerView.Vie
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
         return if (viewType == DEFAULT_TYPE) {
-            CategoryDefaultViewHolder(ItemCategoryDefaultBinding.inflate(layoutInflater, parent, false))
+            CategoryDefaultViewHolder(parent.inflateBinding(ItemCategoryDefaultBinding::inflate))
         } else {
-            CategoryMoreViewHolder(ItemCategoryMoreBinding.inflate(layoutInflater, parent, false))
+            CategoryMoreViewHolder(parent.inflateBinding(ItemCategoryMoreBinding::inflate))
         }
     }
 

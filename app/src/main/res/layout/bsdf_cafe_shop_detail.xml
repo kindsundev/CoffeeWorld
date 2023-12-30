@@ -15,6 +15,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/bg_bsdf_white_border_16"
         tools:context="ui.cafe.CafeDetailBottomFragment">
 
         <androidx.core.widget.NestedScrollView

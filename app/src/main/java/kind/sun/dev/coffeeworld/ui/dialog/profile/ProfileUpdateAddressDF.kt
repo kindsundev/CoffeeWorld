@@ -2,7 +2,7 @@ package kind.sun.dev.coffeeworld.ui.dialog.profile
 
 import android.view.View
 import dagger.hilt.android.AndroidEntryPoint
-import kind.sun.dev.coffeeworld.base.BaseDialogFragment
+import kind.sun.dev.coffeeworld.base.BaseDF
 import kind.sun.dev.coffeeworld.databinding.DfProfileUpdateAddressBinding
 import kind.sun.dev.coffeeworld.util.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.util.helper.view.showErrorMessage
@@ -12,7 +12,7 @@ import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 @AndroidEntryPoint
 class ProfileUpdateAddressDF(
     private val onUpdateSuccess: (message: String) -> Unit
-) : BaseDialogFragment<DfProfileUpdateAddressBinding, UserViewModel>(
+) : BaseDF<DfProfileUpdateAddressBinding, UserViewModel>(
     bindingInflater = DfProfileUpdateAddressBinding::inflate,
     viewModelClass = UserViewModel::class.java
 ) {

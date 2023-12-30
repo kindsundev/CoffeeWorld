@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/coffee_background"
+        android:background="@drawable/bg_bsdf_white_border_16"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="24dp">

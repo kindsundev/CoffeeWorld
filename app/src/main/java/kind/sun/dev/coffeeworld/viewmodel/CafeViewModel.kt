@@ -104,13 +104,13 @@ class CafeViewModel @Inject constructor(
                 randomDistance = CafeShopDataSet.generateRandomDistance(index + 1)
                 if (index == 0) {
                     add(CafeShopViewItem.Title(title[0]))
-                    add(CafeShopViewItem.ItemShop(CafeShopDataSet.Id.NEAR_HERE, cafeModel, randomDistance))
+                    add(CafeShopViewItem.Shop(CafeShopDataSet.Id.NEAR_HERE, cafeModel, randomDistance))
                 } else {
                     if (index == 1) {
                         add(CafeShopViewItem.Title(title[1]))
-                        add(CafeShopViewItem.ItemShop(CafeShopDataSet.Id.NEAR_HERE, cafeModel, randomDistance))
+                        add(CafeShopViewItem.Shop(CafeShopDataSet.Id.NEAR_HERE, cafeModel, randomDistance))
                     } else {
-                        add(CafeShopViewItem.ItemShop(CafeShopDataSet.Id.FAR_AWAY, cafeModel, randomDistance))
+                        add(CafeShopViewItem.Shop(CafeShopDataSet.Id.FAR_AWAY, cafeModel, randomDistance))
                     }
                 }
             }
@@ -142,7 +142,7 @@ class CafeViewModel @Inject constructor(
         return mutableListOf<CafeShopViewItem>().apply {
             scope.launch {
                 list.forEach { item ->
-                    if (item is CafeShopViewItem.ItemShop) {
+                    if (item is CafeShopViewItem.Shop) {
                         if (item.cafe.name.lowercase().contains(formatName)) {
                             add(item)
                         }

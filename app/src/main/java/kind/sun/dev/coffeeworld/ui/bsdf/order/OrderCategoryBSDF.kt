@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseBSDF
 import kind.sun.dev.coffeeworld.data.local.model.CategoryModel
@@ -16,6 +17,7 @@ import kind.sun.dev.coffeeworld.util.helper.view.show
 import kind.sun.dev.coffeeworld.ui.adapter.order.category.OrderCategoryAdapter
 import kind.sun.dev.coffeeworld.viewmodel.CafeViewModel
 
+@AndroidEntryPoint
 class OrderCategoryBSDF : BaseBSDF<BsdfSelectItemDefaultBinding, CafeViewModel>(
     layoutInflater = BsdfSelectItemDefaultBinding::inflate,
     viewModelClass = CafeViewModel::class.java,
@@ -60,7 +62,6 @@ class OrderCategoryBSDF : BaseBSDF<BsdfSelectItemDefaultBinding, CafeViewModel>(
                     onItemClicked?.invoke(it)
                     this@OrderCategoryBSDF.dismiss()
                 }
-
                 hasFixedSize()
             }
         }

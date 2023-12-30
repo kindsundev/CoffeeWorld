@@ -1,10 +1,10 @@
 package kind.sun.dev.coffeeworld.ui.adapter.order.shop
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.databinding.ItemCafeShopRowBinding
+import kind.sun.dev.coffeeworld.util.helper.view.inflateBinding
 
 class OrderCafeShopAdapter(
     private val data: List<CafeModel>,
@@ -25,9 +25,7 @@ class OrderCafeShopAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CafeViewHolder {
-        return CafeViewHolder(
-            ItemCafeShopRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
+        return CafeViewHolder(parent.inflateBinding(ItemCafeShopRowBinding::inflate))
     }
 
     override fun getItemCount(): Int = data.size

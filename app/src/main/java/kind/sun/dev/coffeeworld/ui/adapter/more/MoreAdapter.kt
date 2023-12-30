@@ -3,18 +3,15 @@ package kind.sun.dev.coffeeworld.ui.adapter.more
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseDiffUtil
 import kind.sun.dev.coffeeworld.databinding.ItemMoreBoxDoubleBinding
 import kind.sun.dev.coffeeworld.databinding.ItemMoreBoxOnlyBinding
 import kind.sun.dev.coffeeworld.databinding.ItemMoreRowBinding
-import kind.sun.dev.coffeeworld.databinding.ItemMoreTempBinding
 import kind.sun.dev.coffeeworld.databinding.ItemMoreTitleBinding
 import kind.sun.dev.coffeeworld.util.dataset.MoreDataSet
+import kind.sun.dev.coffeeworld.util.helper.view.inflateBinding
 
 class MoreAdapter : RecyclerView.Adapter<MoreViewHolder>() {
-
-    private var doubleBoxItems = mutableListOf<MoreViewItem.Item>()
 
     var onItemClickListener: ((itemId: MoreDataSet.Id) -> Unit)? = null
 
@@ -24,63 +21,47 @@ class MoreAdapter : RecyclerView.Adapter<MoreViewHolder>() {
             field = value
         }
 
+    companion object {
+        const val ROW_TYPE = 0
+        const val BOX_ONLY_TYPE = 1
+        const val BOX_DOUBLE_TYPE = 2
+        const val TITLE_TYPE = 4
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoreViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
         return when(viewType) {
-            R.layout.item_more_title -> {
-                MoreViewHolder.TitleViewHolder(
-                    ItemMoreTitleBinding.inflate(layoutInflater, parent, false)
-                )
+            TITLE_TYPE -> {
+                MoreViewHolder.TitleViewHolder(parent.inflateBinding(ItemMoreTitleBinding::inflate))
             }
-            R.layout.item_more_box_only -> {
-                MoreViewHolder.OnlyBoxViewHolder(
-                    ItemMoreBoxOnlyBinding.inflate(layoutInflater, parent, false)
-                )
+            BOX_ONLY_TYPE -> {
+                MoreViewHolder.OnlyBoxViewHolder(parent.inflateBinding(ItemMoreBoxOnlyBinding::inflate))
             }
-            R.layout.item_more_box_double -> {
-                MoreViewHolder.DoubleBoxViewHolder(
-                    ItemMoreBoxDoubleBinding.inflate(layoutInflater, parent, false)
-                )
+            BOX_DOUBLE_TYPE -> {
+                MoreViewHolder.DoubleBoxViewHolder(parent.inflateBinding(ItemMoreBoxDoubleBinding::inflate))
             }
-            R.layout.item_more_row -> {
-                MoreViewHolder.RowViewHolder(
-                    ItemMoreRowBinding.inflate(layoutInflater, parent, false)
-                )
+            ROW_TYPE -> {
+                MoreViewHolder.RowViewHolder(parent.inflateBinding(ItemMoreRowBinding::inflate))
             }
-            else -> {
-                MoreViewHolder.TempViewHolder(
-                    ItemMoreTempBinding.inflate(layoutInflater, parent, false)
-                )
-            }
+            else -> throw IllegalStateException("Invalid view type: $viewType")
         }
     }
 
     override fun onBindViewHolder(holder: MoreViewHolder, position: Int) {
-        val item = items[position].also {
-            if (it is MoreViewItem.Item && it.type == MoreViewItem.BOX_DOUBLE_TYPE) {
-                doubleBoxItems.add(it)
-            }
-            if (doubleBoxItems.size > 2) doubleBoxItems.clear()
-        }
-
+        val item = items[position]
         holder.onItemClickListener = onItemClickListener
-
         when (holder) {
             is MoreViewHolder.TitleViewHolder -> {
-                holder.onBind(item as MoreViewItem.Title)
+                holder.bindView(item as MoreViewItem.Title)
             }
             is MoreViewHolder.OnlyBoxViewHolder -> {
-                holder.onBind(item as MoreViewItem.Item)
+                holder.bindView(item as MoreViewItem.Item)
             }
             is MoreViewHolder.DoubleBoxViewHolder -> {
-                if (doubleBoxItems.size == 2) {
-                    holder.onBind(doubleBoxItems[0], doubleBoxItems[1])
-                }
+                holder.bindView((item as MoreViewItem.Items).items)
             }
             is MoreViewHolder.RowViewHolder -> {
-                holder.onBind(item as MoreViewItem.Item)
+                holder.bindView(item as MoreViewItem.Item)
             }
-            else -> {}
         }
     }
 
@@ -88,17 +69,9 @@ class MoreAdapter : RecyclerView.Adapter<MoreViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
         return when(val item = items[position]) {
-            is MoreViewItem.Title -> R.layout.item_more_title
-            is MoreViewItem.Temp -> R.layout.item_more_box_double
-            is MoreViewItem.Item -> {
-                when (item.type) {
-                    MoreViewItem.ROW_TYPE -> R.layout.item_more_row
-                    MoreViewItem.BOX_ONLY_TYPE -> R.layout.item_more_box_only
-                    else -> { R.layout.item_more_temp }
-                }
-            }
+            is MoreViewItem.Title -> TITLE_TYPE
+            is MoreViewItem.Items -> BOX_DOUBLE_TYPE
+            is MoreViewItem.Item -> item.type
         }
     }
-
-
 }

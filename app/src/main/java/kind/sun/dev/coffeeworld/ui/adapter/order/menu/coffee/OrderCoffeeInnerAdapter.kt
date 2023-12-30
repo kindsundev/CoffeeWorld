@@ -1,12 +1,12 @@
 package kind.sun.dev.coffeeworld.ui.adapter.order.menu.coffee
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kind.sun.dev.coffeeworld.base.BaseDiffUtil
 import kind.sun.dev.coffeeworld.data.local.model.DrinkModel
 import kind.sun.dev.coffeeworld.databinding.ItemOrderCollectionCoffeeBinding
 import kind.sun.dev.coffeeworld.util.common.Constants
+import kind.sun.dev.coffeeworld.util.helper.view.inflateBinding
 import kind.sun.dev.coffeeworld.util.helper.view.setOnClickScaleListener
 
 internal class OrderCoffeeInnerAdapter : RecyclerView.Adapter<OrderCoffeeInnerAdapter.CoffeeViewHolder>() {
@@ -20,11 +20,7 @@ internal class OrderCoffeeInnerAdapter : RecyclerView.Adapter<OrderCoffeeInnerAd
     internal var onItemClickListener: ((type : (String), id: (Int), drink: (DrinkModel)?) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoffeeViewHolder {
-        return CoffeeViewHolder(
-            ItemOrderCollectionCoffeeBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
-            )
-        )
+        return CoffeeViewHolder(parent.inflateBinding(ItemOrderCollectionCoffeeBinding::inflate))
     }
 
     override fun getItemCount(): Int = items.size

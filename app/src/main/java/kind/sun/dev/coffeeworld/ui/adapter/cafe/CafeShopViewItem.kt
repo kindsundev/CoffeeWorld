@@ -7,7 +7,7 @@ sealed class CafeShopViewItem {
 
     data class Title(val title: String): CafeShopViewItem()
 
-    data class ItemShop(
+    data class Shop(
         val type: CafeShopDataSet.Id,
         val cafe: CafeModel,
         val distance: String

@@ -4,7 +4,7 @@ import android.text.InputType
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.AndroidEntryPoint
-import kind.sun.dev.coffeeworld.base.BaseDialogFragment
+import kind.sun.dev.coffeeworld.base.BaseDF
 import kind.sun.dev.coffeeworld.databinding.DfProfileUpdatePasswordBinding
 import kind.sun.dev.coffeeworld.util.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.util.helper.view.showErrorMessage
@@ -13,7 +13,7 @@ import kind.sun.dev.coffeeworld.util.helper.view.showToastSuccess
 import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 
 @AndroidEntryPoint
-class ProfileUpdatePasswordDF : BaseDialogFragment<DfProfileUpdatePasswordBinding, UserViewModel>(
+class ProfileUpdatePasswordDF : BaseDF<DfProfileUpdatePasswordBinding, UserViewModel>(
     bindingInflater = DfProfileUpdatePasswordBinding::inflate,
     viewModelClass = UserViewModel::class.java
 ){

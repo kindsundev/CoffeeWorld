@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_bottom_sheet_white_border_8"
+        android:background="@drawable/bg_bsdf_white_border_16"
         android:orientation="vertical"
         android:paddingBottom="16dp">
 

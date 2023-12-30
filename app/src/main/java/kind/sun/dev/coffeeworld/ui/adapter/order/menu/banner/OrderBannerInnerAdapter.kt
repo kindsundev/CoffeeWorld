@@ -1,6 +1,5 @@
 package kind.sun.dev.coffeeworld.ui.adapter.order.menu.banner
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kind.sun.dev.coffeeworld.base.BaseDiffUtil
@@ -9,6 +8,7 @@ import kind.sun.dev.coffeeworld.databinding.ItemOrderCollectionBannerBinding
 import kind.sun.dev.coffeeworld.util.common.Constants
 import kind.sun.dev.coffeeworld.util.helper.view.setOnClickScaleListener
 import kind.sun.dev.coffeeworld.ui.adapter.order.menu.BannerItem
+import kind.sun.dev.coffeeworld.util.helper.view.inflateBinding
 
 internal class OrderBannerInnerAdapter : RecyclerView.Adapter<OrderBannerInnerAdapter.BannerViewHolder>() {
 
@@ -21,11 +21,7 @@ internal class OrderBannerInnerAdapter : RecyclerView.Adapter<OrderBannerInnerAd
     internal var onItemClickListener: ((type : (String), id: (Int), drink: (DrinkModel)?) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerViewHolder {
-        return BannerViewHolder(
-            ItemOrderCollectionBannerBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
-            )
-        )
+        return BannerViewHolder(parent.inflateBinding(ItemOrderCollectionBannerBinding::inflate))
     }
 
     override fun getItemCount(): Int = items.size

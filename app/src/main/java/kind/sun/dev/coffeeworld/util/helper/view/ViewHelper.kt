@@ -2,10 +2,12 @@ package kind.sun.dev.coffeeworld.util.helper.view
 
 import android.content.Context
 import android.os.Build
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -76,4 +78,10 @@ fun RecyclerView.smoothToPositionWithOffset(position: Int, snapMode: Int = Linea
     }
     smoothScroller.targetPosition = position
     layoutManager?.startSmoothScroll(smoothScroller)
+}
+
+inline fun <reified T: ViewDataBinding> ViewGroup.inflateBinding(
+    inflater: (LayoutInflater, ViewGroup, Boolean) -> T
+): T {
+    return inflater.invoke(LayoutInflater.from(context), this, false)
 }

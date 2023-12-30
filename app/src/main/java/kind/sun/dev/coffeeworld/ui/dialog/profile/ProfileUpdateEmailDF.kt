@@ -4,7 +4,7 @@ import android.text.InputType
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.AndroidEntryPoint
-import kind.sun.dev.coffeeworld.base.BaseDialogFragment
+import kind.sun.dev.coffeeworld.base.BaseDF
 import kind.sun.dev.coffeeworld.databinding.DfProfileUpdateEmailBinding
 import kind.sun.dev.coffeeworld.util.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.util.helper.view.showErrorMessage
@@ -14,7 +14,7 @@ import kind.sun.dev.coffeeworld.viewmodel.UserViewModel
 @AndroidEntryPoint
 class ProfileUpdateEmailDF(
     private val onUpdateSuccess: (message: String) -> Unit
-) : BaseDialogFragment<DfProfileUpdateEmailBinding, UserViewModel>(
+) : BaseDF<DfProfileUpdateEmailBinding, UserViewModel>(
     bindingInflater = DfProfileUpdateEmailBinding::inflate,
     viewModelClass = UserViewModel::class.java
 ) {

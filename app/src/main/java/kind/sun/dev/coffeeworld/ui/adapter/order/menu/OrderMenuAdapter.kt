@@ -1,6 +1,5 @@
 package kind.sun.dev.coffeeworld.ui.adapter.order.menu
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kind.sun.dev.coffeeworld.data.local.model.DrinkModel
@@ -9,7 +8,7 @@ import kind.sun.dev.coffeeworld.databinding.ItemOrderCollectionBinding
 import kind.sun.dev.coffeeworld.ui.adapter.order.menu.banner.OrderBannerOuterViewHolder
 import kind.sun.dev.coffeeworld.ui.adapter.order.menu.category.OrderCategoryOuterViewHolder
 import kind.sun.dev.coffeeworld.ui.adapter.order.menu.coffee.OrderCoffeeOuterViewHolder
-
+import kind.sun.dev.coffeeworld.util.helper.view.inflateBinding
 
 class OrderMenuAdapter(
     private val menu: List<OrderMenuViewItem>
@@ -25,22 +24,15 @@ class OrderMenuAdapter(
     var onItemClickListener: ((type : (String), id: (Int), drink: (DrinkModel)?) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
         return when(viewType) {
             CATEGORY_TYPE -> {
-                OrderCategoryOuterViewHolder(
-                    ItemOrderCategoryBinding.inflate(layoutInflater, parent, false)
-                )
+                OrderCategoryOuterViewHolder(parent.inflateBinding(ItemOrderCategoryBinding::inflate))
             }
             BANNER_TYPE -> {
-                OrderBannerOuterViewHolder(
-                    ItemOrderCollectionBinding.inflate(layoutInflater, parent, false)
-                )
+                OrderBannerOuterViewHolder(parent.inflateBinding(ItemOrderCollectionBinding::inflate))
             }
             COFFEE_TYPE -> {
-                OrderCoffeeOuterViewHolder(
-                    ItemOrderCollectionBinding.inflate(layoutInflater, parent, false)
-                )
+                OrderCoffeeOuterViewHolder(parent.inflateBinding(ItemOrderCollectionBinding::inflate))
             }
             else -> throw IllegalArgumentException("Unknown view type")
         }

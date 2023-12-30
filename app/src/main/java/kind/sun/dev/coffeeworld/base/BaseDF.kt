@@ -19,7 +19,7 @@ import kind.sun.dev.coffeeworld.util.custom.CustomLoadingDialog
 import kind.sun.dev.coffeeworld.util.helper.view.monitorNetworkOperationOnce
 import javax.inject.Inject
 
-abstract class BaseDialogFragment<VB: ViewDataBinding, VM: BaseViewModel>(
+abstract class BaseDF<VB: ViewDataBinding, VM: BaseViewModel>(
     private val bindingInflater: (inflater: LayoutInflater) -> VB,
     private val viewModelClass: Class<VM>?
 ) : DialogFragment() {
@@ -66,7 +66,7 @@ abstract class BaseDialogFragment<VB: ViewDataBinding, VM: BaseViewModel>(
         onSuccess: (T) -> Unit,
         onError: (String) -> Unit
     ) {
-        monitorNetworkOperationOnce(this@BaseDialogFragment, childFragmentManager, loadingDialog,
+        monitorNetworkOperationOnce(this@BaseDF, childFragmentManager, loadingDialog,
             onSuccess = {
                 onSuccess.invoke(it)
             }, onError = {

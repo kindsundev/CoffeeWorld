@@ -7,23 +7,16 @@ import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.databinding.ItemMoreBoxDoubleBinding
 import kind.sun.dev.coffeeworld.databinding.ItemMoreBoxOnlyBinding
 import kind.sun.dev.coffeeworld.databinding.ItemMoreRowBinding
-import kind.sun.dev.coffeeworld.databinding.ItemMoreTempBinding
 import kind.sun.dev.coffeeworld.databinding.ItemMoreTitleBinding
-import kind.sun.dev.coffeeworld.util.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.util.dataset.MoreDataSet
+import kind.sun.dev.coffeeworld.util.helper.view.setOnClickScaleListener
 
 sealed class MoreViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
     var onItemClickListener: ((itemId: MoreDataSet.Id) -> Unit)? = null
 
-    protected fun onClickMoreItem(view: View, optionId: MoreDataSet.Id) {
-        view.setScaleAnimation {
-            onItemClickListener?.invoke(optionId)
-        }
-    }
-
     class TitleViewHolder(private val binding: ItemMoreTitleBinding): MoreViewHolder(binding) {
-        fun onBind(title: MoreViewItem.Title) {
+        fun bindView(title: MoreViewItem.Title) {
             binding.apply {
                 binding.tvTitle.setText(title.resTitle)
             }
@@ -31,34 +24,28 @@ sealed class MoreViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(bind
     }
 
     class OnlyBoxViewHolder(private val binding: ItemMoreBoxOnlyBinding): MoreViewHolder(binding) {
-        fun onBind(data: MoreViewItem.Item) {
-            binding.apply {
-                item = data
-                executePendingBindings()
-                root.setOnClickListener { onClickMoreItem(it, data.id) }
-            }
+        fun bindView(data: MoreViewItem.Item) = binding.apply {
+            item = data
+            root.setOnClickScaleListener { onItemClickListener?.invoke(data.id) }
+            executePendingBindings()
         }
     }
 
     class DoubleBoxViewHolder(private val binding: ItemMoreBoxDoubleBinding): MoreViewHolder(binding) {
-        fun onBind(firstItem: MoreViewItem.Item, secondItem: MoreViewItem.Item) {
-            binding.apply {
-                first = firstItem
-                second = secondItem
-                executePendingBindings()
-                firstOption.setOnClickListener { onClickMoreItem(it, firstItem.id) }
-                secondOption.setOnClickListener { onClickMoreItem(it, secondItem.id) }
-            }
+        fun bindView(items: List<MoreViewItem.Item>) = binding.apply {
+            if (items[0] == null) return@apply
+            first = items[0]
+            second = items[1]
+            firstOption.setOnClickScaleListener { onItemClickListener?.invoke(items[0].id) }
+            secondOption.setOnClickScaleListener { onItemClickListener?.invoke(items[1].id) }
+            executePendingBindings()
         }
     }
 
     class RowViewHolder(private val binding: ItemMoreRowBinding): MoreViewHolder(binding) {
-        fun onBind(data: MoreViewItem.Item) {
+        fun bindView(data: MoreViewItem.Item) {
             binding.apply {
                 item = data
-                executePendingBindings()
-                root.setOnClickListener { onClickMoreItem(it, data.id) }
-
                 when (data.id) {
                     MoreDataSet.Id.ORDER_REVIEWS -> {
                         root.setBackgroundResource(R.drawable.bg_layout_solid_white_border_top_8)
@@ -76,10 +63,9 @@ sealed class MoreViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(bind
                     }
                     else -> {}
                 }
+                root.setOnClickScaleListener { onItemClickListener?.invoke(data.id) }
+                executePendingBindings()
             }
         }
     }
-
-    class TempViewHolder(binding: ItemMoreTempBinding): MoreViewHolder(binding)
-
 }

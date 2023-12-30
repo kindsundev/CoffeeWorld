@@ -11,11 +11,11 @@ import kind.sun.dev.coffeeworld.R
 import kind.sun.dev.coffeeworld.base.BaseFragment
 import kind.sun.dev.coffeeworld.data.local.model.CafeModel
 import kind.sun.dev.coffeeworld.databinding.FragmentCafeBinding
+import kind.sun.dev.coffeeworld.ui.adapter.cafe.CafeShopAdapter
 import kind.sun.dev.coffeeworld.util.common.Constants
 import kind.sun.dev.coffeeworld.util.helper.animation.setScaleAnimation
 import kind.sun.dev.coffeeworld.util.helper.view.checkToHide
 import kind.sun.dev.coffeeworld.util.helper.view.toggleNetworkErrorLayout
-import kind.sun.dev.coffeeworld.ui.adapter.cafe.CafeShopAdapter
 import kind.sun.dev.coffeeworld.ui.adapter.cafe.CafeShopViewItem
 import kind.sun.dev.coffeeworld.viewmodel.CafeViewModel
 import kotlinx.coroutines.launch
@@ -122,9 +122,8 @@ class CafeFragment : BaseFragment<FragmentCafeBinding, CafeViewModel>(
             requireContext().getString(R.string.nearby_coffee_shop),
             requireContext().getString(R.string.other_coffee_shop)
         ).also { tittles ->
-            cafeShopAdapter.items = viewModel!!.convertToCafeViewItem(tittles, result).also {
-                transformedData = it
-            }
+            transformedData = viewModel!!.convertToCafeViewItem(tittles, result)
+            cafeShopAdapter.items = transformedData
         }
     }
 
